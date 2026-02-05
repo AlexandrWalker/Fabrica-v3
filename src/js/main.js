@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  /**
-   * Подключение GSAP
-   */
+  // ====================================================
+  // Глобальная длительность скролла в миллисекундах
+  const SCROLL_DURATION = 1500;
+  // ====================================================
+
   gsap.registerPlugin(ScrollTrigger);
 
   /**
@@ -15,9 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let scrollY = 0;
 
     function updatePointerEvents() {
-      stack.forEach((p, i) => {
-        p.style.pointerEvents = i === stack.length - 1 ? 'all' : 'none';
-      });
+      stack.forEach((p, i) => p.style.pointerEvents = i === stack.length - 1 ? 'all' : 'none');
 
       if (stack.length) {
         overlay.style.pointerEvents = 'all';
@@ -38,15 +38,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function unlockBodyScrollIfNeeded() {
-      if (stack.length === 0 && document.body.classList.contains('no-scroll')) {
+      if (!stack.length && document.body.classList.contains('no-scroll')) {
         document.body.classList.remove('no-scroll');
+      }
+    }
+
+    function addHtmlPopupClass() {
+      if (!document.documentElement.classList.contains('popup-open')) {
+        document.documentElement.classList.add('popup-open');
+      }
+    }
+
+    function removeHtmlPopupClassIfNeeded() {
+      if (!stack.length && document.documentElement.classList.contains('popup-open')) {
+        document.documentElement.classList.remove('popup-open');
       }
     }
 
     function openPopup(popup) {
       if (stack.includes(popup)) return;
 
-      if (stack.length === 0) lockBodyScroll();
+      if (!stack.length) lockBodyScroll();
 
       const z = BASE_Z + stack.length + 1;
       popup.style.zIndex = z;
@@ -65,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       stack.push(popup);
       updatePointerEvents();
-
+      addHtmlPopupClass();
       history.pushState({ popupId: popup.id }, '', '');
     }
 
@@ -74,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!popup) return;
 
       const duration = Math.max(0.2, Math.min(0.6, 0.4 - velocity));
-
       popup.style.transition = `top ${duration}s ease, opacity ${duration}s ease`;
       popup.style.top = '100%';
       popup.style.opacity = '0';
@@ -91,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       updatePointerEvents();
       unlockBodyScrollIfNeeded();
+      removeHtmlPopupClassIfNeeded();
     }
 
     document.addEventListener('click', e => {
@@ -102,11 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.addEventListener('touchstart', e => {
-      const head = e.target.closest('[data-popup-head]');
-      if (!head) return;
-
-      const popup = head.closest('.popup');
+      const popup = e.target.closest('.popup');
       if (!popup || stack.at(-1) !== popup) return;
+
+      const scrollParent = e.target.closest('[data-popup-scroll]');
+      if (scrollParent && scrollParent.scrollTop > 0) return;
 
       const startY = e.touches[0].clientY;
       let lastY = startY;
@@ -131,9 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         popup.style.transition = '';
 
-        if (delta > 120 || velocity > 0.6) {
-          history.back();
-        } else {
+        if (delta > 120 || velocity > 0.6) history.back();
+        else {
           const duration = 0.3;
           popup.style.transition = `top ${duration}s ease, opacity ${duration}s ease`;
           popup.style.top = '0';
@@ -145,45 +156,42 @@ document.addEventListener('DOMContentLoaded', () => {
         document.removeEventListener('touchend', end);
       }
 
-      document.addEventListener('touchmove', move);
+      document.addEventListener('touchmove', move, { passive: true });
       document.addEventListener('touchend', end);
     });
 
-    window.addEventListener('popstate', () => {
-      if (stack.length > 0) closeTopPopup();
-    });
+    window.addEventListener('popstate', () => { if (stack.length) closeTopPopup(); });
   })();
 
   /**
-   * Инициализация swiper
+   * Инициализация Swiper + динамический is-active для nav__slide
    */
-  if (document.querySelector('.swiper')) {
+  (function () {
+    const sliderEl = document.querySelector('.nav__slider');
+    if (!sliderEl) return;
+
+    const slides = sliderEl.querySelectorAll('.nav__slide');
+    const sections = document.querySelectorAll('.layout[id]');
 
     const swiper = new Swiper(".nav__slider", {
       slidesPerGroup: 1,
       slidesPerView: 'auto',
       spaceBetween: 8,
       grabCursor: true,
-
       speed: 180,
       touchRatio: 1.6,
-      resistanceRatio: 0.65,
-
+      resistance: true,
+      resistanceRatio: 0.4,
       centeredSlides: false,
       centeredSlidesBounds: true,
-      centerInsufficientSlides: true,
-      slidesOffsetBefore: 0,
-      slidesOffsetAfter: 0,
       loop: false,
       simulateTouch: true,
       watchOverflow: true,
-
       direction: 'horizontal',
       touchStartPreventDefault: true,
       touchMoveStopPropagation: true,
       threshold: 8,
       touchAngle: 25,
-
       freeMode: {
         enabled: true,
         momentum: true,
@@ -192,55 +200,118 @@ document.addEventListener('DOMContentLoaded', () => {
         momentumBounce: false,
         sticky: false
       },
-
       mousewheel: {
         forceToAxis: true,
         sensitivity: 1,
         releaseOnEdges: true
       },
     });
-  }
 
-  /**
-   * Управляет поведением хедера (появление/скрытие при скролле)
-   */
-  (function headerFunc() {
-    const html = document.documentElement;
-    const firstSection = document.querySelector('section');
-    let lastScrollTop = 1;
-    const scrollPosition = () => window.pageYOffset || document.documentElement.scrollTop;
+    const updateActiveSlide = () => {
+      let currentSection = null;
+      const scrollPos = window.scrollY + window.innerHeight * 0.25;
 
-    window.addEventListener('scroll', () => {
-      if (scrollPosition() > lastScrollTop && scrollPosition() > firstSection.offsetHeight) {
-        html.classList.add('header-out');
-      } else {
-        html.classList.remove('header-out');
+      sections.forEach(section => {
+        if (scrollPos >= section.offsetTop) currentSection = section;
+      });
+
+      if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4) {
+        currentSection = sections[sections.length - 1];
       }
-      lastScrollTop = scrollPosition();
-    })
+
+      if (!currentSection) return;
+      const targetId = currentSection.id;
+
+      slides.forEach((slide, index) => {
+        const isActive = slide.dataset.id === targetId;
+        slide.classList.toggle('is-active', isActive);
+
+        if (isActive) {
+          const slideLeft = slide.offsetLeft;
+          const slideRight = slideLeft + slide.offsetWidth;
+          const visibleLeft = swiper.translate * -1;
+          const visibleRight = visibleLeft + swiper.width;
+
+          let targetTranslate = swiper.translate;
+
+          if (slideLeft < visibleLeft) {
+            targetTranslate = -slideLeft;
+          } else if (slideRight > visibleRight) {
+            targetTranslate = -(slideRight - swiper.width);
+          }
+
+          if (targetTranslate !== swiper.translate) {
+            // Добавляем плавность
+            swiper.setTransition(300); // скорость анимации в мс
+            swiper.setTranslate(targetTranslate);
+          }
+        }
+      });
+    };
+
+    window.addEventListener('scroll', updateActiveSlide, { passive: true });
+    window.addEventListener('resize', updateActiveSlide);
+    updateActiveSlide();
   })();
 
+  function smoothScrollTo(targetY, duration = SCROLL_DURATION, callback) {
+    const startY = window.scrollY;
+    const delta = targetY - startY;
+    const startTime = performance.now();
+
+    function easeInOutCubic(t) {
+      return t < 0.5
+        ? 4 * t * t * t
+        : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function step(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = easeInOutCubic(progress);
+
+      window.scrollTo(0, startY + delta * eased);
+
+      if (progress < 1) requestAnimationFrame(step);
+      else if (callback) callback();
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const targetId = link.getAttribute('href').slice(1);
+      const targetEl = document.getElementById(targetId);
+      if (!targetEl) return;
+
+      const scrollPadding = 16.5 * parseFloat(getComputedStyle(document.documentElement).fontSize);
+      const targetY = targetEl.getBoundingClientRect().top + window.scrollY - scrollPadding;
+
+      smoothScrollTo(targetY, SCROLL_DURATION);
+    });
+  });
+
   /**
-   * Меняет класс у тега html на login
+   * Login / Logout
    */
   (function () {
     const loginBtn = document.querySelector('[data-log="login"]');
     const logoutBtn = document.querySelector('[data-log="logout"]');
 
-    if (loginBtn || logoutBtn) {
-      loginBtn.addEventListener('click', () => {
-        document.documentElement.classList.remove('logout');
-        document.documentElement.classList.add(loginBtn.dataset.log);
-      })
-      logoutBtn.addEventListener('click', () => {
-        document.documentElement.classList.remove('login');
-        document.documentElement.classList.add(logoutBtn.dataset.log);
-      })
-    }
+    if (loginBtn) loginBtn.addEventListener('click', () => {
+      document.documentElement.classList.remove('logout');
+      document.documentElement.classList.add('login');
+    });
+    if (logoutBtn) logoutBtn.addEventListener('click', () => {
+      document.documentElement.classList.remove('login');
+      document.documentElement.classList.add('logout');
+    });
   })();
 
   /**
-   * Шагово меняем фокус у инпута при вводе кода при регистрации
+   * Регистрационный код — шаговое заполнение
    */
   (function () {
     const regCode = document.getElementById('regCode');
@@ -249,39 +320,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputs = regCode.querySelectorAll('.form-code');
     const btn = regCode.querySelector('.btn');
 
-    const checkInputs = () => {
-      const allFilled = Array.from(inputs).every(input => input.value.length > 0);
-      btn.disabled = !allFilled;
-    };
+    const checkInputs = () => { btn.disabled = !Array.from(inputs).every(i => i.value.length); };
 
-    inputs.forEach((input, index) => {
-      input.addEventListener('input', (e) => {
-        if (e.target.value.length > 1) {
-          e.target.value = e.target.value.slice(-1);
-        }
-        if (e.target.value && index < inputs.length - 1) {
-          inputs[index + 1].focus();
-        } else if (index === inputs.length - 1) {
-          btn.focus();
-        }
+    inputs.forEach((input, idx) => {
+      input.addEventListener('input', e => {
+        if (e.target.value.length > 1) e.target.value = e.target.value.slice(-1);
+        if (e.target.value && idx < inputs.length - 1) inputs[idx + 1].focus();
+        else if (idx === inputs.length - 1) btn.focus();
         checkInputs();
       });
-
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Backspace' && !e.target.value && index > 0) {
-          inputs[index - 1].focus();
-        }
-        setTimeout(checkInputs, 0);
-      });
-
-      input.addEventListener('paste', (e) => {
+      input.addEventListener('keydown', e => { if (e.key === 'Backspace' && !e.target.value && idx > 0) inputs[idx - 1].focus(); setTimeout(checkInputs, 0); });
+      input.addEventListener('paste', e => {
         e.preventDefault();
         const data = e.clipboardData.getData('text').trim().slice(0, inputs.length);
-        data.split('').forEach((char, i) => {
-          if (inputs[i]) inputs[i].value = char;
-        });
-        if (data.length === inputs.length) btn.focus();
-        else inputs[data.length].focus();
+        data.split('').forEach((c, i) => { if (inputs[i]) inputs[i].value = c; });
+        if (data.length === inputs.length) btn.focus(); else inputs[data.length].focus();
         checkInputs();
       });
     });
@@ -290,26 +343,111 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
   /**
-   * Присваиваем класс у заполненного инпута
+   * Класс filled у инпутов и textarea
    */
   (function () {
-    const inputElements = document.querySelectorAll('.form-input');
-    const textareaElements = document.querySelectorAll('.form-textarea');
+    const addFilledClass = el => el.addEventListener('input', () => el.classList.toggle('filled', !!el.value.trim()));
+    document.querySelectorAll('.form-input, .form-textarea').forEach(addFilledClass);
+  })();
 
-    if (inputElements.length || textareaElements.length) {
-      const className = 'filled';
+  /**
+   * Навигация layout__nav
+   */
+  (function () {
+    const OFFSET_REM = 21.8;
+    const getOffsetPx = () => OFFSET_REM * parseFloat(getComputedStyle(document.documentElement).fontSize);
 
-      inputElements.forEach(element => {
-        element.addEventListener('input', function () {
-          this.value.trim() ? element.classList.add(className) : element.classList.remove(className);
+    document.addEventListener('click', e => {
+      const navBtn = e.target.closest('.layout__nav-item');
+      if (!navBtn) return;
+
+      const layout = navBtn.closest('.layout');
+      if (!layout) return;
+
+      const nav = layout.querySelector('.layout__nav');
+      if (!nav) return;
+
+      const navItems = nav.querySelectorAll('.layout__nav-item');
+      const cards = layout.querySelectorAll('.card[data-dish]');
+      if (!cards.length) return;
+
+      const targetKey = navBtn.dataset.nav;
+      const targetCard = Array.from(cards).find(c => c.dataset.dish === targetKey);
+      if (!targetCard) return;
+
+      layout._disableNavUpdate = true;
+
+      if (layout.classList.contains('layout--carousel')) {
+        const container = layout.querySelector('.layout__items');
+        if (!container) return;
+
+        const scrollTarget = targetCard.offsetLeft - (container.clientWidth / 2 - targetCard.offsetWidth / 2);
+        container.scrollTo({ left: scrollTarget, behavior: 'smooth' });
+
+        setTimeout(() => { layout._disableNavUpdate = false; }, SCROLL_DURATION);
+      } else {
+        const y = targetCard.getBoundingClientRect().top + window.pageYOffset - getOffsetPx();
+        smoothScrollTo(y, SCROLL_DURATION, () => { layout._disableNavUpdate = false; });
+      }
+
+      navItems.forEach(btn => btn.classList.toggle('active', btn === navBtn));
+    });
+
+    const layouts = document.querySelectorAll('.layout');
+    layouts.forEach(layout => {
+      const nav = layout.querySelector('.layout__nav');
+      if (!nav) return;
+      const navItems = nav.querySelectorAll('.layout__nav-item');
+      const cards = layout.querySelectorAll('.card[data-dish]');
+      if (!cards.length) return;
+
+      const isCarousel = layout.classList.contains('layout--carousel');
+
+      const updateActiveNav = () => {
+        if (layout._disableNavUpdate) return;
+
+        let currentCard = null;
+        if (isCarousel) {
+          const container = layout.querySelector('.layout__items');
+          const scrollCenter = container.scrollLeft + container.clientWidth / 2;
+          currentCard = Array.from(cards).reduce((closest, card) => {
+            const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+            return !closest || Math.abs(cardCenter - scrollCenter) < Math.abs(closest.offsetLeft + closest.offsetWidth / 2 - scrollCenter) ? card : closest;
+          }, null);
+        } else {
+          const offsetPx = getOffsetPx();
+          const scrollPos = window.scrollY + offsetPx + window.innerHeight * 0.25;
+          cards.forEach(card => { if (scrollPos >= card.getBoundingClientRect().top + window.pageYOffset) currentCard = card; });
+          if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4) currentCard = cards[cards.length - 1];
+        }
+
+        if (!currentCard) return;
+        const targetKey = currentCard.dataset.dish;
+
+        navItems.forEach(btn => {
+          const isActive = btn.dataset.nav === targetKey;
+          btn.classList.toggle('active', isActive);
+
+          if (isActive) {
+            const btnLeft = btn.offsetLeft;
+            const btnRight = btnLeft + btn.offsetWidth;
+            const navScrollLeft = nav.scrollLeft;
+            const navRightEdge = navScrollLeft + nav.clientWidth;
+            if (btnLeft < navScrollLeft || btnRight > navRightEdge) {
+              nav.scrollTo({ left: btnLeft - nav.clientWidth / 2 + btn.offsetWidth / 2, behavior: 'smooth' });
+            }
+          }
         });
-      });
+      };
 
-      textareaElements.forEach(element => {
-        element.addEventListener('input', function () {
-          this.value.trim() ? element.classList.add(className) : element.classList.remove(className);
-        });
-      });
-    }
+      if (isCarousel) {
+        const container = layout.querySelector('.layout__items');
+        container.addEventListener('scroll', updateActiveNav, { passive: true });
+      } else {
+        window.addEventListener('scroll', updateActiveNav, { passive: true });
+      }
+
+      updateActiveNav();
+    });
   })();
 });

@@ -7,11 +7,15 @@ html {
 
   font-size: calc(100vw / var(--refRes) * 10);
 
-  scroll-behavior: smooth;
+  // scroll-behavior: smooth;
   scroll-padding-top: 16.5rem;
 
   @include domd {
     --refRes: 1920;
+  }
+
+  &.header-out {
+    scroll-padding-top: 10rem;
   }
 }
 
@@ -25,12 +29,6 @@ body {
   line-height: 140%;
   color: var(--black);
   cursor: default;
-}
-
-html.popup-open,
-body.popup-open {
-  overflow: hidden;
-  overscroll-behavior: none;
 }
 
 .wrapper {

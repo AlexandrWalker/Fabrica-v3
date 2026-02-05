@@ -32,7 +32,7 @@
       width: calc((100% / 6) - (10rem / 6));
     }
 
-    &.is-active {
+    .is-active & {
       background: var(--aqua-dark);
     }
 
