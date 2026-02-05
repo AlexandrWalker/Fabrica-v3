@@ -224,7 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   (function headerFunc() {
     const html = document.documentElement;
-    const header = document.getElementById('header');
     const firstSection = document.querySelector('section');
     let lastScrollTop = 1;
     const scrollPosition = () => window.pageYOffset || document.documentElement.scrollTop;

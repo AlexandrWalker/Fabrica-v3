@@ -2,6 +2,8 @@
 
 [data-popup-head] {
   touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
 }
 
 [data-popup-scroll] {

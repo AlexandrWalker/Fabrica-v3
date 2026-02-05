@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /**
    * Попапы
    */
-  (() => {
+  (function () {
     const BASE_Z = 600;
     const stack = [];
     const overlay = document.getElementById('popup-overlay');
@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
         p.style.pointerEvents = i === stack.length - 1 ? 'all' : 'none';
       });
 
-      // Overlay активен только если есть хотя бы один попап
       if (stack.length) {
         overlay.style.pointerEvents = 'all';
         overlay.style.transition = 'opacity 0.3s ease';
@@ -51,14 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const z = BASE_Z + stack.length + 1;
       popup.style.zIndex = z;
-
-      // Сначала делаем visible без transition
       popup.style.visibility = 'visible';
       popup.style.pointerEvents = 'all';
 
-      // Через RAF включаем transition pop-up и overlay
       requestAnimationFrame(() => {
-        const duration = 0.4; // можно настроить
+        const duration = 0.4;
         popup.style.transition = `top ${duration}s ease, opacity ${duration}s ease`;
         popup.style.top = '0';
         popup.style.opacity = '1';
@@ -122,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
         popup.style.transition = 'none';
         popup.style.top = `${delta}px`;
 
-        // Динамический overlay
         const ratio = 1 - Math.min(delta / popup.offsetHeight, 1);
         overlay.style.opacity = ratio;
 
@@ -187,15 +182,15 @@ document.addEventListener('DOMContentLoaded', () => {
       touchStartPreventDefault: true,
       touchMoveStopPropagation: true,
       threshold: 8,
-      touchAngle: 25, // ключевой параметр
+      touchAngle: 25,
 
       freeMode: {
         enabled: true,
         momentum: true,
-        momentumRatio: 0.85, // меньше инерции
+        momentumRatio: 0.85,
         momentumVelocityRatio: 1,
-        momentumBounce: false, // убрать bounce
-        sticky: false // убрать залипание
+        momentumBounce: false,
+        sticky: false
       },
 
       mousewheel: {
@@ -205,4 +200,116 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     });
   }
+
+  /**
+   * Управляет поведением хедера (появление/скрытие при скролле)
+   */
+  (function headerFunc() {
+    const html = document.documentElement;
+    const firstSection = document.querySelector('section');
+    let lastScrollTop = 1;
+    const scrollPosition = () => window.pageYOffset || document.documentElement.scrollTop;
+
+    window.addEventListener('scroll', () => {
+      if (scrollPosition() > lastScrollTop && scrollPosition() > firstSection.offsetHeight) {
+        html.classList.add('header-out');
+      } else {
+        html.classList.remove('header-out');
+      }
+      lastScrollTop = scrollPosition();
+    })
+  })();
+
+  /**
+   * Меняет класс у тега html на login
+   */
+  (function () {
+    const loginBtn = document.querySelector('[data-log="login"]');
+    const logoutBtn = document.querySelector('[data-log="logout"]');
+
+    if (loginBtn || logoutBtn) {
+      loginBtn.addEventListener('click', () => {
+        document.documentElement.classList.remove('logout');
+        document.documentElement.classList.add(loginBtn.dataset.log);
+      })
+      logoutBtn.addEventListener('click', () => {
+        document.documentElement.classList.remove('login');
+        document.documentElement.classList.add(logoutBtn.dataset.log);
+      })
+    }
+  })();
+
+  /**
+   * Шагово меняем фокус у инпута при вводе кода при регистрации
+   */
+  (function () {
+    const regCode = document.getElementById('regCode');
+    if (!regCode) return;
+
+    const inputs = regCode.querySelectorAll('.form-code');
+    const btn = regCode.querySelector('.btn');
+
+    const checkInputs = () => {
+      const allFilled = Array.from(inputs).every(input => input.value.length > 0);
+      btn.disabled = !allFilled;
+    };
+
+    inputs.forEach((input, index) => {
+      input.addEventListener('input', (e) => {
+        if (e.target.value.length > 1) {
+          e.target.value = e.target.value.slice(-1);
+        }
+        if (e.target.value && index < inputs.length - 1) {
+          inputs[index + 1].focus();
+        } else if (index === inputs.length - 1) {
+          btn.focus();
+        }
+        checkInputs();
+      });
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !e.target.value && index > 0) {
+          inputs[index - 1].focus();
+        }
+        setTimeout(checkInputs, 0);
+      });
+
+      input.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const data = e.clipboardData.getData('text').trim().slice(0, inputs.length);
+        data.split('').forEach((char, i) => {
+          if (inputs[i]) inputs[i].value = char;
+        });
+        if (data.length === inputs.length) btn.focus();
+        else inputs[data.length].focus();
+        checkInputs();
+      });
+    });
+
+    checkInputs();
+  })();
+
+  /**
+   * Присваиваем класс у заполненного инпута
+   */
+  (function () {
+    const inputElements = document.querySelectorAll('.form-input');
+    const textareaElements = document.querySelectorAll('.form-textarea');
+
+    if (inputElements.length || textareaElements.length) {
+      const className = 'filled';
+
+      inputElements.forEach(element => {
+        element.addEventListener('input', function () {
+          this.value.trim() ? element.classList.add(className) : element.classList.remove(className);
+        });
+      });
+
+      textareaElements.forEach(element => {
+        element.addEventListener('input', function () {
+          this.value.trim() ? element.classList.add(className) : element.classList.remove(className);
+        });
+      });
+    }
+  })();
 });
