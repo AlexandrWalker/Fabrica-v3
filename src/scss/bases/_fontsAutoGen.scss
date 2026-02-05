@@ -15,6 +15,13 @@
 @font-face {
 	font-family: Inter;
 	font-display: swap;
+	src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
+	font-weight: 700;
+	font-style: normal;
+}
+@font-face {
+	font-family: Inter;
+	font-display: swap;
 	src: url("../fonts/Inter-ExtraLight.woff2") format("woff2"), url("../fonts/Inter-ExtraLight.woff") format("woff");
 	font-weight: 200;
 	font-style: normal;
@@ -45,13 +52,6 @@
 	font-display: swap;
 	src: url("../fonts/Inter-SemiBold.woff2") format("woff2"), url("../fonts/Inter-SemiBold.woff") format("woff");
 	font-weight: 600;
-	font-style: normal;
-}
-@font-face {
-	font-family: Inter;
-	font-display: swap;
-	src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
-	font-weight: 700;
 	font-style: normal;
 }
 @font-face {
@@ -118,17 +118,17 @@
 	font-style: normal;
 }
 @font-face {
-	font-family: LeagueSpartan;
-	font-display: swap;
-	src: url("../fonts/LeagueSpartan-Thin.woff2") format("woff2"), url("../fonts/LeagueSpartan-Thin.woff") format("woff");
-	font-weight: 100;
-	font-style: normal;
-}
-@font-face {
 	font-family: PlayfairDisplay;
 	font-display: swap;
 	src: url("../fonts/PlayfairDisplay-Black.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Black.woff") format("woff");
 	font-weight: 900;
+	font-style: normal;
+}
+@font-face {
+	font-family: LeagueSpartan;
+	font-display: swap;
+	src: url("../fonts/LeagueSpartan-Thin.woff2") format("woff2"), url("../fonts/LeagueSpartan-Thin.woff") format("woff");
+	font-weight: 100;
 	font-style: normal;
 }
 @font-face {
@@ -223,17 +223,17 @@
 	font-style: normal;
 }
 @font-face {
-	font-family: SFCompact;
-	font-display: swap;
-	src: url("../fonts/SFCompact-UltraLight.woff2") format("woff2"), url("../fonts/SFCompact-UltraLight.woff") format("woff");
-	font-weight: 200;
-	font-style: normal;
-}
-@font-face {
 	font-family: SFPro;
 	font-display: swap;
 	src: url("../fonts/SFPro-Black.woff2") format("woff2"), url("../fonts/SFPro-Black.woff") format("woff");
 	font-weight: 900;
+	font-style: normal;
+}
+@font-face {
+	font-family: SFCompact;
+	font-display: swap;
+	src: url("../fonts/SFCompact-UltraLight.woff2") format("woff2"), url("../fonts/SFCompact-UltraLight.woff") format("woff");
+	font-weight: 200;
 	font-style: normal;
 }
 @font-face {
@@ -260,13 +260,6 @@
 @font-face {
 	font-family: SFPro;
 	font-display: swap;
-	src: url("../fonts/SFPro-Medium.woff2") format("woff2"), url("../fonts/SFPro-Medium.woff") format("woff");
-	font-weight: 500;
-	font-style: normal;
-}
-@font-face {
-	font-family: SFPro;
-	font-display: swap;
 	src: url("../fonts/SFPro-Regular.woff2") format("woff2"), url("../fonts/SFPro-Regular.woff") format("woff");
 	font-weight: 400;
 	font-style: normal;
@@ -288,8 +281,8 @@
 @font-face {
 	font-family: SFPro;
 	font-display: swap;
-	src: url("../fonts/SFPro-UltraLight.woff2") format("woff2"), url("../fonts/SFPro-UltraLight.woff") format("woff");
-	font-weight: 200;
+	src: url("../fonts/SFPro-Medium.woff2") format("woff2"), url("../fonts/SFPro-Medium.woff") format("woff");
+	font-weight: 500;
 	font-style: normal;
 }
 @font-face {
@@ -297,6 +290,13 @@
 	font-display: swap;
 	src: url("../fonts/SofiaPro-Black.woff2") format("woff2"), url("../fonts/SofiaPro-Black.woff") format("woff");
 	font-weight: 900;
+	font-style: normal;
+}
+@font-face {
+	font-family: SFPro;
+	font-display: swap;
+	src: url("../fonts/SFPro-UltraLight.woff2") format("woff2"), url("../fonts/SFPro-UltraLight.woff") format("woff");
+	font-weight: 200;
 	font-style: normal;
 }
 @font-face {
