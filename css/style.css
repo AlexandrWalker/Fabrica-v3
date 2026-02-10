@@ -139,14 +139,6 @@ li:last-child {
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-Medium.woff2") format("woff2"), url("../fonts/Inter-Medium.woff") format("woff");
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: Inter;
-  font-display: swap;
   src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
   font-weight: 700;
   font-style: normal;
@@ -155,8 +147,8 @@ li:last-child {
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-Regular.woff2") format("woff2"), url("../fonts/Inter-Regular.woff") format("woff");
-  font-weight: 400;
+  src: url("../fonts/Inter-Medium.woff2") format("woff2"), url("../fonts/Inter-Medium.woff") format("woff");
+  font-weight: 500;
   font-style: normal;
 }
 
@@ -165,6 +157,14 @@ li:last-child {
   font-display: swap;
   src: url("../fonts/Inter-SemiBold.woff2") format("woff2"), url("../fonts/Inter-SemiBold.woff") format("woff");
   font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Inter;
+  font-display: swap;
+  src: url("../fonts/Inter-Regular.woff2") format("woff2"), url("../fonts/Inter-Regular.woff") format("woff");
+  font-weight: 400;
   font-style: normal;
 }
 
@@ -195,16 +195,16 @@ li:last-child {
 @font-face {
   font-family: LeagueSpartan;
   font-display: swap;
-  src: url("../fonts/LeagueSpartan-ExtraBold.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraBold.woff") format("woff");
-  font-weight: 800;
+  src: url("../fonts/LeagueSpartan-ExtraLight.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraLight.woff") format("woff");
+  font-weight: 200;
   font-style: normal;
 }
 
 @font-face {
   font-family: LeagueSpartan;
   font-display: swap;
-  src: url("../fonts/LeagueSpartan-ExtraLight.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraLight.woff") format("woff");
-  font-weight: 200;
+  src: url("../fonts/LeagueSpartan-ExtraBold.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraBold.woff") format("woff");
+  font-weight: 800;
   font-style: normal;
 }
 
@@ -379,16 +379,16 @@ li:last-child {
 @font-face {
   font-family: SFPro;
   font-display: swap;
-  src: url("../fonts/SFPro-Bold.woff2") format("woff2"), url("../fonts/SFPro-Bold.woff") format("woff");
-  font-weight: 700;
+  src: url("../fonts/SFPro-Heavy.woff2") format("woff2"), url("../fonts/SFPro-Heavy.woff") format("woff");
+  font-weight: 800;
   font-style: normal;
 }
 
 @font-face {
   font-family: SFPro;
   font-display: swap;
-  src: url("../fonts/SFPro-Heavy.woff2") format("woff2"), url("../fonts/SFPro-Heavy.woff") format("woff");
-  font-weight: 800;
+  src: url("../fonts/SFPro-Bold.woff2") format("woff2"), url("../fonts/SFPro-Bold.woff") format("woff");
+  font-weight: 700;
   font-style: normal;
 }
 
@@ -1086,6 +1086,26 @@ body {
   line-height: 100%;
 }
 
+.form-radio-remove i {
+  font-weight: 400;
+  font-size: 2.4rem;
+  color: var(--green);
+}
+
+.form-radio-wrap {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 1rem;
+}
+
 .form-radio-input {
   display: grid;
   place-content: center;
@@ -1565,6 +1585,13 @@ body {
   -ms-flex-direction: column;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+.layout__block-img img {
+  width: 100%;
+  height: auto;
+  -o-object-fit: contain;
+  object-fit: contain;
 }
 
 .layout__block-values {
@@ -2448,6 +2475,10 @@ p {
   gap: 0.8rem;
 }
 
+.cards .form-foot .btn {
+  font-weight: 700;
+}
+
 .contacts .layout__block-text span {
   font-size: 1rem;
 }
@@ -3203,6 +3234,10 @@ p {
   -ms-flex-direction: column;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+.reviews__item-title {
+  margin-bottom: 0.5rem;
 }
 
 .reviews__item-wrap {
