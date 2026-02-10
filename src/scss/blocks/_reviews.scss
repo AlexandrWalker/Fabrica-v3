@@ -27,6 +27,10 @@
     flex-direction: column;
     gap: 1.5rem;
 
+    &-title {
+      margin-bottom: 0.5rem;
+    }
+
     &-wrap {
       display: flex;
       flex-direction: column;

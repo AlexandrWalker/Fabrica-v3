@@ -186,6 +186,22 @@
       }
     }
 
+    &-remove {
+
+      i {
+        font-weight: 400;
+        font-size: 2.4rem;
+        color: var(--green);
+      }
+    }
+
+    &-wrap {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 1rem;
+    }
+
     &-input {
       display: grid;
       place-content: center;

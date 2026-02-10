@@ -1,4 +1,4 @@
-<div id="profileCard" class="profile popup" data-lenis-prevent>
+<div id="myReviews" class="reviews popup" data-lenis-prevent>
   <div class="popup__wrap">
     <div class="popup__area" data-popup-head></div>
     <div class="popup__inner">
@@ -10,16 +10,14 @@
             <div class="layout__head">
               <div class="layout__head-title">
                 <h2>
-                  Применить системой лояльности
+                  Мои отзывы
                 </h2>
               </div>
             </div>
 
             <div class="layout__body">
-              <div class="layout__card">
-                <div class="layout__card-qr">
-                  <img src="./../../images/temp/profile-card-qr.png" alt="">
-                </div>
+              <div class="reviews__items">
+                @@loop('./../elements/my-reviews-item.html', './data/my-reviews-items.json')
               </div>
             </div>
 

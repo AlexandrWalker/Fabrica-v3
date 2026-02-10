@@ -24,10 +24,15 @@
                       <i class="icon-menu-card"></i>
                     </div>
                     <div class="form-radio-title">
-                      <h6>
-                        Карта - - 4489
-                      </h6>
-                      <input class="form-radio-input" type="radio" name="cards" checked>
+                      <div class="form-radio-wrap">
+                        <input class="form-radio-input" type="radio" name="cards" checked>
+                        <h6>
+                          Карта - - 4489
+                        </h6>
+                      </div>
+                      <button class="form-radio-remove">
+                        <i class="icon-trash"></i>
+                      </button>
                     </div>
                   </label>
                 </div>
@@ -37,19 +42,29 @@
                       <i class="icon-menu-card"></i>
                     </div>
                     <div class="form-radio-title">
-                      <h6>
-                        Карта - - 4489
-                      </h6>
-                      <input class="form-radio-input" type="radio" name="cards">
+                      <div class="form-radio-wrap">
+                        <input class="form-radio-input" type="radio" name="cards">
+                        <h6>
+                          Карта - - 4489
+                        </h6>
+                      </div>
+                      <button class="form-radio-remove">
+                        <i class="icon-trash"></i>
+                      </button>
                     </div>
                   </label>
                 </div>
 
               </div>
 
-              <button class="btn btn--green" data-popup-target="cardsAdd">
-                Добавить карту
-              </button>
+              <div class="form-foot">
+                <button class="btn btn--green" data-popup-target="cardsAdd">
+                  Добавить карту
+                </button>
+                <button class="btn btn--remove">
+                  Удалить выбранную карту
+                </button>
+              </div>
             </div>
 
           </div>
