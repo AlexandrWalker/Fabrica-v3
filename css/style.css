@@ -107,14 +107,6 @@ li:last-child {
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-Black.woff2") format("woff2"), url("../fonts/Inter-Black.woff") format("woff");
-  font-weight: 900;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: Inter;
-  font-display: swap;
   src: url("../fonts/Inter-ExtraBold.woff2") format("woff2"), url("../fonts/Inter-ExtraBold.woff") format("woff");
   font-weight: 800;
   font-style: normal;
@@ -131,22 +123,6 @@ li:last-child {
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-Light.woff2") format("woff2"), url("../fonts/Inter-Light.woff") format("woff");
-  font-weight: 300;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: Inter;
-  font-display: swap;
-  src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: Inter;
-  font-display: swap;
   src: url("../fonts/Inter-Medium.woff2") format("woff2"), url("../fonts/Inter-Medium.woff") format("woff");
   font-weight: 500;
   font-style: normal;
@@ -155,8 +131,8 @@ li:last-child {
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-SemiBold.woff2") format("woff2"), url("../fonts/Inter-SemiBold.woff") format("woff");
-  font-weight: 600;
+  src: url("../fonts/Inter-Light.woff2") format("woff2"), url("../fonts/Inter-Light.woff") format("woff");
+  font-weight: 300;
   font-style: normal;
 }
 
@@ -165,6 +141,14 @@ li:last-child {
   font-display: swap;
   src: url("../fonts/Inter-Regular.woff2") format("woff2"), url("../fonts/Inter-Regular.woff") format("woff");
   font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Inter;
+  font-display: swap;
+  src: url("../fonts/Inter-SemiBold.woff2") format("woff2"), url("../fonts/Inter-SemiBold.woff") format("woff");
+  font-weight: 600;
   font-style: normal;
 }
 
@@ -195,16 +179,16 @@ li:last-child {
 @font-face {
   font-family: LeagueSpartan;
   font-display: swap;
-  src: url("../fonts/LeagueSpartan-ExtraLight.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraLight.woff") format("woff");
-  font-weight: 200;
+  src: url("../fonts/LeagueSpartan-ExtraBold.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraBold.woff") format("woff");
+  font-weight: 800;
   font-style: normal;
 }
 
 @font-face {
   font-family: LeagueSpartan;
   font-display: swap;
-  src: url("../fonts/LeagueSpartan-ExtraBold.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraBold.woff") format("woff");
-  font-weight: 800;
+  src: url("../fonts/LeagueSpartan-ExtraLight.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraLight.woff") format("woff");
+  font-weight: 200;
   font-style: normal;
 }
 
@@ -321,6 +305,14 @@ li:last-child {
 }
 
 @font-face {
+  font-family: Inter;
+  font-display: swap;
+  src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
   font-family: SFCompact;
   font-display: swap;
   src: url("../fonts/SFCompact-Light.woff2") format("woff2"), url("../fonts/SFCompact-Light.woff") format("woff");
@@ -329,18 +321,18 @@ li:last-child {
 }
 
 @font-face {
-  font-family: SFCompact;
+  font-family: Inter;
   font-display: swap;
-  src: url("../fonts/SFCompact-Medium.woff2") format("woff2"), url("../fonts/SFCompact-Medium.woff") format("woff");
-  font-weight: 500;
+  src: url("../fonts/Inter-Black.woff2") format("woff2"), url("../fonts/Inter-Black.woff") format("woff");
+  font-weight: 900;
   font-style: normal;
 }
 
 @font-face {
   font-family: SFCompact;
   font-display: swap;
-  src: url("../fonts/SFCompact-Regular.woff2") format("woff2"), url("../fonts/SFCompact-Regular.woff") format("woff");
-  font-weight: 400;
+  src: url("../fonts/SFCompact-Medium.woff2") format("woff2"), url("../fonts/SFCompact-Medium.woff") format("woff");
+  font-weight: 500;
   font-style: normal;
 }
 
@@ -379,16 +371,24 @@ li:last-child {
 @font-face {
   font-family: SFPro;
   font-display: swap;
-  src: url("../fonts/SFPro-Heavy.woff2") format("woff2"), url("../fonts/SFPro-Heavy.woff") format("woff");
-  font-weight: 800;
+  src: url("../fonts/SFPro-Bold.woff2") format("woff2"), url("../fonts/SFPro-Bold.woff") format("woff");
+  font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
   font-family: SFPro;
   font-display: swap;
-  src: url("../fonts/SFPro-Bold.woff2") format("woff2"), url("../fonts/SFPro-Bold.woff") format("woff");
-  font-weight: 700;
+  src: url("../fonts/SFPro-Heavy.woff2") format("woff2"), url("../fonts/SFPro-Heavy.woff") format("woff");
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: SFCompact;
+  font-display: swap;
+  src: url("../fonts/SFCompact-Regular.woff2") format("woff2"), url("../fonts/SFCompact-Regular.woff") format("woff");
+  font-weight: 400;
   font-style: normal;
 }
 
@@ -451,14 +451,6 @@ li:last-child {
 @font-face {
   font-family: SofiaPro;
   font-display: swap;
-  src: url("../fonts/SofiaPro-Bold.woff2") format("woff2"), url("../fonts/SofiaPro-Bold.woff") format("woff");
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: SofiaPro;
-  font-display: swap;
   src: url("../fonts/SofiaPro-ExtraLight.woff2") format("woff2"), url("../fonts/SofiaPro-ExtraLight.woff") format("woff");
   font-weight: 200;
   font-style: normal;
@@ -501,6 +493,14 @@ li:last-child {
   font-display: swap;
   src: url("../fonts/SofiaPro-UltraLight.woff2") format("woff2"), url("../fonts/SofiaPro-UltraLight.woff") format("woff");
   font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: SofiaPro;
+  font-display: swap;
+  src: url("../fonts/SofiaPro-Bold.woff2") format("woff2"), url("../fonts/SofiaPro-Bold.woff") format("woff");
+  font-weight: 700;
   font-style: normal;
 }
 
@@ -792,15 +792,158 @@ body {
 }
 
 .btn__text a {
+  font-weight: 700;
+}
+
+.login .btn__text a {
   font-weight: 900;
   color: var(--green);
   text-decoration: underline;
+}
+
+.btn__text--logout {
+  display: block;
+}
+
+.login .btn__text--logout {
+  display: none;
+}
+
+.btn__text--login {
+  display: none;
+}
+
+.login .btn__text--login {
+  display: block;
+}
+
+.dropdown {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: relative;
+  z-index: 9;
+}
+
+.dropdown__selected {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 100%;
+  height: 5rem;
+  padding: 0 2rem;
+  border-radius: 0.4rem;
+  border: 0.1rem solid var(--beige);
+  background-color: var(--bg);
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.dropdown__selected i {
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+  border-radius: 50%;
+  background-color: var(--white);
+  font-size: 2.4rem;
+  color: var(--green);
+}
+
+.dropdown.is-active .dropdown__selected i {
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.filled .dropdown__selected-label--js {
+  color: var(--black);
+}
+
+.filled .dropdown__selected--js {
+  border-color: var(--green);
+  background-color: var(--white);
+}
+
+.dropdown__label {
+  font-weight: 500;
+  font-size: 1.4rem;
+  line-height: 120%;
+  color: var(--black);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown__container {
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  top: calc(100% + 0.2rem);
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.dropdown.is-active .dropdown__container {
+  pointer-events: all;
+}
+
+.dropdown__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.6rem 2rem;
+  background-color: var(--white);
+  border-radius: 0.4rem;
+  border: 0.1rem solid var(--beige);
+  -webkit-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  transform: translateY(-100%);
+  will-change: transform;
+  -webkit-transition: -webkit-transform 0.3s ease;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+}
+
+.dropdown.is-active .dropdown__content {
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+}
+
+.dropdown__label {
+  display: block;
+  width: 100%;
+  font-weight: 500;
+  font-size: 1.4rem;
+  line-height: 120%;
+  color: var(--black-50);
+  cursor: pointer;
+}
+
+.dropdown__radio {
+  display: none;
 }
 
 .form-body {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.8rem;
+}
+
+.form-group {
+  position: relative;
 }
 
 .form-input {
@@ -848,6 +991,19 @@ body {
 .form-input:active {
   border-color: var(--green);
   background-color: var(--white);
+}
+
+.form-input-btn {
+  --btn-size: 2.2rem;
+  width: var(--btn-size);
+  height: var(--btn-size);
+  font-size: var(--btn-size);
+  position: absolute;
+  top: 50%;
+  right: 1.1rem;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .form-label {
@@ -1241,6 +1397,11 @@ body {
   height: 100%;
 }
 
+.layout__title span {
+  font-style: italic;
+  color: var(--red);
+}
+
 .layout__head {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1316,11 +1477,19 @@ body {
 }
 
 .layout__head-tag.tags-top {
-  background-color: var(--green-light);
+  background-color: var(--aqua-light);
 }
 
 .layout__head-tag.tags-hot {
   background-color: var(--red);
+}
+
+.layout__head-tag.tags-vega {
+  background-color: var(--green-light);
+}
+
+.layout__head-tag.tags-chef {
+  background-color: var(--orange-light);
 }
 
 .layout__head-banner {
@@ -1358,6 +1527,10 @@ body {
 
 .layout__head-tel {
   font-weight: 700 !important;
+}
+
+.layout__head-link {
+  color: var(--green);
 }
 
 .layout__rating {
@@ -1692,18 +1865,26 @@ body {
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
-  padding: 0.7rem 1rem;
+  padding: 1rem 1rem 1rem 3rem;
   background-color: var(--bg);
   border: 0.1rem solid var(--beige);
   border-radius: 3rem;
+  position: relative;
+}
+
+#hookahs .layout__time {
+  padding-right: 4rem;
 }
 
 .layout__time i {
   font-size: 1.6rem;
   color: var(--green);
+  position: absolute;
+  top: 0.8rem;
+  left: 1rem;
 }
 
-.layout__time p {
+.layout__time-text {
   font-weight: 500;
   font-size: 1rem;
   line-height: 120%;
@@ -2240,6 +2421,10 @@ p {
   position: relative;
 }
 
+#hookahs .card {
+  min-height: 27.6rem;
+}
+
 .card * {
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
@@ -2270,6 +2455,7 @@ p {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  gap: 0.2rem;
   border-radius: 1.6rem;
   padding: 0.6rem 0.55rem;
   background-color: var(--aqua);
@@ -2282,12 +2468,24 @@ p {
   color: var(--white);
 }
 
+.card__tags-item i {
+  font-size: 1.2rem;
+}
+
 .card__tags-top {
-  background-color: var(--green-light);
+  background-color: var(--aqua-light);
 }
 
 .card__tags-hot {
   background-color: var(--red);
+}
+
+.card__tags-vega {
+  background-color: var(--green-light);
+}
+
+.card__tags-chef {
+  background-color: var(--orange-light);
 }
 
 .card__img {
@@ -2406,7 +2604,7 @@ p {
   font-weight: 500;
   font-size: 1rem;
   line-height: 120%;
-  color: var(--green-light);
+  color: var(--black-50);
 }
 
 .card__foot {
@@ -2477,6 +2675,34 @@ p {
 
 .cards .form-foot .btn {
   font-weight: 700;
+}
+
+.cards--delete {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: flex-end;
+}
+
+.cards--delete .popup__wrap {
+  width: 100%;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.cards--delete .btn {
+  font-weight: 700;
+}
+
+.cards--delete .layout__foot-inner {
+  padding: 0;
+}
+
+.cards--delete [data-popup-scroll] {
+  padding-bottom: 8.8rem;
 }
 
 .contacts .layout__block-text span {
@@ -2690,9 +2916,7 @@ p {
 }
 
 .header__points {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  display: none;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
   -ms-flex-direction: row;
@@ -2717,6 +2941,12 @@ p {
   font-size: 1.4rem;
   line-height: 100%;
   color: var(--white);
+}
+
+.login .header__points {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .header__points i {
@@ -3201,6 +3431,10 @@ p {
 
 .profile .btn {
   font-weight: 700;
+}
+
+.rassadka .layout__head-text * {
+  font-weight: 500;
 }
 
 .reviews .layout__head {
