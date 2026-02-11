@@ -2,7 +2,7 @@
   {
     "dish": "hot-napitki",
     "img": "./../../images/temp/drinks-1.png",
-    "tags-top": "Топчик",
+    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div>",
     "rating": "4.8",
     "name": "Домашний омлет с моцареллой и чоризо",
     "weight": "380/30 Г",
@@ -16,7 +16,7 @@
   {
     "dish": "cold-napitki",
     "img": "./../../images/temp/drinks-2.png",
-    "tags-top": "Топчик",
+    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div>",
     "rating": "4.8",
     "name": "Домашний омлет с моцареллой и чоризо",
     "weight": "380/30 Г",

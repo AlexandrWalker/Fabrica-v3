@@ -14,6 +14,10 @@
 
   position: relative;
 
+  #hookahs & {
+    min-height: 27.6rem;
+  }
+
   * {
     transition: all 0.3s ease;
   }
@@ -34,6 +38,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      gap: 0.2rem;
       border-radius: 1.6rem;
       padding: 0.6rem 0.55rem;
       background-color: var(--aqua);
@@ -43,14 +48,26 @@
       font-size: 0.8rem;
       line-height: 100%;
       color: var(--white);
+
+      i {
+        font-size: 1.2rem;
+      }
     }
 
     &-top {
-      background-color: var(--green-light);
+      background-color: var(--aqua-light);
     }
 
     &-hot {
       background-color: var(--red);
+    }
+
+    &-vega {
+      background-color: var(--green-light);
+    }
+
+    &-chef {
+      background-color: var(--orange-light);
     }
   }
 
@@ -146,7 +163,7 @@
     font-weight: 500;
     font-size: 1rem;
     line-height: 120%;
-    color: var(--green-light);
+    color: var(--black-50);
   }
 
   &__foot {

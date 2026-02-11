@@ -67,8 +67,14 @@
     @@include('./popups/search.html')
     <!-- Рассадки -->
     @@include('./popups/rassadka.html')
-    <!-- Рассадки -->
+    <!-- Мои отзывы -->
     @@include('./popups/my-reviews.html')
+    <!-- Авторизация -->
+    @@include('./popups/auth.html')
+    <!-- Авторизация, ввод кода -->
+    @@include('./popups/auth-code.html')
+    <!-- Удаление карты -->
+    @@include('./popups/cards-delete.html')
     <!-- Панель -->
     @@include('blocks/panel.html')
     <!-- overlay для блокировки скролла при открытых попапах -->
@@ -80,15 +86,19 @@
         <div class="container">
           <div class="layout__inner">
             <button class="btn btn--beige btn--arrow" data-popup-target="branch">
-              <div class="btn__text">
-                ​Советская улица, 33 <a href="javascript: void(0)">Изменить</a>
+              <div class="btn__text btn__text--logout">
+                Пройдите <a href="javascript: void(0)" data-popup-target="auth">авторизицию</a> или <a
+                  href="javascript: void(0)" data-popup-target="reg">зарегистрируйтесь</a>
+              </div>
+              <div class="btn__text btn__text--login">
+                ​Советская улица, 33 <a href="javascript: void(0)" data-popup-target="branch">Изменить</a>
               </div>
               <i class="icon-chevron-right"></i>
             </button>
           </div>
         </div>
       </section>
-
+      <!-- Фиксируемая главная навигация -->
       <section id="hero" class="hero">
         <div class="container">
           <div class="hero__inner">
@@ -181,7 +191,7 @@
           </div>
         </div>
       </section>
-
+      <!-- Баннеры -->
       <section class="banners">
         <div class="container">
           <div class="banners__inner">
@@ -202,7 +212,7 @@
           </div>
         </div>
       </section>
-
+      <!-- Афиша -->
       <section class="layout">
         <div class="container">
           <div class="layout__inner">
@@ -257,7 +267,7 @@
           </div>
         </div>
       </section>
-
+      <!-- Вам понравится -->
       <section class="layout layout--carousel">
         <div class="container">
           <div class="layout__inner">
@@ -277,7 +287,7 @@
           </div>
         </div>
       </section>
-
+      <!-- Сезонные Specials -->
       <section class="layout">
         <div class="container">
           <div class="layout__inner">
@@ -291,14 +301,13 @@
             </div>
 
             <div class="layout__items">
-              @@loop('./elements/card-item.html', './data/card-items.json')
+              @@loop('./elements/card-item-specials.html', './data/card-items-specials.json')
             </div>
 
           </div>
         </div>
       </section>
-
-      <!-- Каталог блюд -->
+      <!-- Кальяны -->
       <section class="layout" id="hookahs">
         <div class="container">
           <div class="layout__inner">
@@ -311,6 +320,26 @@
               </div>
             </div>
 
+            <div class="layout__time">
+              <i class="icon-clock"></i>
+              <div class="layout__time-text">
+                Бронь 2 часа; продление — при новом заказе (если нет следующей брони); от 5 гостей — минимум 2 кальяна;
+                цены без НДС, +5% к счёту.
+              </div>
+            </div>
+
+            <div class="layout__nav">
+              <button class="layout__nav-item active" type="button" data-nav="business-hookahs">
+                Бизнес кальяны
+              </button>
+              <button class="layout__nav-item" type="button" data-nav="bowl-hookahs">
+                Кальяны на чаше
+              </button>
+              <button class="layout__nav-item" type="button" data-nav="fruit-hookahs">
+                Кальяны на фруктах
+              </button>
+            </div>
+
             <div class="layout__items">
               @@loop('./elements/card-item-hookahs.html', './data/card-items-hookahs.json')
             </div>
@@ -318,8 +347,8 @@
           </div>
         </div>
       </section>
-
-      <section class="layout" id="lunch">
+      <!-- Завтраки -->
+      <!-- <section class="layout" id="lunch">
         <div class="container">
           <div class="layout__inner">
 
@@ -331,9 +360,9 @@
               </div>
               <div class="layout__time">
                 <i class="icon-clock"></i>
-                <p>
+                <div class="layout__time-text">
                   с 10:00 до 11:00
-                </p>
+                </div>
               </div>
             </div>
 
@@ -343,8 +372,8 @@
 
           </div>
         </div>
-      </section>
-
+      </section> -->
+      <!-- Бизнес-ланч -->
       <section class="layout" id="business-lunch">
         <div class="container">
           <div class="layout__inner">
@@ -357,9 +386,9 @@
               </div>
               <div class="layout__time">
                 <i class="icon-clock"></i>
-                <p>
+                <div class="layout__time-text">
                   с 12:00 до 14:00
-                </p>
+                </div>
               </div>
             </div>
 
@@ -370,7 +399,7 @@
           </div>
         </div>
       </section>
-
+      <!-- Салаты -->
       <section class="layout" id="salads">
         <div class="container">
           <div class="layout__inner">
@@ -390,8 +419,7 @@
           </div>
         </div>
       </section>
-
-      <!-- Фиксированные навигации по блюдам внутри контейнера -->
+      <!-- Горячее -->
       <section class="layout" id="osnovnoe">
         <div class="container">
           <div class="layout__inner">
@@ -426,7 +454,7 @@
           </div>
         </div>
       </section>
-
+      <!-- Закуски -->
       <section class="layout" id="zakuski">
         <div class="container">
           <div class="layout__inner">
@@ -455,7 +483,7 @@
           </div>
         </div>
       </section>
-
+      <!-- Напитки -->
       <section class="layout" id="napitki">
         <div class="container">
           <div class="layout__inner">
@@ -484,7 +512,7 @@
           </div>
         </div>
       </section>
-
+      <!-- Фабричные коктейли -->
       <section class="layout" id="cocktail">
         <div class="container">
           <div class="layout__inner">
@@ -516,7 +544,6 @@
           </div>
         </div>
       </section>
-      <!-- ./Каталог блюд -->
     </main>
     <!-- Подвал -->
     @@include('blocks/footer.html')

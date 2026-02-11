@@ -86,7 +86,7 @@
   }
 
   &__points {
-    display: flex;
+    display: none;
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -102,6 +102,10 @@
     font-size: 1.4rem;
     line-height: 100%;
     color: var(--white);
+
+    .login & {
+      display: flex;
+    }
 
     i {
       font-size: 1.6rem;

@@ -18,12 +18,51 @@
             <div class="layout__body">
 
               <form action="#" class="layout__form">
-
-                <div class="form-group">
-                  <label class="form-label">
-                    Телефон*
-                    <input class="form-input" type="tel" name="reg_tel" placeholder="Телефон">
-                  </label>
+                <div class="form-body">
+                  <div class="form-group">
+                    <label class="form-label">
+                      <input class="form-input" type="tel" name="reg_tel" placeholder="Телефон">
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <div class="dropdown dropdown--js">
+                      <div class="dropdown__selected dropdown__selected--js">
+                        <input class="dropdown__input dropdown__selected-input--js" type="hidden" value="">
+                        <label class="dropdown__label dropdown__selected-label--js">Откуда о нас узнали</label>
+                        <i class="icon-chevron-right"></i>
+                      </div>
+                      <div class="dropdown__container">
+                        <div class="dropdown__content">
+                          <div class="dropdown__option">
+                            <input id="place_1" class="dropdown__radio" name="place_name" type="radio"
+                              value="Место 1">
+                            <label for="place_1" class="dropdown__label">Место 1</label>
+                          </div>
+                          <div class="dropdown__option">
+                            <input id="place_2" class="dropdown__radio" name="place_name" type="radio"
+                              value="Место 2">
+                            <label for="place_2" class="dropdown__label">Место 2</label>
+                          </div>
+                          <div class="dropdown__option">
+                            <input id="place_3" class="dropdown__radio" name="place_name" type="radio"
+                              value="Место 3">
+                            <label for="place_3" class="dropdown__label">Место 3</label>
+                          </div>
+                        </div>
+                      </div>
+                      <input class="dropdown__value" type="hidden">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">
+                      <input class="form-input" type="text" name="reg_name" placeholder="Имя">
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">
+                      <input class="form-input" type="text" name="reg_surname" placeholder="Фамилия">
+                    </label>
+                  </div>
                 </div>
 
                 <div class="form-foot">

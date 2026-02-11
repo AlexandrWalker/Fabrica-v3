@@ -23,4 +23,26 @@
       }
     }
   }
+
+  &--delete {
+    display: flex;
+    align-items: flex-end;
+
+    .popup__wrap {
+      width: 100%;
+      height: fit-content;
+    }
+
+    .btn {
+      font-weight: 700;
+    }
+
+    .layout__foot-inner {
+      padding: 0;
+    }
+
+    [data-popup-scroll] {
+      padding-bottom: 8.8rem;
+    }
+  }
 }

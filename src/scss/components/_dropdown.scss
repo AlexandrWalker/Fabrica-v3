@@ -1,0 +1,108 @@
+@use './../mixins' as *;
+
+.dropdown {
+  user-select: none;
+
+  position: relative;
+  z-index: 9;
+
+  &__selected {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 5rem;
+    padding: 0 2rem;
+    border-radius: 0.4rem;
+    border: 0.1rem solid var(--beige);
+    background-color: var(--bg);
+    transition: all 0.3s ease;
+
+    position: relative;
+
+    i {
+      transform: rotate(90deg);
+      border-radius: 50%;
+      background-color: var(--white);
+
+      font-size: 2.4rem;
+      color: var(--green);
+
+      .dropdown.is-active & {
+        transform: rotate(-90deg);
+      }
+    }
+
+    &-label--js {
+
+      .filled & {
+        color: var(--black);
+      }
+    }
+
+    &--js {
+
+      .filled & {
+        border-color: var(--green);
+        background-color: var(--white);
+      }
+    }
+  }
+
+  &__label {
+    font-weight: 500;
+    font-size: 1.4rem;
+    line-height: 120%;
+    color: var(--black);
+    white-space: nowrap;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__container {
+    overflow: hidden;
+    pointer-events: none;
+
+    position: absolute;
+    top: calc(100% + 0.2rem);
+    left: 0;
+    right: 0;
+    z-index: 10;
+
+    .dropdown.is-active & {
+      pointer-events: all;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.6rem 2rem;
+    background-color: var(--white);
+    border-radius: 0.4rem;
+    border: 0.1rem solid var(--beige);
+    transform: translateY(-100%);
+    will-change: transform;
+    transition: transform 0.3s ease;
+
+    .dropdown.is-active & {
+      transform: translateY(0);
+    }
+  }
+
+  &__label {
+    display: block;
+    width: 100%;
+
+    font-weight: 500;
+    font-size: 1.4rem;
+    line-height: 120%;
+    color: var(--black-50);
+    cursor: pointer;
+  }
+
+  &__radio {
+    display: none;
+  }
+}

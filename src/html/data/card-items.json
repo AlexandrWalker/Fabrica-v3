@@ -1,69 +1,53 @@
 [
   {
     "img": "./../../images/temp/card-burger.png",
-    "tags-top": "Топчик",
-    "tags-hot": "Островато",
-
+    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div><div class=\"card__tags-item card__tags-hot\"><i class=\"icon-hot\"></i>Островато</div>",
     "rating": "4.8",
     "name": "Домашний омлет с моцареллой и чоризо",
     "weight": "380/30 Г",
-
     "calories": "120 Ккал",
     "protein": "Б-10г",
     "fat": "Ж-10г",
     "carbohydrates": "У-65г",
-
     "desc": "Свободен",
     "price": "500 ₽"
   },
   {
     "img": "./../../images/temp/card-burger.png",
-    "tags-top": "Топчик",
-    "tags-hot": "Островато",
-
+    "tags": "<div class=\"card__tags-item card__tags-hot\"><i class=\"icon-hot\"></i>Островато</div>",
     "rating": "4.8",
     "name": "Домашний омлет с моцареллой и чоризо",
     "weight": "380/30 Г",
-
     "calories": "120 Ккал",
     "protein": "Б-10г",
     "fat": "Ж-10г",
     "carbohydrates": "У-65г",
-
     "desc": "Свободен",
     "price": "500 ₽"
   },
   {
     "img": "./../../images/temp/card-burger.png",
-    "tags-top": "Топчик",
-    "tags-hot": "Островато",
-
+    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div>",
     "rating": "4.8",
     "name": "Домашний омлет с моцареллой и чоризо",
     "weight": "380/30 Г",
-
     "calories": "120 Ккал",
     "protein": "Б-10г",
     "fat": "Ж-10г",
     "carbohydrates": "У-65г",
-
     "desc": "Свободен",
     "price": "500 ₽"
   },
   {
     "img": "./../../images/temp/card-burger.png",
-    "tags-top": "Топчик",
-    "tags-hot": "Островато",
-
+    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div><div class=\"card__tags-item card__tags-hot\"><i class=\"icon-hot\"></i>Островато</div>",
     "rating": "4.8",
     "name": "Домашний омлет с моцареллой и чоризо",
     "weight": "380/30 Г",
-
     "calories": "120 Ккал",
     "protein": "Б-10г",
     "fat": "Ж-10г",
     "carbohydrates": "У-65г",
-
     "desc": "Свободен",
     "price": "500 ₽"
   }

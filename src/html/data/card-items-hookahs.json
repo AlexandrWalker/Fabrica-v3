@@ -1,46 +1,56 @@
 [
   {
+    "id": "business-hookahs",
     "img": "./../../images/temp/hookahs-1.png",
-    "tags-top": "Топчик",
-
+    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div>",
     "rating": "4.8",
-    "name": "Авторский кальян от нашего автора",
-    "weight": "380/30 Г",
-
-    "desc": "Свободен",
-    "price": "500 ₽"
+    "name": "Один кальян на грейпфруте + один кальян на чаше",
+    "desc": "При единовременном заказе",
+    "price": "3 500 ₽"
   },
   {
+    "id": "business-hookahs",
     "img": "./../../images/temp/hookahs-2.png",
-    "tags-top": "Топчик",
-
+    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div>",
     "rating": "4.8",
-    "name": "Авторский кальян от нашего автора",
-    "weight": "380/30 Г",
-
-    "desc": "Свободен",
-    "price": "500 ₽"
+    "name": "Два кальяна на грейпфруте",
+    "desc": "При единовременном заказе",
+    "price": "4 200 ₽"
   },
   {
+    "id": "bowl-hookahs",
     "img": "./../../images/temp/hookahs-3.png",
-    "tags-top": "Топчик",
-
+    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div>",
     "rating": "4.8",
-    "name": "Авторский кальян от нашего автора",
-    "weight": "380/30 Г",
-
-    "desc": "Свободен",
-    "price": "500 ₽"
+    "name": "Один кальян на ананасе",
+    "desc": "При единовременном заказе",
+    "price": "3 300 ₽"
   },
   {
-    "img": "./../../images/temp/hookahs-1.png",
-    "tags-top": "Топчик",
-
+    "id": "bowl-hookahs",
+    "img": "./../../images/temp/hookahs-3.png",
+    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div>",
     "rating": "4.8",
-    "name": "Авторский кальян от нашего автора",
-    "weight": "380/30 Г",
-
-    "desc": "Свободен",
-    "price": "500 ₽"
+    "name": "Два кальяна на ананасе",
+    "desc": "При единовременном заказе",
+    "price": "4 300 ₽"
+  },
+  {
+    "id": "fruit-hookahs",
+    "img": "./../../images/temp/hookahs-3.png",
+    "tags": "<div class=\"card__tags-item card__tags-hot\"><i class=\"icon-hot\"></i>Островато</div>",
+    "rating": "4.8",
+    "name": "Один кальян на ананасе + один кальян на чаше",
+    "desc": "При единовременном заказе",
+    "price": "3 300 ₽"
+  },
+  {
+    "id": "fruit-hookahs",
+    "img": "./../../images/temp/hookahs-3.png",
+    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div>",
+    "rating": "4.8",
+    "name": "Один кальян на ананасе + один кальян на грейпфруте",
+    "desc": "При единовременном заказе",
+    "price": "4 200 ₽"
   }
 ]

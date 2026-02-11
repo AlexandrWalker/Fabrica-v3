@@ -93,9 +93,29 @@
     gap: 0.5rem;
 
     a {
-      font-weight: 900;
-      color: var(--green);
-      text-decoration: underline;
+      font-weight: 700;
+
+      .login & {
+        font-weight: 900;
+        color: var(--green);
+        text-decoration: underline;
+      }
+    }
+
+    &--logout {
+      display: block;
+
+      .login & {
+        display: none;
+      }
+    }
+
+    &--login {
+      display: none;
+
+      .login & {
+        display: block;
+      }
     }
   }
 }

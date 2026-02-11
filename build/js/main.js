@@ -113,6 +113,18 @@ document.addEventListener('DOMContentLoaded', () => {
       if (popup) openPopup(popup);
     });
 
+    // Новый обработчик для кнопок закрытия попапов
+    document.addEventListener('click', e => {
+      const closeBtn = e.target.closest('.popup__close');
+      if (!closeBtn) return;
+
+      // Находим ближайший попап к кнопке закрытия
+      const popup = closeBtn.closest('.popup');
+      if (popup && stack.includes(popup)) {
+        closeTopPopup();
+      }
+    });
+
     document.addEventListener('touchstart', e => {
       const popup = e.target.closest('.popup');
       if (!popup || stack.at(-1) !== popup) return;
@@ -314,32 +326,31 @@ document.addEventListener('DOMContentLoaded', () => {
    * Регистрационный код — шаговое заполнение
    */
   (function () {
-    const regCode = document.getElementById('regCode');
-    if (!regCode) return;
-
-    const inputs = regCode.querySelectorAll('.form-code');
-    const btn = regCode.querySelector('.btn');
-
-    const checkInputs = () => { btn.disabled = !Array.from(inputs).every(i => i.value.length); };
-
-    inputs.forEach((input, idx) => {
-      input.addEventListener('input', e => {
-        if (e.target.value.length > 1) e.target.value = e.target.value.slice(-1);
-        if (e.target.value && idx < inputs.length - 1) inputs[idx + 1].focus();
-        else if (idx === inputs.length - 1) btn.focus();
+    const formCodeBodys = document.querySelectorAll('.form-code-body');
+    if (formCodeBodys.length > 0) {
+      formCodeBodys.forEach(formCodeBody => {
+        const inputs = formCodeBody.querySelectorAll('.form-code');
+        const btn = formCodeBody.querySelector('.btn');
+        const checkInputs = () => { btn.disabled = !Array.from(inputs).every(i => i.value.length); };
+        inputs.forEach((input, idx) => {
+          input.addEventListener('input', e => {
+            if (e.target.value.length > 1) e.target.value = e.target.value.slice(-1);
+            if (e.target.value && idx < inputs.length - 1) inputs[idx + 1].focus();
+            else if (idx === inputs.length - 1) btn.focus();
+            checkInputs();
+          });
+          input.addEventListener('keydown', e => { if (e.key === 'Backspace' && !e.target.value && idx > 0) inputs[idx - 1].focus(); setTimeout(checkInputs, 0); });
+          input.addEventListener('paste', e => {
+            e.preventDefault();
+            const data = e.clipboardData.getData('text').trim().slice(0, inputs.length);
+            data.split('').forEach((c, i) => { if (inputs[i]) inputs[i].value = c; });
+            if (data.length === inputs.length) btn.focus(); else inputs[data.length].focus();
+            checkInputs();
+          });
+        });
         checkInputs();
       });
-      input.addEventListener('keydown', e => { if (e.key === 'Backspace' && !e.target.value && idx > 0) inputs[idx - 1].focus(); setTimeout(checkInputs, 0); });
-      input.addEventListener('paste', e => {
-        e.preventDefault();
-        const data = e.clipboardData.getData('text').trim().slice(0, inputs.length);
-        data.split('').forEach((c, i) => { if (inputs[i]) inputs[i].value = c; });
-        if (data.length === inputs.length) btn.focus(); else inputs[data.length].focus();
-        checkInputs();
-      });
-    });
-
-    checkInputs();
+    }
   })();
 
   /**
@@ -350,9 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.form-input, .form-textarea').forEach(addFilledClass);
   })();
 
-  /**
-   * Навигация layout__nav
-   */
+  /* Старая версия след. кода 
   (function () {
     const OFFSET_REM = 21.8;
     const getOffsetPx = () => OFFSET_REM * parseFloat(getComputedStyle(document.documentElement).fontSize);
@@ -448,6 +457,180 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       updateActiveNav();
+    });
+  })(); */
+
+  /**
+   * Навигация layout__nav
+   */
+  (function () {
+    const OFFSET_REM = 21.8;
+    const SCROLL_DURATION = 500; // Гарантия существования константы
+    const getOffsetPx = () => OFFSET_REM * parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+    function scrollNavToActiveItem(nav, activeBtn) {
+      if (!activeBtn) return; // Защита от null
+
+      const btnLeft = activeBtn.offsetLeft;
+      const btnRight = btnLeft + activeBtn.offsetWidth;
+      const navScrollLeft = nav.scrollLeft;
+      const navRightEdge = navScrollLeft + nav.clientWidth;
+
+      if (btnLeft < navScrollLeft || btnRight > navRightEdge) {
+        nav.scrollTo({
+          left: btnLeft - nav.clientWidth / 2 + activeBtn.offsetWidth / 2,
+          behavior: 'smooth'
+        });
+      }
+    }
+
+    document.addEventListener('click', e => {
+      const navBtn = e.target.closest('.layout__nav-item');
+      if (!navBtn) return;
+
+      const layout = navBtn.closest('.layout');
+      if (!layout) return;
+
+      layout._disableNavUpdate = true; // Однократное присваивание
+      layout._activeByClick = true;
+
+      const nav = layout.querySelector('.layout__nav');
+      if (!nav) return;
+
+      const navItems = nav.querySelectorAll('.layout__nav-item');
+      if (!navItems.length) return; // Проверка на наличие пунктов
+
+      const cards = layout.querySelectorAll('.card[data-dish]');
+      if (!cards.length) return;
+
+      const targetKey = navBtn.dataset.nav;
+      const targetCard = Array.from(cards).find(c => c.dataset.dish === targetKey);
+      if (!targetCard) return;
+
+      if (layout.classList.contains('layout--carousel')) {
+        const container = layout.querySelector('.layout__items');
+        if (!container) return;
+
+        const scrollTarget = targetCard.offsetLeft - (container.clientWidth / 2 - targetCard.offsetWidth / 2);
+        container.scrollTo({ left: scrollTarget, behavior: 'smooth' });
+
+        setTimeout(() => {
+          layout._disableNavUpdate = false;
+          layout._activeByClick = false;
+          scrollNavToActiveItem(nav, navBtn);
+        }, SCROLL_DURATION);
+      } else {
+        const y = targetCard.getBoundingClientRect().top + window.pageYOffset - getOffsetPx();
+        smoothScrollTo(y, SCROLL_DURATION, () => {
+          layout._disableNavUpdate = false;
+          layout._activeByClick = false;
+          scrollNavToActiveItem(nav, navBtn); // Вызов после скролла
+        });
+      }
+
+      navItems.forEach(btn => btn.classList.toggle('active', btn === navBtn));
+    });
+
+    const layouts = document.querySelectorAll('.layout');
+    layouts.forEach(layout => {
+      const nav = layout.querySelector('.layout__nav');
+      if (!nav) return;
+
+      const navItems = nav.querySelectorAll('.layout__nav-item');
+      const cards = layout.querySelectorAll('.card[data-dish]');
+      if (!cards.length) return;
+
+      const isCarousel = layout.classList.contains('layout--carousel');
+
+      const updateActiveNav = () => {
+        if (layout._disableNavUpdate) return;
+        if (layout._activeByClick) return;
+
+        let currentCard = null;
+        if (isCarousel) {
+          const container = layout.querySelector('.layout__items');
+          const scrollCenter = container.scrollLeft + container.clientWidth / 2;
+          currentCard = Array.from(cards).reduce((closest, card) => {
+            const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+            return !closest || Math.abs(cardCenter - scrollCenter) < Math.abs(closest.offsetLeft + closest.offsetWidth / 2 - scrollCenter) ? card : closest;
+          }, null);
+        } else {
+          const offsetPx = getOffsetPx();
+          const scrollPos = window.scrollY + offsetPx + window.innerHeight * 0.25;
+          cards.forEach(card => { if (scrollPos >= card.getBoundingClientRect().top + window.pageYOffset) currentCard = card; });
+          if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4) currentCard = cards[cards.length - 1];
+        }
+
+        if (!currentCard) return;
+        const targetKey = currentCard.dataset.dish;
+
+        navItems.forEach(btn => {
+          const isActive = btn.dataset.nav === targetKey;
+          btn.classList.toggle('active', isActive);
+
+          if (isActive) {
+            const btnLeft = btn.offsetLeft;
+            const btnRight = btnLeft + btn.offsetWidth;
+            const navScrollLeft = nav.scrollLeft;
+            const navRightEdge = navScrollLeft + nav.clientWidth;
+            if (btnLeft < navScrollLeft || btnRight > navRightEdge) {
+              nav.scrollTo({ left: btnLeft - nav.clientWidth / 2 + btn.offsetWidth / 2, behavior: 'smooth' });
+            }
+          }
+        });
+      };
+
+      if (isCarousel) {
+        const container = layout.querySelector('.layout__items');
+        container.addEventListener('scroll', updateActiveNav, { passive: true });
+      } else {
+        window.addEventListener('scroll', updateActiveNav, { passive: true });
+      }
+
+      updateActiveNav();
+    });
+  })();
+
+  /**
+   * Выпадашка
+   */
+  (function () {
+    const dropdowns = document.querySelectorAll('.dropdown--js');
+    dropdowns.forEach(dropdown => {
+      const selectedJs = dropdown.querySelector('.dropdown__selected--js');
+      const selectedInputJs = dropdown.querySelector('.dropdown__selected-input--js');
+      const selectedLabelJs = dropdown.querySelector('.dropdown__selected-label--js');
+      const dropdownRadio = dropdown.querySelectorAll('.dropdown__radio');
+      const dropdownValue = dropdown.querySelector('.dropdown__value');
+
+      // Открываем/закрываем при клике на заголовок
+      selectedJs.addEventListener('click', (e) => {
+        e.stopPropagation(); // Предотвращаем всплытие
+        dropdown.classList.toggle('is-active');
+      });
+
+      // Закрываем при клике вне dropdown
+      document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) {
+          dropdown.classList.remove('is-active');
+        }
+      });
+
+      // Обрабатываем выбор опции
+      dropdownRadio.forEach(radio => {
+        radio.addEventListener('change', () => {
+          // Только если радио включено
+          if (radio.checked) {
+            // Обновляем текст в заголовке
+            selectedLabelJs.textContent = radio.value;
+            selectedInputJs.value = radio.value;
+            dropdownValue.value = radio.value;
+            // Закрываем dropdown
+            dropdown.classList.remove('is-active');
+            dropdown.classList.add('filled');
+          }
+        });
+      });
     });
   })();
 });

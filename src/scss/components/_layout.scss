@@ -79,6 +79,14 @@
     height: 100%;
   }
 
+  &__title {
+
+    span {
+      font-style: italic;
+      color: var(--red);
+    }
+  }
+
   &__head {
     display: flex;
     flex-direction: column;
@@ -137,11 +145,19 @@
       }
 
       &.tags-top {
-        background-color: var(--green-light);
+        background-color: var(--aqua-light);
       }
 
       &.tags-hot {
         background-color: var(--red);
+      }
+
+      &.tags-vega {
+        background-color: var(--green-light);
+      }
+
+      &.tags-chef {
+        background-color: var(--orange-light);
       }
     }
 
@@ -172,6 +188,10 @@
 
     &-tel {
       font-weight: 700 !important;
+    }
+
+    &-link {
+      color: var(--green);
     }
   }
 
@@ -227,7 +247,6 @@
   &__body {
     display: flex;
     flex-direction: column;
-    // gap: 2rem;
     gap: 1.5rem;
   }
 
@@ -342,7 +361,7 @@
     }
 
     &-img {
-      
+
       img {
         width: 100%;
         height: auto;
@@ -434,17 +453,27 @@
     align-items: center;
     gap: 0.5rem;
     width: fit-content;
-    padding: 0.7rem 1rem;
+    padding: 1rem 1rem 1rem 3rem;
     background-color: var(--bg);
     border: 0.1rem solid var(--beige);
     border-radius: 3rem;
 
+    position: relative;
+
+    #hookahs & {
+      padding-right: 4rem;
+    }
+
     i {
       font-size: 1.6rem;
       color: var(--green);
+
+      position: absolute;
+      top: 0.8rem;
+      left: 1rem;
     }
 
-    p {
+    &-text {
       font-weight: 500;
       font-size: 1rem;
       line-height: 120%;

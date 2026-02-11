@@ -2,8 +2,7 @@
   {
     "dish": "hot-zakuski",
     "img": "./../../images/temp/salads-1.png",
-    "tags-top": "Топчик",
-    "tags-hot": "Островато",
+    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div>",
     "rating": "4.8",
     "name": "Домашний омлет с моцареллой и чоризо",
     "weight": "380/30 Г",
@@ -17,8 +16,7 @@
   {
     "dish": "hot-zakuski",
     "img": "./../../images/temp/salads-2.png",
-    "tags-top": "Топчик",
-    "tags-hot": "Островато",
+    "tags": "",
     "rating": "4.8",
     "name": "Домашний омлет с моцареллой и чоризо",
     "weight": "380/30 Г",
@@ -32,8 +30,7 @@
   {
     "dish": "cold-zakuski",
     "img": "./../../images/temp/salads-3.png",
-    "tags-top": "Топчик",
-    "tags-hot": "Островато",
+    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div>",
     "rating": "4.8",
     "name": "Домашний омлет с моцареллой и чоризо",
     "weight": "380/30 Г",

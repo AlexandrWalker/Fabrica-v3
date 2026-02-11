@@ -1,3 +1,11 @@
 @use './../mixins' as *;
 
-.rassadka {}
+.rassadka {
+
+  .layout__head-text {
+    
+    * {
+      font-weight: 500;
+    }
+  }
+}
