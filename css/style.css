@@ -115,14 +115,6 @@ li:last-child {
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: Inter;
-  font-display: swap;
   src: url("../fonts/Inter-ExtraBold.woff2") format("woff2"), url("../fonts/Inter-ExtraBold.woff") format("woff");
   font-weight: 800;
   font-style: normal;
@@ -133,6 +125,14 @@ li:last-child {
   font-display: swap;
   src: url("../fonts/Inter-ExtraLight.woff2") format("woff2"), url("../fonts/Inter-ExtraLight.woff") format("woff");
   font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Inter;
+  font-display: swap;
+  src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
+  font-weight: 700;
   font-style: normal;
 }
 
@@ -267,14 +267,6 @@ li:last-child {
 @font-face {
   font-family: PlayfairDisplay;
   font-display: swap;
-  src: url("../fonts/PlayfairDisplay-Regular.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Regular.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: PlayfairDisplay;
-  font-display: swap;
   src: url("../fonts/PlayfairDisplay-Bold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Bold.woff") format("woff");
   font-weight: 700;
   font-style: normal;
@@ -285,6 +277,14 @@ li:last-child {
   font-display: swap;
   src: url("../fonts/PlayfairDisplay-Medium.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Medium.woff") format("woff");
   font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: PlayfairDisplay;
+  font-display: swap;
+  src: url("../fonts/PlayfairDisplay-Regular.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Regular.woff") format("woff");
+  font-weight: 400;
   font-style: normal;
 }
 
@@ -1121,6 +1121,10 @@ body {
   font-weight: 700;
 }
 
+.form-text a:hover {
+  text-decoration: underline;
+}
+
 .form-code {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1317,6 +1321,75 @@ body {
 
 .form-results li:last-child {
   margin-bottom: 0;
+}
+
+.form-checkbox {
+  display: none;
+}
+
+.form-checkbox:checked + label .form-checkbox--item::after {
+  background-color: var(--green);
+}
+
+.form-checkbox + label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-checkbox--item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  border: 0.1rem solid var(--green);
+  position: relative;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.form-checkbox--item::before {
+  content: "";
+  width: 1.06rem;
+  height: 1.06rem;
+  border-radius: 50%;
+  background-color: var(--green);
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.form-checkbox--item::after {
+  content: "";
+  width: 0.66rem;
+  height: 0.66rem;
+  border-radius: 50%;
+  background-color: var(--white);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 /* Стили для иконок */
@@ -3348,6 +3421,16 @@ p {
   transform: translateX(-50%);
 }
 
+.popup.favorite .layout {
+  padding-bottom: 15rem;
+}
+
+.popup.favorite .layout__head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
 /* Overlay */
 
 #popup-overlay {
@@ -3924,6 +4007,10 @@ p {
     background: var(--aqua-dark);
   }
 
+  .panel {
+    display: none;
+  }
+
   .afisha__items {
     gap: 2rem;
   }
@@ -3949,6 +4036,10 @@ p {
   .banner__link:hover i {
     background-color: var(--green);
     color: var(--white);
+  }
+
+  .hero {
+    display: none;
   }
 
   .hero__inner {
