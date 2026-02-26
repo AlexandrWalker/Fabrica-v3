@@ -2269,10 +2269,28 @@
                   <button class="btn btn--green" type="button" data-popup-target="regCode">
                     Получить код
                   </button>
+                  <div class="form-group form-text">
+                    <input id="form-checkbox-1" class="form-checkbox" type="checkbox" required="">
+                    <label for="form-checkbox-1">
+                      <div class="form-checkbox--item"></div>
+                      <p>
+                        Я согласен на <a href="/">обработку персональных данных</a>
+                      </p>
+                    </label>
+                  </div>
+                  <div class="form-group form-text">
+                    <input id="form-checkbox-2" class="form-checkbox" type="checkbox">
+                    <label for="form-checkbox-2">
+                      <div class="form-checkbox--item"></div>
+                      <p>
+                        Я согласен на <a href="/">рекламные уведомления</a>
+                      </p>
+                    </label>
+                  </div>
                   <div class="form-text">
                     <p>
-                      Нажимая кнопку «Получить код», вы соглашаетесь с <a href="/">политикой конфиденциальности</a> и <a
-                        href="/">условиями оферты</a>
+                      Нажимая на кнопку, Вы соглашаетесь с обработкой персональных данный в рамках <a
+                        href="/">Политики персональных данных </a>
                     </p>
                   </div>
                 </div>
@@ -2328,10 +2346,28 @@
                   <button class="btn btn--green" disabled>
                     Войти
                   </button>
+                  <div class="form-group form-text">
+                    <input id="form-checkbox-1" class="form-checkbox" type="checkbox" required="">
+                    <label for="form-checkbox-1">
+                      <div class="form-checkbox--item"></div>
+                      <p>
+                        Я согласен на <a href="/">обработку персональных данных</a>
+                      </p>
+                    </label>
+                  </div>
+                  <div class="form-group form-text">
+                    <input id="form-checkbox-2" class="form-checkbox" type="checkbox">
+                    <label for="form-checkbox-2">
+                      <div class="form-checkbox--item"></div>
+                      <p>
+                        Я согласен на <a href="/">рекламные уведомления</a>
+                      </p>
+                    </label>
+                  </div>
                   <div class="form-text">
                     <p>
-                      Нажимая кнопку «Войти», вы соглашаетесь с <a href="/">политикой конфиденциальности</a> и <a
-                        href="/">условиями оферты</a>
+                      Нажимая на кнопку, Вы соглашаетесь с обработкой персональных данный в рамках <a href="/">Политики
+                        персональных данных </a>
                     </p>
                   </div>
                 </div>
@@ -2718,26 +2754,26 @@
             <div class="layout__body">
               <div class="layout__block">
 
-                <div class="layout layout--carousel">
+                <div class="layout">
                   <div class="layout__inner">
                     <div class="layout__head">
                       <div class="layout__nav">
-                        <button class="layout__nav-item active" type="button" data-nav="hot">
+                        <button class="layout__nav-item active" type="button" data-nav="favorites-hot">
                           Горячее
                         </button>
-                        <button class="layout__nav-item" type="button" data-nav="pasta">
+                        <button class="layout__nav-item" type="button" data-nav="favorites-pasta">
                           Паста
                         </button>
-                        <button class="layout__nav-item" type="button" data-nav="sides">
+                        <button class="layout__nav-item" type="button" data-nav="favorites-sides">
                           Гарниры
                         </button>
-                        <button class="layout__nav-item" type="button" data-nav="soups">
+                        <button class="layout__nav-item" type="button" data-nav="favorites-soups">
                           Супы
                         </button>
                       </div>
                     </div>
                     <div class="layout__items">
-                      <div class="card" data-popup-target="dish" data-dish="hot">
+                      <div class="card" data-popup-target="dish" data-dish="favorites-hot">
   <div class="card__head">
     <div class="card__tags">
       <div class="card__tags-item card__tags-top"><i class="icon-top"></i>Топчик</div>
@@ -2796,7 +2832,7 @@
       </div>
     </div>
   </div>
-</div><div class="card" data-popup-target="dish" data-dish="hot">
+</div><div class="card" data-popup-target="dish" data-dish="favorites-hot">
   <div class="card__head">
     <div class="card__tags">
       <div class="card__tags-item card__tags-hot"><i class="icon-hot"></i>Островато</div>
@@ -2855,7 +2891,7 @@
       </div>
     </div>
   </div>
-</div><div class="card" data-popup-target="dish" data-dish="pasta">
+</div><div class="card" data-popup-target="dish" data-dish="favorites-pasta">
   <div class="card__head">
     <div class="card__tags">
       <div class="card__tags-item card__tags-top"><i class="icon-top"></i>Топчик</div>
@@ -2914,7 +2950,7 @@
       </div>
     </div>
   </div>
-</div><div class="card" data-popup-target="dish" data-dish="pasta">
+</div><div class="card" data-popup-target="dish" data-dish="favorites-pasta">
   <div class="card__head">
     <div class="card__tags">
       <div class="card__tags-item card__tags-top"><i class="icon-top"></i>Топчик</div>
@@ -2973,7 +3009,7 @@
       </div>
     </div>
   </div>
-</div><div class="card" data-popup-target="dish" data-dish="sides">
+</div><div class="card" data-popup-target="dish" data-dish="favorites-sides">
   <div class="card__head">
     <div class="card__tags">
       <div class="card__tags-item card__tags-top"><i class="icon-top"></i>Топчик</div>
@@ -3032,7 +3068,7 @@
       </div>
     </div>
   </div>
-</div><div class="card" data-popup-target="dish" data-dish="sides">
+</div><div class="card" data-popup-target="dish" data-dish="favorites-sides">
   <div class="card__head">
     <div class="card__tags">
       <div class="card__tags-item card__tags-top"><i class="icon-top"></i>Топчик</div>
@@ -3091,7 +3127,7 @@
       </div>
     </div>
   </div>
-</div><div class="card" data-popup-target="dish" data-dish="soups">
+</div><div class="card" data-popup-target="dish" data-dish="favorites-soups">
   <div class="card__head">
     <div class="card__tags">
       <div class="card__tags-item card__tags-top"><i class="icon-top"></i>Топчик</div>
@@ -3150,7 +3186,7 @@
       </div>
     </div>
   </div>
-</div><div class="card" data-popup-target="dish" data-dish="soups">
+</div><div class="card" data-popup-target="dish" data-dish="favorites-soups">
   <div class="card__head">
     <div class="card__tags">
       <div class="card__tags-item card__tags-hot"><i class="icon-hot"></i>Островато</div>
@@ -3744,10 +3780,28 @@
                   <button class="btn btn--green" type="button" data-popup-target="authCode">
                     Получить код
                   </button>
+                  <div class="form-group form-text">
+                    <input id="form-checkbox-1" class="form-checkbox" type="checkbox" required="">
+                    <label for="form-checkbox-1">
+                      <div class="form-checkbox--item"></div>
+                      <p>
+                        Я согласен на <a href="/">обработку персональных данных</a>
+                      </p>
+                    </label>
+                  </div>
+                  <div class="form-group form-text">
+                    <input id="form-checkbox-2" class="form-checkbox" type="checkbox">
+                    <label for="form-checkbox-2">
+                      <div class="form-checkbox--item"></div>
+                      <p>
+                        Я согласен на <a href="/">рекламные уведомления</a>
+                      </p>
+                    </label>
+                  </div>
                   <div class="form-text">
                     <p>
-                      Нажимая кнопку «Получить код», вы соглашаетесь с <a href="/">политикой конфиденциальности</a> и <a
-                        href="/">условиями оферты</a>
+                      Нажимая на кнопку, Вы соглашаетесь с обработкой персональных данный в рамках <a href="/">Политики
+                        персональных данных </a>
                     </p>
                   </div>
                 </div>
@@ -3803,10 +3857,28 @@
                   <button class="btn btn--green" disabled>
                     Войти
                   </button>
+                  <div class="form-group form-text">
+                    <input id="form-checkbox-1" class="form-checkbox" type="checkbox" required="">
+                    <label for="form-checkbox-1">
+                      <div class="form-checkbox--item"></div>
+                      <p>
+                        Я согласен на <a href="/">обработку персональных данных</a>
+                      </p>
+                    </label>
+                  </div>
+                  <div class="form-group form-text">
+                    <input id="form-checkbox-2" class="form-checkbox" type="checkbox">
+                    <label for="form-checkbox-2">
+                      <div class="form-checkbox--item"></div>
+                      <p>
+                        Я согласен на <a href="/">рекламные уведомления</a>
+                      </p>
+                    </label>
+                  </div>
                   <div class="form-text">
                     <p>
-                      Нажимая кнопку «Войти», вы соглашаетесь с <a href="/">политикой конфиденциальности</a> и <a
-                        href="/">условиями оферты</a>
+                      Нажимая на кнопку, Вы соглашаетесь с обработкой персональных данный в рамках <a href="/">Политики
+                        персональных данных </a>
                     </p>
                   </div>
                 </div>

@@ -464,12 +464,29 @@ document.addEventListener('DOMContentLoaded', () => {
    * Навигация layout__nav
    */
   (function () {
-    const OFFSET_REM = 21.8;
-    const SCROLL_DURATION = 500; // Гарантия существования константы
-    const getOffsetPx = () => OFFSET_REM * parseFloat(getComputedStyle(document.documentElement).fontSize);
+    const DEFAULT_OFFSET_REM = 21.8;
+    const POPUP_OFFSET_REM = 15.9;
+    const SCROLL_DURATION = 500;
+
+    /**
+     * Возвращает scroll-контейнер для layout
+     */
+    function getScrollContainer(layout) {
+      const popupScroll = layout.closest('[data-popup-scroll]');
+      return popupScroll || window;
+    }
+
+    /**
+     * Возвращает смещение в px в зависимости от того, обычная страница или popup
+     */
+    function getOffsetPx(layout) {
+      const isPopup = layout.closest('[data-popup-scroll]');
+      const offsetRem = isPopup ? POPUP_OFFSET_REM : DEFAULT_OFFSET_REM;
+      return offsetRem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+    }
 
     function scrollNavToActiveItem(nav, activeBtn) {
-      if (!activeBtn) return; // Защита от null
+      if (!activeBtn) return;
 
       const btnLeft = activeBtn.offsetLeft;
       const btnRight = btnLeft + activeBtn.offsetWidth;
@@ -484,6 +501,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    /**
+     * Клик по навигации
+     */
     document.addEventListener('click', e => {
       const navBtn = e.target.closest('.layout__nav-item');
       if (!navBtn) return;
@@ -491,47 +511,72 @@ document.addEventListener('DOMContentLoaded', () => {
       const layout = navBtn.closest('.layout');
       if (!layout) return;
 
-      layout._disableNavUpdate = true; // Однократное присваивание
-      layout._activeByClick = true;
-
       const nav = layout.querySelector('.layout__nav');
       if (!nav) return;
 
       const navItems = nav.querySelectorAll('.layout__nav-item');
-      if (!navItems.length) return; // Проверка на наличие пунктов
-
       const cards = layout.querySelectorAll('.card[data-dish]');
       if (!cards.length) return;
 
       const targetKey = navBtn.dataset.nav;
-      const targetCard = Array.from(cards).find(c => c.dataset.dish === targetKey);
+      const targetCard = Array.from(cards).find(
+        c => c.dataset.dish === targetKey
+      );
       if (!targetCard) return;
+
+      layout._disableNavUpdate = true;
+      layout._activeByClick = true;
+
+      const scrollContainer = getScrollContainer(layout);
+      const offsetPx = getOffsetPx(layout);
 
       if (layout.classList.contains('layout--carousel')) {
         const container = layout.querySelector('.layout__items');
         if (!container) return;
 
-        const scrollTarget = targetCard.offsetLeft - (container.clientWidth / 2 - targetCard.offsetWidth / 2);
-        container.scrollTo({ left: scrollTarget, behavior: 'smooth' });
+        const scrollTarget =
+          targetCard.offsetLeft -
+          (container.clientWidth / 2 - targetCard.offsetWidth / 2);
+
+        container.scrollTo({
+          left: scrollTarget,
+          behavior: 'smooth'
+        });
 
         setTimeout(() => {
           layout._disableNavUpdate = false;
           layout._activeByClick = false;
           scrollNavToActiveItem(nav, navBtn);
         }, SCROLL_DURATION);
+
       } else {
-        const y = targetCard.getBoundingClientRect().top + window.pageYOffset - getOffsetPx();
-        smoothScrollTo(y, SCROLL_DURATION, () => {
+        const y =
+          targetCard.getBoundingClientRect().top +
+          (scrollContainer === window ? window.pageYOffset : scrollContainer.scrollTop) -
+          offsetPx;
+
+        scrollContainer.scrollTo({
+          top: y,
+          behavior: 'smooth'
+        });
+
+        setTimeout(() => {
           layout._disableNavUpdate = false;
           layout._activeByClick = false;
-          scrollNavToActiveItem(nav, navBtn); // Вызов после скролла
-        });
+          scrollNavToActiveItem(nav, navBtn);
+        }, SCROLL_DURATION);
       }
 
-      navItems.forEach(btn => btn.classList.toggle('active', btn === navBtn));
+      navItems.forEach(btn =>
+        btn.classList.toggle('active', btn === navBtn)
+      );
     });
 
+    /**
+     * Обновление активного пункта при скролле
+     */
     const layouts = document.querySelectorAll('.layout');
+
     layouts.forEach(layout => {
       const nav = layout.querySelector('.layout__nav');
       if (!nav) return;
@@ -540,28 +585,77 @@ document.addEventListener('DOMContentLoaded', () => {
       const cards = layout.querySelectorAll('.card[data-dish]');
       if (!cards.length) return;
 
-      const isCarousel = layout.classList.contains('layout--carousel');
+      const isCarousel =
+        layout.classList.contains('layout--carousel');
+
+      const scrollContainer = getScrollContainer(layout);
+      const offsetPx = getOffsetPx(layout);
 
       const updateActiveNav = () => {
         if (layout._disableNavUpdate) return;
         if (layout._activeByClick) return;
 
         let currentCard = null;
+
         if (isCarousel) {
-          const container = layout.querySelector('.layout__items');
-          const scrollCenter = container.scrollLeft + container.clientWidth / 2;
-          currentCard = Array.from(cards).reduce((closest, card) => {
-            const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-            return !closest || Math.abs(cardCenter - scrollCenter) < Math.abs(closest.offsetLeft + closest.offsetWidth / 2 - scrollCenter) ? card : closest;
-          }, null);
+          const container =
+            layout.querySelector('.layout__items');
+          if (!container) return;
+
+          const scrollCenter =
+            container.scrollLeft + container.clientWidth / 2;
+
+          currentCard = Array.from(cards).reduce(
+            (closest, card) => {
+              const cardCenter =
+                card.offsetLeft + card.offsetWidth / 2;
+
+              if (!closest) return card;
+
+              const closestCenter =
+                closest.offsetLeft + closest.offsetWidth / 2;
+
+              return Math.abs(cardCenter - scrollCenter) <
+                Math.abs(closestCenter - scrollCenter)
+                ? card
+                : closest;
+            },
+            null
+          );
+
         } else {
-          const offsetPx = getOffsetPx();
-          const scrollPos = window.scrollY + offsetPx + window.innerHeight * 0.25;
-          cards.forEach(card => { if (scrollPos >= card.getBoundingClientRect().top + window.pageYOffset) currentCard = card; });
-          if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4) currentCard = cards[cards.length - 1];
+          let scrollPos;
+
+          if (scrollContainer === window) {
+            scrollPos =
+              window.scrollY + offsetPx + window.innerHeight * 0.25;
+          } else {
+            scrollPos =
+              scrollContainer.scrollTop + offsetPx + scrollContainer.clientHeight * 0.25;
+          }
+
+          cards.forEach(card => {
+            const cardTop =
+              scrollContainer === window
+                ? card.getBoundingClientRect().top + window.pageYOffset
+                : card.offsetTop;
+
+            if (scrollPos >= cardTop) {
+              currentCard = card;
+            }
+          });
+
+          if (
+            scrollContainer === window &&
+            window.scrollY + window.innerHeight >=
+            document.documentElement.scrollHeight - 4
+          ) {
+            currentCard = cards[cards.length - 1];
+          }
         }
 
         if (!currentCard) return;
+
         const targetKey = currentCard.dataset.dish;
 
         navItems.forEach(btn => {
@@ -569,22 +663,35 @@ document.addEventListener('DOMContentLoaded', () => {
           btn.classList.toggle('active', isActive);
 
           if (isActive) {
-            const btnLeft = btn.offsetLeft;
-            const btnRight = btnLeft + btn.offsetWidth;
-            const navScrollLeft = nav.scrollLeft;
-            const navRightEdge = navScrollLeft + nav.clientWidth;
-            if (btnLeft < navScrollLeft || btnRight > navRightEdge) {
-              nav.scrollTo({ left: btnLeft - nav.clientWidth / 2 + btn.offsetWidth / 2, behavior: 'smooth' });
-            }
+            scrollNavToActiveItem(nav, btn);
           }
         });
       };
 
       if (isCarousel) {
-        const container = layout.querySelector('.layout__items');
-        container.addEventListener('scroll', updateActiveNav, { passive: true });
+        const container =
+          layout.querySelector('.layout__items');
+        if (!container) return;
+
+        container.addEventListener(
+          'scroll',
+          updateActiveNav,
+          { passive: true }
+        );
       } else {
-        window.addEventListener('scroll', updateActiveNav, { passive: true });
+        if (scrollContainer === window) {
+          window.addEventListener(
+            'scroll',
+            updateActiveNav,
+            { passive: true }
+          );
+        } else {
+          scrollContainer.addEventListener(
+            'scroll',
+            updateActiveNav,
+            { passive: true }
+          );
+        }
       }
 
       updateActiveNav();

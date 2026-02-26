@@ -17,26 +17,26 @@
             <div class="layout__body">
               <div class="layout__block">
 
-                <div class="layout layout--carousel">
+                <div class="layout">
                   <div class="layout__inner">
                     <div class="layout__head">
                       <div class="layout__nav">
-                        <button class="layout__nav-item active" type="button" data-nav="hot">
+                        <button class="layout__nav-item active" type="button" data-nav="favorites-hot">
                           Горячее
                         </button>
-                        <button class="layout__nav-item" type="button" data-nav="pasta">
+                        <button class="layout__nav-item" type="button" data-nav="favorites-pasta">
                           Паста
                         </button>
-                        <button class="layout__nav-item" type="button" data-nav="sides">
+                        <button class="layout__nav-item" type="button" data-nav="favorites-sides">
                           Гарниры
                         </button>
-                        <button class="layout__nav-item" type="button" data-nav="soups">
+                        <button class="layout__nav-item" type="button" data-nav="favorites-soups">
                           Супы
                         </button>
                       </div>
                     </div>
                     <div class="layout__items">
-                      @@loop('./../elements/card-item-osnovnoe.html', './data/card-items-osnovnoe.json')
+                      @@loop('./../elements/card-item-osnovnoe.html', './data/card-items-osnovnoe-favorites.json')
                     </div>
                   </div>
                 </div>

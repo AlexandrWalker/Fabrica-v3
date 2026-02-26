@@ -134,6 +134,10 @@
 
     a {
       font-weight: 700;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 
@@ -269,6 +273,66 @@
 
       &:last-child {
         margin-bottom: 0;
+      }
+    }
+  }
+
+  // Тут начинается новый код чекбокса
+  &-checkbox {
+    display: none;
+
+    &:checked {
+
+      &+label {
+
+        .form-checkbox--item {
+
+          &::after {
+            background-color: var(--green);
+          }
+        }
+      }
+    }
+
+    &+label {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    &--item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 1.6rem;
+      height: 1.6rem;
+      border-radius: 50%;
+      border: 0.1rem solid var(--green);
+      position: relative;
+      flex-shrink: 0;
+
+      &::before {
+        content: "";
+        width: 1.06rem;
+        height: 1.06rem;
+        border-radius: 50%;
+        background-color: var(--green);
+        flex-shrink: 0;
+      }
+
+      &::after {
+        content: "";
+        width: 0.66rem;
+        height: 0.66rem;
+        border-radius: 50%;
+        background-color: var(--white);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transition: all 0.3s ease;
+        flex-shrink: 0;
       }
     }
   }
