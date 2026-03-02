@@ -1,12 +1,20 @@
 <div class="panel">
   <div class="panel__inner">
     <div class="panel__btns">
-      <a class="panel__btn" href="#main">
-        <i class="icon-up"></i>
-        <span>
-          Наверх
-        </span>
-      </a>
+      <div class="panel__btn">
+        <a class="panel__btn panel__btn--visible" href="#main">
+          <i class="icon-up"></i>
+          <span>
+            Наверх
+          </span>
+        </a>
+        <div class="panel__btn panel__btn--hidden" data-close-all-popups>
+          <i class="icon-menu-meatballs"></i>
+          <span>
+            На главную
+          </span>
+        </div>
+      </div>
       <button class="panel__btn" data-popup-target="filter">
         <i class="icon-filter"></i>
         <span>

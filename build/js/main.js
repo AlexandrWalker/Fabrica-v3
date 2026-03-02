@@ -105,6 +105,42 @@ document.addEventListener('DOMContentLoaded', () => {
       removeHtmlPopupClassIfNeeded();
     }
 
+    function closeAllPopups() {
+      if (!stack.length) return;
+
+      const duration = 0.4;
+
+      // Копируем стек, чтобы корректно обработать все элементы
+      const popupsToClose = [...stack];
+      stack.length = 0;
+
+      popupsToClose.forEach(popup => {
+        popup.style.transition = `top ${duration}s ease, opacity ${duration}s ease`;
+        popup.style.top = '100%';
+        popup.style.opacity = '0';
+
+        setTimeout(() => {
+          popup.style.visibility = 'hidden';
+          popup.style.pointerEvents = 'none';
+          popup.style.zIndex = '';
+        }, duration * 1000);
+      });
+
+      overlay.style.transition = `opacity ${duration}s ease`;
+      overlay.style.opacity = '0';
+
+      updatePointerEvents();
+      unlockBodyScrollIfNeeded();
+      removeHtmlPopupClassIfNeeded();
+    }
+
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('[data-close-all-popups]');
+      if (!btn) return;
+
+      closeAllPopups();
+    });
+
     document.addEventListener('click', e => {
       const btn = e.target.closest('[data-popup-target]');
       if (!btn) return;
@@ -738,6 +774,27 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
       });
+    });
+  })();
+
+  (function () {
+    const html = document.documentElement;
+    const button = document.querySelector('.panel__btn');
+
+    if (!button) return;
+
+    // MutationObserver отслеживает изменение class у html
+    const observer = new MutationObserver(() => {
+      if (html.classList.contains('popup-open')) {
+        button.classList.add('is-flipped');
+      } else {
+        button.classList.remove('is-flipped');
+      }
+    });
+
+    observer.observe(html, {
+      attributes: true,
+      attributeFilter: ['class']
     });
   })();
 });

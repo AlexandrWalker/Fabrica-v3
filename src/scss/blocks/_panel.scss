@@ -1,4 +1,5 @@
 @use './../mixins' as *;
+
 /* Тут я поменял позиционирование с bottom на top. Также установил 100dvh для панели */
 .panel {
   display: flex;
@@ -13,9 +14,14 @@
   top: 0;
   right: 0;
   z-index: 500;
+  z-index: 1000;
 
   @include domd {
     display: none;
+  }
+
+  * {
+    transition: height 400ms cubic-bezier(.4, 0, .2, 1), transform 400ms cubic-bezier(.4, 0, .2, 1);
   }
 
   &::before {
@@ -30,6 +36,10 @@
     right: 0;
     left: 0;
     z-index: -1;
+
+    .popup-open & {
+      height: 10rem;
+    }
   }
 
   &__inner {
@@ -40,6 +50,12 @@
     padding: 0 var(--container-padding);
     height: var(--panel-height);
     pointer-events: all;
+
+        .popup-open & {}
+
+    /* Вырез под кнопку */
+    // mask-image: radial-gradient(circle at 50% 0%, transparent 4.1rem, black 4.1rem);
+    // -webkit-mask-image: radial-gradient(circle at 50% 0%, transparent 4.1rem, black 4.1rem);
   }
 
   &__btns {
@@ -60,6 +76,11 @@
     padding: 1.2rem 0 1.8rem;
 
     position: relative;
+
+    perspective: 100rem;
+    -webkit-perspective: 1000px;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
 
     i {
       font-size: 3rem;
@@ -82,6 +103,45 @@
       i {
         font-size: 2.8rem;
         color: var(--white);
+      }
+
+      .popup-open & {
+        transform: translateY(-0.5rem);
+      }
+    }
+
+    /* 3D контейнер */
+    &>.panel__btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      inset: 0;
+      transition: transform 0.6s cubic-bezier(.4, .2, .2, 1);
+
+      position: absolute;
+    }
+
+    /* Лицевая сторона */
+    &--visible {
+      transform: rotateY(0deg);
+      z-index: 2;
+
+      html.popup-open & {
+        transform: rotateY(180deg);
+      }
+    }
+
+    /* Обратная сторона */
+    &--hidden {
+      transform: rotateY(180deg);
+
+      html.popup-open & {
+        transform: rotateY(0deg);
       }
     }
   }

@@ -84,14 +84,11 @@
       }
 
       &-title {
+        opacity: 0.5;
+        color: var(--black);
 
-        * {
-          opacity: 0.5;
-          color: var(--black);
-
-          .login & {
-            opacity: 1;
-          }
+        .login & {
+          opacity: 1;
         }
       }
     }

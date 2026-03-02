@@ -29,6 +29,10 @@
 
     &-title {
       margin-bottom: 0.5rem;
+
+      font-weight: 900;
+      font-size: 2rem;
+      line-height: 100%;
     }
 
     &-wrap {
@@ -38,10 +42,9 @@
     }
 
     &-name {
-
-      * {
-        font-weight: 700;
-      }
+      font-weight: 700;
+      font-size: 1.4rem;
+      line-height: 120%;
     }
 
     &-rating {
