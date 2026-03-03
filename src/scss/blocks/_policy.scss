@@ -1,0 +1,24 @@
+@use './../mixins' as *;
+
+.policy {
+
+  .layout__head-title {
+
+    h2 {
+      font-size: 2rem;
+    }
+  }
+
+  .layout__block-text {
+    gap: 1.6rem;
+
+    a {
+      margin-left: unset;
+
+      font-weight: 400;
+      font-size: 1.2rem;
+      color: inherit;
+      text-decoration: none;
+    }
+  }
+}

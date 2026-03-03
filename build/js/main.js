@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ====================================================
   // Глобальная длительность скролла в миллисекундах
   const SCROLL_DURATION = 1500;
-  // ====================================================
 
   gsap.registerPlugin(ScrollTrigger);
 
@@ -397,105 +395,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.form-input, .form-textarea').forEach(addFilledClass);
   })();
 
-  /* Старая версия след. кода 
-  (function () {
-    const OFFSET_REM = 21.8;
-    const getOffsetPx = () => OFFSET_REM * parseFloat(getComputedStyle(document.documentElement).fontSize);
-
-    document.addEventListener('click', e => {
-      const navBtn = e.target.closest('.layout__nav-item');
-      if (!navBtn) return;
-
-      const layout = navBtn.closest('.layout');
-      if (!layout) return;
-
-      const nav = layout.querySelector('.layout__nav');
-      if (!nav) return;
-
-      const navItems = nav.querySelectorAll('.layout__nav-item');
-      const cards = layout.querySelectorAll('.card[data-dish]');
-      if (!cards.length) return;
-
-      const targetKey = navBtn.dataset.nav;
-      const targetCard = Array.from(cards).find(c => c.dataset.dish === targetKey);
-      if (!targetCard) return;
-
-      layout._disableNavUpdate = true;
-
-      if (layout.classList.contains('layout--carousel')) {
-        const container = layout.querySelector('.layout__items');
-        if (!container) return;
-
-        const scrollTarget = targetCard.offsetLeft - (container.clientWidth / 2 - targetCard.offsetWidth / 2);
-        container.scrollTo({ left: scrollTarget, behavior: 'smooth' });
-
-        setTimeout(() => { layout._disableNavUpdate = false; }, SCROLL_DURATION);
-      } else {
-        const y = targetCard.getBoundingClientRect().top + window.pageYOffset - getOffsetPx();
-        smoothScrollTo(y, SCROLL_DURATION, () => { layout._disableNavUpdate = false; });
-      }
-
-      navItems.forEach(btn => btn.classList.toggle('active', btn === navBtn));
-    });
-
-    const layouts = document.querySelectorAll('.layout');
-    layouts.forEach(layout => {
-      const nav = layout.querySelector('.layout__nav');
-      if (!nav) return;
-      const navItems = nav.querySelectorAll('.layout__nav-item');
-      const cards = layout.querySelectorAll('.card[data-dish]');
-      if (!cards.length) return;
-
-      const isCarousel = layout.classList.contains('layout--carousel');
-
-      const updateActiveNav = () => {
-        if (layout._disableNavUpdate) return;
-
-        let currentCard = null;
-        if (isCarousel) {
-          const container = layout.querySelector('.layout__items');
-          const scrollCenter = container.scrollLeft + container.clientWidth / 2;
-          currentCard = Array.from(cards).reduce((closest, card) => {
-            const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-            return !closest || Math.abs(cardCenter - scrollCenter) < Math.abs(closest.offsetLeft + closest.offsetWidth / 2 - scrollCenter) ? card : closest;
-          }, null);
-        } else {
-          const offsetPx = getOffsetPx();
-          const scrollPos = window.scrollY + offsetPx + window.innerHeight * 0.25;
-          cards.forEach(card => { if (scrollPos >= card.getBoundingClientRect().top + window.pageYOffset) currentCard = card; });
-          if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4) currentCard = cards[cards.length - 1];
-        }
-
-        if (!currentCard) return;
-        const targetKey = currentCard.dataset.dish;
-
-        navItems.forEach(btn => {
-          const isActive = btn.dataset.nav === targetKey;
-          btn.classList.toggle('active', isActive);
-
-          if (isActive) {
-            const btnLeft = btn.offsetLeft;
-            const btnRight = btnLeft + btn.offsetWidth;
-            const navScrollLeft = nav.scrollLeft;
-            const navRightEdge = navScrollLeft + nav.clientWidth;
-            if (btnLeft < navScrollLeft || btnRight > navRightEdge) {
-              nav.scrollTo({ left: btnLeft - nav.clientWidth / 2 + btn.offsetWidth / 2, behavior: 'smooth' });
-            }
-          }
-        });
-      };
-
-      if (isCarousel) {
-        const container = layout.querySelector('.layout__items');
-        container.addEventListener('scroll', updateActiveNav, { passive: true });
-      } else {
-        window.addEventListener('scroll', updateActiveNav, { passive: true });
-      }
-
-      updateActiveNav();
-    });
-  })(); */
-
   /**
    * Навигация layout__nav
    */
@@ -777,6 +676,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   })();
 
+  /**
+   * Функция для смены иконки в панели при открытии попапа
+   */
   (function () {
     const html = document.documentElement;
     const button = document.querySelector('.panel__btn');
@@ -797,4 +699,46 @@ document.addEventListener('DOMContentLoaded', () => {
       attributeFilter: ['class']
     });
   })();
+
+  /**
+   * Функция для рейтинга
+   */
+  (function () {
+    const formRating = document.querySelector('.form-rating');
+    const formRatingStars = formRating.querySelectorAll('i');
+
+    formRatingStars.forEach(star => {
+      star.addEventListener('click', function () {
+        // Получаем рейтинг из data‑атрибута
+        const selectedRating = parseInt(this.getAttribute('data-rating'));
+
+        // Проходим по всем иконкам и обновляем классы
+        formRatingStars.forEach((star, index) => {
+          if (index < selectedRating) {
+            star.classList.add('icon-star-fill');
+          } else {
+            star.classList.remove('icon-star-fill');
+          }
+        });
+      });
+    });
+  })();
+
+  /**
+   * Кнопка куки
+   */
+  if (('; ' + document.cookie).split(`; COOKIE_ACCEPT=`).pop().split(';')[0] !== '1') {
+    const cookiesNotify = document.getElementById('plate-cookie');
+
+    if (cookiesNotify) {
+      cookiesNotify.style.transform = 'translateY(0)';
+    }
+  }
+
 });
+
+function checkCookies() {
+  document.cookie = 'COOKIE_ACCEPT=1;path=\'/\';expires:' + (new Date(new Date().getTime() + 86400e3 * 365).toUTCString());
+  document.getElementById('plate-cookie').style.transform = 'translateY(100%)';
+  setInterval(() => document.getElementById('plate-cookie').remove(), 5000);
+}
