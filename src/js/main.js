@@ -9,25 +9,60 @@ document.addEventListener('DOMContentLoaded', () => {
    * Попапы
    */
   (function () {
+    // ─── КОНФИГУРАЦИЯ ─────────────────────────────────────────────────────────
+    // Базовый z-index для попапов. Каждый следующий попап получает +1
     const BASE_Z = 600;
+
+    // Стек открытых попапов. Последний элемент — самый верхний (активный)
     const stack = [];
+
+    // Полупрозрачный оверлей за попапами
     const overlay = document.getElementById('popup-overlay');
+
+    // Запоминаем позицию скролла перед блокировкой страницы
     let scrollY = 0;
 
-    function updatePointerEvents() {
-      stack.forEach((p, i) => p.style.pointerEvents = i === stack.length - 1 ? 'all' : 'none');
+    // ─── ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ──────────────────────────────────────────────
 
-      if (stack.length) {
-        overlay.style.pointerEvents = 'all';
-        overlay.style.transition = 'opacity 0.3s ease';
-        overlay.style.opacity = '1';
-      } else {
-        overlay.style.pointerEvents = 'none';
-        overlay.style.transition = 'opacity 0.3s ease';
-        overlay.style.opacity = '0';
-      }
+    /**
+     * Синхронизирует класс popup-open на <html> с состоянием стека.
+     * Класс нужен для глобальных CSS-стилей (например, анимация навбара).
+     */
+    function updateHtmlClasses() {
+      const hasPopups = stack.length > 0;
+      document.documentElement.classList.toggle('popup-open', hasPopups);
     }
 
+    /**
+     * Показывает или скрывает оверлей с анимацией.
+     * @param {boolean} visible  - true = показать, false = скрыть
+     * @param {number}  duration - длительность перехода в секундах
+     */
+    function updateOverlay(visible, duration = 0.3) {
+      overlay.style.transition = `opacity ${duration}s ease`;
+      overlay.style.opacity = visible ? '1' : '0';
+      // pointer-events отключаем когда оверлей скрыт, чтобы клики проходили сквозь него
+      overlay.style.pointerEvents = visible ? 'all' : 'none';
+    }
+
+    /**
+     * Обновляет pointer-events для всех попапов в стеке.
+     * Только верхний (активный) попап принимает клики.
+     * Остальные игнорируют события мыши/тача — они перекрыты активным попапом.
+     */
+    function updatePointerEvents() {
+      stack.forEach((p, i) => {
+        p.style.pointerEvents = i === stack.length - 1 ? 'all' : 'none';
+      });
+    }
+
+    // ─── БЛОКИРОВКА СКРОЛЛА ───────────────────────────────────────────────────
+
+    /**
+     * Блокирует скролл страницы при открытии первого попапа.
+     * Запоминает текущую позицию скролла для возможного восстановления.
+     * Идемпотентна — повторный вызов не даёт эффекта.
+     */
     function lockBodyScroll() {
       if (!document.body.classList.contains('no-scroll')) {
         scrollY = window.scrollY;
@@ -35,84 +70,103 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    function unlockBodyScrollIfNeeded() {
-      if (!stack.length && document.body.classList.contains('no-scroll')) {
+    /**
+     * Разблокирует скролл страницы, но только если стек пуст.
+     * Вызывается после каждого закрытия попапа.
+     */
+    function unlockBodyScroll() {
+      if (!stack.length) {
         document.body.classList.remove('no-scroll');
       }
     }
 
-    function addHtmlPopupClass() {
-      if (!document.documentElement.classList.contains('popup-open')) {
-        document.documentElement.classList.add('popup-open');
-      }
-    }
+    // ─── ОСНОВНАЯ ЛОГИКА ──────────────────────────────────────────────────────
 
-    function removeHtmlPopupClassIfNeeded() {
-      if (!stack.length && document.documentElement.classList.contains('popup-open')) {
-        document.documentElement.classList.remove('popup-open');
-      }
-    }
-
+    /**
+     * Открывает попап и добавляет его в стек.
+     * Если попап уже открыт — ничего не делает.
+     * @param {HTMLElement} popup - элемент попапа
+     */
     function openPopup(popup) {
+      // Защита от повторного открытия одного и того же попапа
       if (stack.includes(popup)) return;
 
+      // Блокируем скролл только при открытии первого попапа
       if (!stack.length) lockBodyScroll();
 
-      const z = BASE_Z + stack.length + 1;
-      popup.style.zIndex = z;
+      // z-index растёт с каждым новым попапом, чтобы верхний всегда был поверх
+      popup.style.zIndex = BASE_Z + stack.length + 1;
       popup.style.visibility = 'visible';
-      popup.style.pointerEvents = 'all';
 
+      // requestAnimationFrame нужен, чтобы браузер успел применить
+      // visibility: visible до начала CSS-перехода (иначе анимация не сработает)
       requestAnimationFrame(() => {
-        const duration = 0.4;
-        popup.style.transition = `top ${duration}s ease, opacity ${duration}s ease`;
-        popup.style.top = '0';
+        const d = 0.4;
+        popup.style.transition = `top ${d}s ease, opacity ${d}s ease`;
+        popup.style.top = '0';       // выезжает снизу в позицию 0
         popup.style.opacity = '1';
-
-        overlay.style.transition = `opacity ${duration}s ease`;
-        overlay.style.opacity = '1';
+        updateOverlay(true, d);
       });
 
       stack.push(popup);
+      popup.classList.add('popup-showed');  // маркер для внешних стилей/скриптов
       updatePointerEvents();
-      addHtmlPopupClass();
+      updateHtmlClasses();
+
+      // Добавляем запись в историю браузера — свайп/кнопка «Назад» закроет попап
       history.pushState({ popupId: popup.id }, '', '');
     }
 
+    /**
+     * Закрывает верхний попап из стека с анимацией.
+     * @param {number} velocity - скорость свайпа (px/мс). Чем быстрее свайп,
+     *                            тем короче анимация закрытия.
+     */
     function closeTopPopup(velocity = 0) {
       const popup = stack.pop();
       if (!popup) return;
 
+      // При быстром свайпе сокращаем время анимации (минимум 0.2с, максимум 0.6с)
       const duration = Math.max(0.2, Math.min(0.6, 0.4 - velocity));
+
+      // Уезжает вниз за экран
       popup.style.transition = `top ${duration}s ease, opacity ${duration}s ease`;
       popup.style.top = '100%';
       popup.style.opacity = '0';
 
-      overlay.style.transition = `opacity ${duration}s ease`;
-      overlay.style.opacity = '0';
+      // Оверлей скрываем только если в стеке больше нет попапов
+      // (stack.pop() уже выполнен, поэтому stack.length актуален)
+      updateOverlay(stack.length > 0, duration);
 
+      // После завершения анимации — полностью убираем попап из потока событий
       setTimeout(() => {
         popup.style.visibility = 'hidden';
         popup.style.pointerEvents = 'none';
         popup.style.zIndex = '';
-        overlay.style.transition = '';
+        overlay.style.transition = '';         // сбрасываем transition оверлея
+        popup.classList.remove('popup-showed'); // снимаем маркер
       }, duration * 1000);
 
       updatePointerEvents();
-      unlockBodyScrollIfNeeded();
-      removeHtmlPopupClassIfNeeded();
+      unlockBodyScroll();
+      updateHtmlClasses();
     }
 
+    /**
+     * Закрывает все открытые попапы одновременно.
+     * Используется, например, при переходе на другую страницу.
+     */
     function closeAllPopups() {
       if (!stack.length) return;
 
       const duration = 0.4;
 
-      // Копируем стек, чтобы корректно обработать все элементы
-      const popupsToClose = [...stack];
-      stack.length = 0;
+      // splice(0) одновременно очищает стек и возвращает его копию —
+      // это важно, чтобы updatePointerEvents/updateHtmlClasses
+      // видели уже пустой стек
+      const toClose = stack.splice(0);
 
-      popupsToClose.forEach(popup => {
+      toClose.forEach(popup => {
         popup.style.transition = `top ${duration}s ease, opacity ${duration}s ease`;
         popup.style.top = '100%';
         popup.style.opacity = '0';
@@ -121,92 +175,123 @@ document.addEventListener('DOMContentLoaded', () => {
           popup.style.visibility = 'hidden';
           popup.style.pointerEvents = 'none';
           popup.style.zIndex = '';
+          popup.classList.remove('popup-showed');
         }, duration * 1000);
       });
 
-      overlay.style.transition = `opacity ${duration}s ease`;
-      overlay.style.opacity = '0';
+      updateOverlay(false, duration);
+
+      // Сбрасываем transition оверлея после завершения анимации
+      setTimeout(() => {
+        overlay.style.transition = '';
+      }, duration * 1000);
 
       updatePointerEvents();
-      unlockBodyScrollIfNeeded();
-      removeHtmlPopupClassIfNeeded();
+      unlockBodyScroll();
+      updateHtmlClasses();
     }
 
+    // ─── ОБРАБОТЧИКИ СОБЫТИЙ ──────────────────────────────────────────────────
+
+    /**
+     * Единый обработчик кликов для трёх сценариев:
+     * 1. [data-close-all-popups] — закрыть все попапы
+     * 2. [data-popup-target]     — открыть попап по id
+     * 3. .popup__close           — закрыть текущий попап
+     */
     document.addEventListener('click', e => {
-      const btn = e.target.closest('[data-close-all-popups]');
-      if (!btn) return;
+      // Сценарий 1: кнопка «закрыть всё»
+      if (e.target.closest('[data-close-all-popups]')) {
+        closeAllPopups();
+        return;
+      }
 
-      closeAllPopups();
-    });
+      // Сценарий 2: кнопка открытия попапа
+      // data-popup-target содержит id целевого попапа
+      const openBtn = e.target.closest('[data-popup-target]');
+      if (openBtn) {
+        const popup = document.getElementById(openBtn.dataset.popupTarget);
+        if (popup) openPopup(popup);
+        return;
+      }
 
-    document.addEventListener('click', e => {
-      const btn = e.target.closest('[data-popup-target]');
-      if (!btn) return;
-
-      const popup = document.getElementById(btn.dataset.popupTarget);
-      if (popup) openPopup(popup);
-    });
-
-    // Новый обработчик для кнопок закрытия попапов
-    document.addEventListener('click', e => {
+      // Сценарий 3: крестик внутри попапа
+      // Ищем ближайший .popup чтобы закрыть именно его, а не произвольный верхний
       const closeBtn = e.target.closest('.popup__close');
-      if (!closeBtn) return;
-
-      // Находим ближайший попап к кнопке закрытия
-      const popup = closeBtn.closest('.popup');
-      if (popup && stack.includes(popup)) {
-        closeTopPopup();
+      if (closeBtn) {
+        const popup = closeBtn.closest('.popup');
+        // Проверяем что попап действительно в стеке (не закрыт повторно)
+        if (popup && stack.includes(popup)) closeTopPopup();
       }
     });
 
+    // ─── СВАЙП ВНИЗ ДЛЯ ЗАКРЫТИЯ ─────────────────────────────────────────────
+
+    /**
+     * Позволяет закрыть попап свайпом вниз.
+     * Во время свайпа попап следует за пальцем, оверлей затемняется пропорционально.
+     * При отпускании — либо закрываем (если достаточно далеко/быстро),
+     * либо возвращаем на место.
+     */
     document.addEventListener('touchstart', e => {
       const popup = e.target.closest('.popup');
+
+      // Реагируем только на тач внутри верхнего (активного) попапа
       if (!popup || stack.at(-1) !== popup) return;
 
+      // Если пользователь скроллит контент внутри попапа — не перехватываем жест
       const scrollParent = e.target.closest('[data-popup-scroll]');
-      if (scrollParent && scrollParent.scrollTop > 0) return;
+      if (scrollParent?.scrollTop > 0) return;
 
       const startY = e.touches[0].clientY;
       let lastY = startY;
-      let startTime = performance.now();
+      const startTime = performance.now();
 
-      function move(ev) {
-        const y = ev.touches[0].clientY;
-        const delta = Math.max(0, y - startY);
-        popup.style.transition = 'none';
+      // Попап следует за пальцем
+      function onMove(ev) {
+        // Math.max(0) запрещает тянуть попап вверх
+        const delta = Math.max(0, ev.touches[0].clientY - startY);
+        popup.style.transition = 'none'; // отключаем transition во время тяги
         popup.style.top = `${delta}px`;
 
-        const ratio = 1 - Math.min(delta / popup.offsetHeight, 1);
-        overlay.style.opacity = ratio;
-
-        lastY = y;
+        // Оверлей плавно исчезает по мере смещения попапа
+        overlay.style.opacity = 1 - Math.min(delta / popup.offsetHeight, 1);
+        lastY = ev.touches[0].clientY;
       }
 
-      function end() {
+      function onEnd() {
         const delta = lastY - startY;
-        const time = performance.now() - startTime;
-        const velocity = delta / time;
+        const velocity = delta / (performance.now() - startTime); // px/мс
 
-        popup.style.transition = '';
+        popup.style.transition = ''; // возвращаем transition
 
-        if (delta > 120 || velocity > 0.6) history.back();
-        else {
-          const duration = 0.3;
-          popup.style.transition = `top ${duration}s ease, opacity ${duration}s ease`;
+        if (delta > 120 || velocity > 0.6) {
+          // Достаточно далеко или быстро — закрываем через историю браузера
+          // (history.back вызовет popstate → closeTopPopup)
+          history.back();
+        } else {
+          // Недостаточно — возвращаем попап на место
+          const d = 0.3;
+          popup.style.transition = `top ${d}s ease, opacity ${d}s ease`;
           popup.style.top = '0';
-          overlay.style.transition = `opacity ${duration}s ease`;
-          overlay.style.opacity = '1';
+          updateOverlay(true, d);
         }
 
-        document.removeEventListener('touchmove', move);
-        document.removeEventListener('touchend', end);
+        document.removeEventListener('touchmove', onMove);
+        document.removeEventListener('touchend', onEnd);
       }
 
-      document.addEventListener('touchmove', move, { passive: true });
-      document.addEventListener('touchend', end);
+      document.addEventListener('touchmove', onMove, { passive: true });
+      document.addEventListener('touchend', onEnd);
     });
 
-    window.addEventListener('popstate', () => { if (stack.length) closeTopPopup(); });
+    /**
+     * Обработчик кнопки «Назад» браузера / свайпа назад на iOS.
+     * popstate срабатывает когда пользователь уходит с состояния pushState.
+     */
+    window.addEventListener('popstate', () => {
+      if (stack.length) closeTopPopup();
+    });
   })();
 
   /**
@@ -728,38 +813,46 @@ document.addEventListener('DOMContentLoaded', () => {
    * Функция сториса
    */
   (function () {
-    // ─── CONFIG ───────────────────────────────────────────────────────────────
-    const STORY_DURATION = 5000; // мс на один сторис
+    // ─── КОНФИГУРАЦИЯ ─────────────────────────────────────────────────────────
+    // Длительность показа одного сториса в миллисекундах
+    const STORY_DURATION = 5000;
 
-    // ─── COLLECT ITEMS ────────────────────────────────────────────────────────
+    // ─── СБОР ЭЛЕМЕНТОВ ───────────────────────────────────────────────────────
+    // Все карточки сторисов на странице
     const items = Array.from(document.querySelectorAll('.stories-item'));
 
-    // Собираем данные из каждого элемента
+    /**
+     * Данные каждого сториса.
+     * img — приоритет: data-story-img атрибут, затем src тега <img> внутри элемента.
+     */
     const stories = items.map((el) => ({
       img: el.dataset.storyImg || el.querySelector('.stories-item img')?.src || '',
-      // date: el.querySelector('.afisha__item-date')?.textContent.trim() || '',
     }));
 
-    // ─── DOM ──────────────────────────────────────────────────────────────────
-    const overlay = document.getElementById('storiesOverlay');
-    const progressEl = document.getElementById('storiesProgress');
-    const closeBtn = document.getElementById('storiesClose');
-    const imgEl = document.getElementById('storiesImg');
-    // const dateEl = document.getElementById('storiesDate');
-    const navPrev = document.getElementById('storiesNavPrev');
-    const navNext = document.getElementById('storiesNavNext');
+    // ─── DOM-ЭЛЕМЕНТЫ ─────────────────────────────────────────────────────────
+    const overlay = document.getElementById('storiesOverlay');   // обёртка всего просмотрщика
+    const progressEl = document.getElementById('storiesProgress');  // контейнер полосок прогресса
+    const closeBtn = document.getElementById('storiesClose');     // кнопка закрытия
+    const imgEl = document.getElementById('storiesImg');       // тег <img> для фото сториса
+    const navPrev = document.getElementById('storiesNavPrev');   // зона нажатия «назад»
+    const navNext = document.getElementById('storiesNavNext');   // зона нажатия «вперёд»
 
-    // ─── STATE ────────────────────────────────────────────────────────────────
-    let currentIndex = 0;
-    let timer = null;
-    let isPaused = false;
-    let startTime = null;
-    let elapsed = 0;
+    // ─── СОСТОЯНИЕ ────────────────────────────────────────────────────────────
+    let currentIndex = 0;     // индекс текущего сториса
+    let timer = null;  // id setTimeout для авто-перехода
+    let isPaused = false; // флаг паузы (долгое нажатие / свайп)
+    let startTime = null;  // момент старта/возобновления таймера (Date.now())
+    let elapsed = 0;     // уже прошедшее время текущего сториса в мс
 
-    // ─── BUILD PROGRESS BARS ──────────────────────────────────────────────────
+    // ─── ПОЛОСЫ ПРОГРЕССА ─────────────────────────────────────────────────────
+
+    /**
+     * Пересоздаёт все полосы прогресса по количеству сторисов.
+     * Вызывается каждый раз при открытии просмотрщика.
+     */
     function buildProgressBars() {
       progressEl.innerHTML = '';
-      stories.forEach((_, i) => {
+      stories.forEach(() => {
         const item = document.createElement('div');
         item.className = 'stories-progress-item';
         item.innerHTML = '<div class="stories-progress-fill"></div>';
@@ -767,12 +860,24 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // ─── UPDATE PROGRESS ──────────────────────────────────────────────────────
+    /**
+     * Обновляет визуальное состояние полос прогресса для заданного индекса:
+     * - пройденные (i < index) → класс is-done (заполнены полностью)
+     * - текущий (i === index)  → класс is-active + запуск CSS-анимации заполнения
+     * - будущие                → без класса (пустые)
+     *
+     * CSS-переменная --duration управляет длительностью анимации,
+     * что позволяет корректно возобновлять с середины.
+     *
+     * @param {number} index - индекс текущего сториса
+     */
     function updateProgress(index) {
       const bars = progressEl.querySelectorAll('.stories-progress-item');
       bars.forEach((bar, i) => {
         bar.classList.remove('is-done', 'is-active');
         const fill = bar.querySelector('.stories-progress-fill');
+
+        // Сбрасываем анимацию перед изменением состояния
         fill.style.animation = 'none';
         fill.style.width = '0%';
 
@@ -780,16 +885,25 @@ document.addEventListener('DOMContentLoaded', () => {
           bar.classList.add('is-done');
         } else if (i === index) {
           bar.classList.add('is-active');
-          // CSS-переменная для длительности
+
+          // Оставшееся время в секундах для CSS-анимации
           bar.style.setProperty('--duration', `${(STORY_DURATION - elapsed) / 1000}s`);
-          // Форс reflow чтобы анимация перезапустилась
+
+          // Форс-reflow: заставляем браузер применить animation: none
+          // перед снятием этого правила, иначе анимация не перезапустится
           void fill.offsetWidth;
           fill.style.animation = '';
         }
       });
     }
 
-    // ─── SHOW STORY ───────────────────────────────────────────────────────────
+    // ─── ПОКАЗ СТОРИСА ────────────────────────────────────────────────────────
+
+    /**
+     * Переключает просмотрщик на сторис с заданным индексом.
+     * @param {number} index     - индекс сториса в массиве stories
+     * @param {string} direction - 'next' или 'prev' (направление анимации)
+     */
     function showStory(index, direction = 'next') {
       if (index < 0 || index >= stories.length) return;
 
@@ -799,25 +913,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const story = stories[index];
 
-      // Анимация
+      // ── Анимация смены картинки ──────────────────────────────────────────────
+      // Сначала убираем все классы анимации и is-loading
       imgEl.classList.remove('anim-next', 'anim-prev', 'is-loading');
-      void imgEl.offsetWidth;
-      imgEl.classList.add(direction === 'next' ? 'anim-next' : 'anim-prev');
 
+      // Форс-reflow чтобы классы точно удалились до добавления новых
+      void imgEl.offsetWidth;
+
+      // Добавляем класс анимации только если overlay уже открыт (is-active).
+      // При первом открытии overlay ещё не имеет is-active —
+      // картинка появится без анимации slide, сразу на месте.
+      if (overlay.classList.contains('is-active')) {
+        imgEl.classList.add(direction === 'next' ? 'anim-next' : 'anim-prev');
+      }
+
+      // Показываем спиннер загрузки пока картинка не загрузилась
       imgEl.classList.add('is-loading');
       imgEl.onload = () => imgEl.classList.remove('is-loading');
       imgEl.src = story.img;
-      // dateEl.textContent = story.date;
 
       updateProgress(index);
       startTimer();
 
-      // Скрыть стрелку назад на первом
+      // На первом сторисе прячем зону «назад» (визуально она всегда прозрачна,
+      // но pointer-events отключаем чтобы случайный тап не вызвал goPrev)
       navPrev.style.pointerEvents = index === 0 ? 'none' : 'auto';
-      navPrev.style.opacity = '0'; // зоны всегда невидимы
+      navPrev.style.opacity = '0';
     }
 
-    // ─── TIMER ────────────────────────────────────────────────────────────────
+    // ─── ТАЙМЕР ───────────────────────────────────────────────────────────────
+
+    /**
+     * Запускает таймер авто-перехода на следующий сторис.
+     * Учитывает уже прошедшее время (elapsed), чтобы корректно
+     * возобновляться после паузы.
+     */
     function startTimer() {
       isPaused = false;
       startTime = Date.now();
@@ -827,42 +957,62 @@ document.addEventListener('DOMContentLoaded', () => {
       }, STORY_DURATION - elapsed);
     }
 
+    /** Останавливает таймер без сброса elapsed. */
     function clearTimer() {
       clearTimeout(timer);
       timer = null;
     }
 
+    /**
+     * Ставит сторис на паузу:
+     * - останавливает JS-таймер
+     * - замораживает CSS-анимацию полосы прогресса
+     * - накапливает elapsed для корректного возобновления
+     */
     function pauseTimer() {
       if (isPaused) return;
       isPaused = true;
       elapsed += Date.now() - startTime;
       clearTimer();
 
-      // Пауза CSS-анимации
-      const activeFill = progressEl.querySelector('.stories-progress-item.is-active .stories-progress-fill');
+      const activeFill = progressEl.querySelector(
+        '.stories-progress-item.is-active .stories-progress-fill'
+      );
       if (activeFill) activeFill.style.animationPlayState = 'paused';
     }
 
+    /**
+     * Возобновляет сторис после паузы:
+     * - пересчитывает --duration с учётом elapsed
+     * - размораживает CSS-анимацию
+     * - перезапускает JS-таймер
+     */
     function resumeTimer() {
       if (!isPaused) return;
 
-      // Возобновить CSS-анимацию
       const activeBar = progressEl.querySelector('.stories-progress-item.is-active');
       if (activeBar) {
         const remaining = (STORY_DURATION - elapsed) / 1000;
         activeBar.style.setProperty('--duration', `${remaining}s`);
+
         const fill = activeBar.querySelector('.stories-progress-fill');
-        fill.style.animationPlayState = 'running';
+        if (fill) fill.style.animationPlayState = 'running';
       }
 
       isPaused = false;
       startTime = Date.now();
+
       timer = setTimeout(() => {
         goNext();
       }, STORY_DURATION - elapsed);
     }
 
-    // ─── NAVIGATION ───────────────────────────────────────────────────────────
+    // ─── НАВИГАЦИЯ ────────────────────────────────────────────────────────────
+
+    /**
+     * Переход к следующему сторису.
+     * Если текущий последний — закрываем просмотрщик.
+     */
     function goNext() {
       if (currentIndex + 1 >= stories.length) {
         closeStories();
@@ -871,19 +1021,40 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    /**
+     * Переход к предыдущему сторису.
+     * На первом сторисе ничего не делает.
+     */
     function goPrev() {
       if (currentIndex === 0) return;
       showStory(currentIndex - 1, 'prev');
     }
 
-    // ─── OPEN / CLOSE ─────────────────────────────────────────────────────────
+    // ─── ОТКРЫТИЕ / ЗАКРЫТИЕ ──────────────────────────────────────────────────
+
+    /**
+     * Открывает просмотрщик сторисов с заданного индекса.
+     * Порядок важен: сначала строим прогресс-бары, потом добавляем is-active
+     * (чтобы showStory знал что overlay ещё закрыт и не добавлял анимацию),
+     * затем показываем сторис и только потом открываем overlay.
+     * @param {number} index - с какого сториса начать
+     */
     function openStories(index) {
       buildProgressBars();
+
+      // showStory вызываем ДО добавления is-active —
+      // внутри showStory проверяется overlay.classList.contains('is-active'),
+      // и при первом открытии анимация slide не добавляется
+      showStory(index, 'next');
+
+      // Теперь открываем overlay
       overlay.classList.add('is-active');
       document.body.style.overflow = 'hidden';
-      showStory(index, 'next');
     }
 
+    /**
+     * Закрывает просмотрщик и сбрасывает состояние.
+     */
     function closeStories() {
       clearTimer();
       overlay.classList.remove('is-active');
@@ -891,468 +1062,336 @@ document.addEventListener('DOMContentLoaded', () => {
       elapsed = 0;
     }
 
-    // ─── CLICK ON AFISHA ITEMS ────────────────────────────────────────────────
+    // ─── КЛИКИ ПО КАРТОЧКАМ ───────────────────────────────────────────────────
     items.forEach((el, i) => {
       el.style.cursor = 'pointer';
       el.addEventListener('click', () => openStories(i));
     });
 
-    // ─── CLOSE BUTTON ─────────────────────────────────────────────────────────
+    // ─── КНОПКА ЗАКРЫТИЯ ──────────────────────────────────────────────────────
     closeBtn.addEventListener('click', closeStories);
 
-    // ─── NAV ZONES ────────────────────────────────────────────────────────────
+    // ─── ЗОНЫ НАВИГАЦИИ ───────────────────────────────────────────────────────
     navNext.addEventListener('click', goNext);
     navPrev.addEventListener('click', goPrev);
 
-    // ─── SWIPE ────────────────────────────────────────────────────────────────
+    // ─── СВАЙПЫ И ТАПЫ ────────────────────────────────────────────────────────
     let touchStartX = 0;
     let touchStartY = 0;
     let touchStartTime = 0;
-    const SWIPE_THRESHOLD = 50;  // px для горизонтального свайпа
-    const SWIPE_DOWN_THRESHOLD = 80; // px для закрытия свайпом вниз
-    const LONG_TAP_THRESHOLD = 200; // мс — долгое нажатие = пауза
+
+    const SWIPE_THRESHOLD = 50;  // минимальный горизонтальный сдвиг для навигации (px)
+    const SWIPE_DOWN_THRESHOLD = 80;  // минимальный вертикальный сдвиг вниз для закрытия (px)
+    const LONG_TAP_THRESHOLD = 200; // мс: дольше = долгое нажатие (пауза), короче = тап
 
     overlay.addEventListener('touchstart', (e) => {
       touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
       touchStartTime = Date.now();
+
+      // Любое касание сразу ставит на паузу — возобновим в touchend
       pauseTimer();
     }, { passive: true });
 
     overlay.addEventListener('touchend', (e) => {
       const dx = e.changedTouches[0].clientX - touchStartX;
       const dy = e.changedTouches[0].clientY - touchStartY;
-      const duration = Date.now() - touchStartTime;
+      const dt = Date.now() - touchStartTime;
       const absDx = Math.abs(dx);
       const absDy = Math.abs(dy);
 
-      // Свайп вниз — закрыть
+      // Приоритет 1: свайп вниз — закрыть просмотрщик
       if (absDy > SWIPE_DOWN_THRESHOLD && dy > 0 && absDy > absDx) {
         closeStories();
         return;
       }
 
-      // Горизонтальный свайп
+      // Приоритет 2: горизонтальный свайп — навигация
       if (absDx > SWIPE_THRESHOLD && absDx > absDy) {
-        if (dx < 0) {
-          goNext();
-        } else {
-          goPrev();
-        }
+        dx < 0 ? goNext() : goPrev();
         return;
       }
 
-      // Короткий тап — просто возобновить таймер
-      if (duration < LONG_TAP_THRESHOLD) {
-        resumeTimer();
-        return;
-      }
-
-      // Долгое нажатие отпущено — возобновить
+      // Приоритет 3: короткий тап — просто возобновить (пользователь «пробуждает»)
+      // Приоритет 4: долгое нажатие отпущено — тоже возобновить
+      // В обоих случаях действие одинаковое
       resumeTimer();
     }, { passive: true });
 
-    // Долгий тап (удержание) — пауза уже вызвана в touchstart
-    // touchcancel — возобновить
+    // touchcancel срабатывает, например, при входящем звонке —
+    // возобновляем чтобы сторис не завис навсегда
     overlay.addEventListener('touchcancel', resumeTimer);
 
-    // ─── KEYBOARD ─────────────────────────────────────────────────────────────
+    // ─── КЛАВИАТУРА ───────────────────────────────────────────────────────────
     document.addEventListener('keydown', (e) => {
+      // Реагируем только когда просмотрщик открыт
       if (!overlay.classList.contains('is-active')) return;
       if (e.key === 'ArrowRight') goNext();
       if (e.key === 'ArrowLeft') goPrev();
       if (e.key === 'Escape') closeStories();
     });
 
-    // ─── CLICK OUTSIDE ────────────────────────────────────────────────────────
+    // ─── КЛИК ПО ФОНУ ─────────────────────────────────────────────────────────
+    // Закрываем если клик пришёл напрямую по оверлею (не по дочернему элементу)
     overlay.addEventListener('click', (e) => {
       if (e.target === overlay) closeStories();
     });
 
   })();
 
+  /**
+   * Функция смены svg у панели при октрытии попапа
+   */
+  (function () {
+    const pathEl = document.getElementById('wavePath');
+    const html = document.documentElement;
+
+    function casteljau(p0, p1, p2, p3, t) {
+      const lerp = (a, b) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+      const p01 = lerp(p0, p1);
+      const p12 = lerp(p1, p2);
+      const p23 = lerp(p2, p3);
+      const p012 = lerp(p01, p12);
+      const p123 = lerp(p12, p23);
+      const p0123 = lerp(p012, p123);
+      return {
+        left: [p0, p01, p012, p0123],
+        right: [p0123, p123, p23, p3]
+      };
+    }
+
+    function split3(p0, p1, p2, p3) {
+      const s1 = casteljau(p0, p1, p2, p3, 1 / 3);
+      const s2 = casteljau(...s1.right, 1 / 2);
+      return [s1.left, s2.left, s2.right];
+    }
+
+    function split2(p0, p1, p2, p3) {
+      const s = casteljau(p0, p1, p2, p3, 0.5);
+      return [s.left, s.right];
+    }
+
+    const aL1 = [
+      [145.796, 0],
+      [152.774, 0],
+      [158.737, 2.02603],
+      [162.89, 7.63478]
+    ];
+    const aL2 = [
+      [162.89, 7.63478],
+      [171.416, 19.1506],
+      [178.549, 35.3855],
+      [201, 35.3855]
+    ];
+    const [aL2a, aL2b] = split2(...aL2);
+
+    const aR1 = [
+      [201, 35.3855],
+      [223.491, 35.3855],
+      [231.284, 19.092],
+      [240.112, 7.57247]
+    ];
+    const aR2 = [
+      [240.112, 7.57247],
+      [244.357, 2.03327],
+      [250.298, 0],
+      [257.276, 0]
+    ];
+    const [aR1a, aR1b] = split2(...aR1);
+
+    const seg = s => ({
+      x1: s[1][0], y1: s[1][1],
+      x2: s[2][0], y2: s[2][1],
+      ex: s[3][0], ey: s[3][1]
+    });
+
+    const stateA = {
+      leftH: 145.796,
+
+      c1x1: aL1[1][0], c1y1: aL1[1][1],
+      c1x2: aL1[2][0], c1y2: aL1[2][1],
+      c1ex: aL1[3][0], c1ey: aL1[3][1],
+
+      c2x1: aL2a[1][0], c2y1: aL2a[1][1],
+      c2x2: aL2a[2][0], c2y2: aL2a[2][1],
+      c2ex: aL2a[3][0], c2ey: aL2a[3][1],
+
+      c3x1: aL2b[1][0], c3y1: aL2b[1][1],
+      c3x2: aL2b[2][0], c3y2: aL2b[2][1],
+      c3ex: aL2b[3][0], c3ey: aL2b[3][1],
+
+      c4x1: aR1a[1][0], c4y1: aR1a[1][1],
+      c4x2: aR1a[2][0], c4y2: aR1a[2][1],
+      c4ex: aR1a[3][0], c4ey: aR1a[3][1],
+
+      c5x1: aR1b[1][0], c5y1: aR1b[1][1],
+      c5x2: aR1b[2][0], c5y2: aR1b[2][1],
+      c5ex: aR1b[3][0], c5ey: aR1b[3][1],
+
+      c6x1: aR2[1][0], c6y1: aR2[1][1],
+      c6x2: aR2[2][0], c6y2: aR2[2][1],
+      c6ex: aR2[3][0], c6ey: aR2[3][1],
+
+      rightLx: 380.56,
+      rightLy: 0
+    };
+
+    const stateB = {
+      leftH: 132,
+
+      c1x1: 149.673, c1y1: 0,
+      c1x2: 163.247, c1y2: 14.3378,
+      c1ex: 163.895, c1ey: 31.999,
+
+      c2x1: 164.06, c2y1: 36.5144,
+      c2x2: 164.391, c2y2: 40.6511,
+      c2ex: 165, c2ey: 44,
+
+      c3x1: 167, c3y1: 55,
+      c3x2: 182, c3y2: 70.5,
+      c3ex: 201.5, c3ey: 70.5,
+
+      c4x1: 221, c4y1: 70.5,
+      c4x2: 235.643, c4y2: 53.5,
+      c4ex: 237, c4ey: 44,
+
+      c5x1: 237.433, c5y1: 40.972,
+      c5x2: 237.699, c5y2: 37.0708,
+      c5ex: 237.859, c5ey: 32.776,
+
+      c6x1: 238.513, c6y1: 15.2026,
+      c6x2: 252.19, c6y2: 0.90046,
+      c6ex: 269.776, c6ey: 0.777108,
+
+      rightLx: 380.56,
+      rightLy: 0
+    };
+
+    const params = { ...stateA };
+
+    function f(v) { return +v.toFixed(4); }
+
+    function buildPath() {
+      const p = params;
+      return [
+        `M0 21.4458 C0 9.60161 9.59902 0 21.44 0`,
+        `H${f(p.leftH)}`,
+        `C${f(p.c1x1)} ${f(p.c1y1)} ${f(p.c1x2)} ${f(p.c1y2)} ${f(p.c1ex)} ${f(p.c1ey)}`,
+        `C${f(p.c2x1)} ${f(p.c2y1)} ${f(p.c2x2)} ${f(p.c2y2)} ${f(p.c2ex)} ${f(p.c2ey)}`,
+        `C${f(p.c3x1)} ${f(p.c3y1)} ${f(p.c3x2)} ${f(p.c3y2)} ${f(p.c3ex)} ${f(p.c3ey)}`,
+        `C${f(p.c4x1)} ${f(p.c4y1)} ${f(p.c4x2)} ${f(p.c4y2)} ${f(p.c4ex)} ${f(p.c4ey)}`,
+        `C${f(p.c5x1)} ${f(p.c5y1)} ${f(p.c5x2)} ${f(p.c5y2)} ${f(p.c5ex)} ${f(p.c5ey)}`,
+        `C${f(p.c6x1)} ${f(p.c6y1)} ${f(p.c6x2)} ${f(p.c6y2)} ${f(p.c6ex)} ${f(p.c6ey)}`,
+        `L${f(p.rightLx)} ${f(p.rightLy)}`,
+        `C392.401 0 402 9.6016 402 21.4458`,
+        `V77 H0 Z`
+      ].join(' ');
+    }
+
+    function applyPath() {
+      pathEl.setAttribute('d', buildPath());
+    }
+
+    applyPath();
+
+    let tween = null;
+
+    function animateTo(target) {
+      if (tween) tween.kill();
+      tween = gsap.to(params, {
+        ...target,
+        duration: 0.65,
+        ease: 'power2.inOut',
+        onUpdate: applyPath
+      });
+    }
+
+    new MutationObserver(() => {
+      animateTo(html.classList.contains('popup-open') ? stateB : stateA);
+    }).observe(html, { attributes: true, attributeFilter: ['class'] });
+
+  })();
+
+  /**
+   * Функция обводки
+   */
   // (function () {
+  //   document.querySelectorAll('.stories-item-stroke').forEach((wrap) => {
+  //     const svg = wrap.querySelector('.card-stroke');
+  //     if (!svg) return;
 
-  //   // ─── КОНФИГУРАЦИЯ ─────────────────────────────────────────────────────────
-  //   const STORY_DURATION = 5000; // длительность одного сториса в миллисекундах
-  //   const SWIPE_THRESHOLD = 50;   // минимальное смещение по X для горизонтального свайпа (px)
-  //   const SWIPE_DOWN_THRESHOLD = 80;   // минимальное смещение по Y для закрытия свайпом вниз (px)
-  //   const LONG_TAP_THRESHOLD = 200;  // порог долгого нажатия для паузы (мс)
+  //     const svgRect = svg.getBoundingClientRect();
+  //     const svgW = svgRect.width;
+  //     const svgH = svgRect.height;
 
-  //   // ─── СБОР ДАННЫХ ИЗ DOM ───────────────────────────────────────────────────
-  //   // Находим все элементы-сторисы на странице
-  //   const items = Array.from(document.querySelectorAll('.stories-item'));
+  //     const sw = 3;
+  //     const rx = 12;
+  //     const shift = sw / 2;
+  //     const color = wrap.dataset.strokeColor || '#ffffff';
 
-  //   // Формируем массив объектов с данными каждого сториса
-  //   // data-story-img — путь к полноразмерному баннеру (указывается в HTML)
-  //   // если data-story-img не задан — берём src миниатюры как фоллбэк
-  //   const stories = items.map((el) => ({
-  //     img: el.dataset.storyImg || el.querySelector('img')?.src || '',
-  //   }));
-  //   console.log('[Stories] найдено сторисов:', stories.length, stories);
+  //     svg.innerHTML = '';
+  //     svg.setAttribute('width', svgW);
+  //     svg.setAttribute('height', svgH);
 
-  //   // ─── ЭЛЕМЕНТЫ DOM ─────────────────────────────────────────────────────────
-  //   const overlay = document.getElementById('storiesOverlay');    // затемнённый оверлей
-  //   const progressEl = document.getElementById('storiesProgress');   // контейнер прогресс-баров
-  //   const closeBtn = document.getElementById('storiesClose');      // кнопка закрытия (крестик)
-  //   const imgEl = document.getElementById('storiesImg');        // тег <img> внутри сториса
-  //   const navPrev = document.getElementById('storiesNavPrev');    // зона нажатия «назад»
-  //   const navNext = document.getElementById('storiesNavNext');    // зона нажатия «вперёд»
+  //     function makeRect() {
+  //       const r = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  //       r.setAttribute('x', shift);
+  //       r.setAttribute('y', shift);
+  //       r.setAttribute('width', svgW - sw);
+  //       r.setAttribute('height', svgH - sw);
+  //       r.setAttribute('rx', rx);
+  //       r.setAttribute('ry', rx);
+  //       r.setAttribute('fill', 'none');
+  //       r.setAttribute('stroke', color);
+  //       r.setAttribute('stroke-width', sw);
+  //       r.setAttribute('stroke-dasharray', `0 9999`);
+  //       r.setAttribute('stroke-dashoffset', 0);
+  //       return r;
+  //     }
 
-  //   // ─── СОСТОЯНИЕ ────────────────────────────────────────────────────────────
-  //   let currentIndex = 0;     // индекс текущего сториса
-  //   let timer = null;  // ссылка на setTimeout для автоперехода
-  //   let isPaused = false; // флаг паузы
-  //   let startTime = null;  // момент последнего старта/возобновления таймера
-  //   let elapsed = 0;     // сколько мс уже прошло для текущего сториса
-  //   let scrollY = 0;     // запомненная позиция скролла страницы (для iOS-фикса)
-  //   let navHandled = false;     // Флаг: навигационная зона уже обработала этот тач
+  //     const rectA = makeRect();
+  //     const rectB = makeRect();
+  //     svg.appendChild(rectA);
+  //     svg.appendChild(rectB);
 
-  //   // ─── ПЕРЕМЕННЫЕ ДЛЯ СВАЙПА ────────────────────────────────────────────────
-  //   let touchStartX = 0;
-  //   let touchStartY = 0;
-  //   let touchStartTime = 0;
+  //     const perimeter = rectA.getTotalLength();
+  //     const halfP = perimeter / 2;
 
-  //   // =========================================================================
-  //   // ПРОГРЕСС-БАРЫ
-  //   // =========================================================================
-
-  //   // Создаём нужное количество прогресс-баров по количеству сторисов
-  //   function buildProgressBars() {
-  //     progressEl.innerHTML = '';
-  //     stories.forEach(() => {
-  //       const item = document.createElement('div');
-  //       item.className = 'stories-progress-item';
-  //       item.innerHTML = '<div class="stories-progress-fill"></div>';
-  //       progressEl.appendChild(item);
+  //     // rectA: стартует из верхнего левого угла, идёт по часовой
+  //     // скрыт: dash=halfP, offset=halfP (линия за краем)
+  //     // финал: offset=0 (линия на месте)
+  //     gsap.set(rectA, {
+  //       strokeDasharray: `${halfP} ${perimeter}`,
+  //       strokeDashoffset: halfP,
   //     });
-  //   }
 
-  //   // Обновляем состояние всех прогресс-баров при переходе к сторису index
-  //   function updateProgress(index) {
-  //     const bars = progressEl.querySelectorAll('.stories-progress-item');
-
-  //     bars.forEach((bar, i) => {
-  //       const fill = bar.querySelector('.stories-progress-fill');
-
-  //       // Сначала полностью сбрасываем все классы и стили
-  //       bar.classList.remove('is-done', 'is-active');
-
-  //       // Останавливаем любую текущую анимацию
-  //       fill.style.animation = 'none';
-  //       fill.style.width = '0%';
-
-  //       if (i < index) {
-  //         // Прошедшие сторисы — заполнены полностью
-  //         bar.classList.add('is-done');
-
-  //       } else if (i === index) {
-  //         // Текущий сторис — запускаем анимацию заполнения
-  //         bar.classList.add('is-active');
-
-  //         // Вычисляем оставшееся время (elapsed уже сброшен в 0 перед вызовом)
-  //         const remainingSec = (STORY_DURATION - elapsed) / 1000;
-
-  //         // Форсируем reflow чтобы браузер увидел сброс анимации
-  //         // и корректно запустил её заново (важно для Safari)
-  //         void fill.offsetWidth;
-
-  //         // Устанавливаем длительность напрямую через style (надёжнее CSS-переменных в Safari)
-  //         fill.style.animationDuration = `${remainingSec}s`;
-  //         fill.style.animationName = 'progressFill';
-  //         fill.style.animationTimingFunction = 'linear';
-  //         fill.style.animationFillMode = 'forwards';
-  //         fill.style.animationPlayState = 'running';
-  //       }
-  //       // Будущие сторисы остаются пустыми (width: 0%, no animation)
+  //     // rectB: стартует из противоположной точки (нижний правый угол)
+  //     // offset = -halfP ставит начало паттерна на середину периметра
+  //     // скрыт: dash=halfP, offset=-halfP (линия за краем в другую сторону)
+  //     // финал: offset=0 (линия на месте, встречается с rectA)
+  //     gsap.set(rectB, {
+  //       strokeDasharray: `${halfP} ${perimeter}`,
+  //       strokeDashoffset: -halfP,
   //     });
-  //   }
 
-  //   // =========================================================================
-  //   // ПОКАЗ СТОРИСА
-  //   // =========================================================================
-
-  //   function showStory(index, direction = 'next') {
-  //     // Защита от выхода за границы массива
-  //     if (index < 0 || index >= stories.length) return;
-
-  //     // Останавливаем предыдущий таймер и сбрасываем elapsed
-  //     clearTimer();
-  //     elapsed = 0;
-  //     currentIndex = index;
-
-  //     const story = stories[index];
-
-  //     // ── Анимация смены изображения ──
-  //     // Убираем предыдущие классы анимации
-  //     imgEl.classList.remove('anim-next', 'anim-prev', 'is-loading');
-  //     // Форс reflow для перезапуска анимации
-  //     void imgEl.offsetWidth;
-  //     // Добавляем нужное направление
-  //     imgEl.classList.add(direction === 'next' ? 'anim-next' : 'anim-prev');
-
-  //     // ── Загрузка изображения ──
-  //     // Скрываем пока грузится (класс is-loading делает opacity: 0)
-  //     imgEl.classList.add('is-loading');
-  //     imgEl.onload = () => imgEl.classList.remove('is-loading');
-  //     imgEl.onerror = () => imgEl.classList.remove('is-loading'); // не застрянем при ошибке
-  //     imgEl.src = story.img;
-
-  //     // ── Прогресс-бары ──
-  //     updateProgress(index);
-
-  //     // ── Таймер автоперехода ──
-  //     startTimer();
-
-  //     // ── Зона «назад» ──
-  //     // На первом сторисе отключаем «назад», на последнем — «вперёд»
-  //     navPrev.style.pointerEvents = index === 0 ? 'none' : 'auto';
-  //     navNext.style.pointerEvents = index === stories.length - 1 ? 'none' : 'auto';
-  //   }
-
-  //   // =========================================================================
-  //   // ТАЙМЕР
-  //   // =========================================================================
-
-  //   // Запускаем таймер автоперехода
-  //   function startTimer() {
-  //     isPaused = false;
-  //     startTime = Date.now();
-
-  //     timer = setTimeout(() => {
-  //       goNext();
-  //     }, STORY_DURATION - elapsed);
-  //   }
-
-  //   // Останавливаем таймер
-  //   function clearTimer() {
-  //     clearTimeout(timer);
-  //     timer = null;
-  //   }
-
-  //   // Ставим сторис на паузу (долгое нажатие / touchstart)
-  //   function pauseTimer() {
-  //     // Если уже на паузе — ничего не делаем
-  //     if (isPaused) return;
-
-  //     isPaused = true;
-  //     // Фиксируем сколько времени уже прошло
-  //     elapsed += Date.now() - startTime;
-  //     clearTimer();
-
-  //     // Ставим CSS-анимацию прогресс-бара на паузу
-  //     const activeFill = progressEl.querySelector(
-  //       '.stories-progress-item.is-active .stories-progress-fill'
-  //     );
-  //     if (activeFill) {
-  //       activeFill.style.animationPlayState = 'paused';
-  //     }
-  //   }
-
-  //   // Возобновляем сторис после паузы
-  //   function resumeTimer() {
-  //     // Если не на паузе — ничего не делаем
-  //     if (!isPaused) return;
-
-  //     const activeBar = progressEl.querySelector('.stories-progress-item.is-active');
-  //     if (activeBar) {
-  //       const fill = activeBar.querySelector('.stories-progress-fill');
-  //       const remainingSec = (STORY_DURATION - elapsed) / 1000;
-
-  //       // Обновляем длительность оставшейся анимации и возобновляем её
-  //       fill.style.animationDuration = `${remainingSec}s`;
-  //       fill.style.animationPlayState = 'running';
-  //     }
-
-  //     isPaused = false;
-  //     startTime = Date.now();
-
-  //     // Перезапускаем JS-таймер на оставшееся время
-  //     timer = setTimeout(() => {
-  //       goNext();
-  //     }, STORY_DURATION - elapsed);
-  //   }
-
-  //   // =========================================================================
-  //   // НАВИГАЦИЯ
-  //   // =========================================================================
-
-  //   // Переход к следующему сторису
-  //   // Если это был последний — закрываем оверлей
-  //   function goNext() {
-  //     console.log('[Stories] goNext: currentIndex =', currentIndex, '/ total =', stories.length);
-  //     if (currentIndex + 1 >= stories.length) {
-  //       closeStories();
-  //     } else {
-  //       showStory(currentIndex + 1, 'next');
-  //     }
-  //   }
-
-  //   // Переход к предыдущему сторису
-  //   // Если мы на первом — просто возобновляем таймер (никуда не уходим)
-  //   function goPrev() {
-  //     if (currentIndex === 0) {
-  //       resumeTimer();
-  //       return;
-  //     }
-  //     showStory(currentIndex - 1, 'prev');
-  //   }
-
-  //   // =========================================================================
-  //   // ОТКРЫТИЕ / ЗАКРЫТИЕ
-  //   // =========================================================================
-
-  //   function openStories(index) {
-  //     buildProgressBars();
-  //     overlay.classList.add('is-active');
-
-  //     // ── iOS-фикс: фиксируем body чтобы страница не скроллилась под оверлеем ──
-  //     scrollY = window.scrollY;
-  //     document.body.style.position = 'fixed';
-  //     document.body.style.top = `-${scrollY}px`;
-  //     document.body.style.left = '0';
-  //     document.body.style.right = '0';
-  //     document.body.style.overflow = 'hidden';
-
-  //     showStory(index, 'next');
-  //   }
-
-  //   function closeStories() {
-  //     clearTimer();
-  //     overlay.classList.remove('is-active');
-
-  //     // ── iOS-фикс: возвращаем скролл на место ──
-  //     document.body.style.position = '';
-  //     document.body.style.top = '';
-  //     document.body.style.left = '';
-  //     document.body.style.right = '';
-  //     document.body.style.overflow = '';
-  //     window.scrollTo(0, scrollY);
-
-  //     // Сбрасываем состояние
-  //     elapsed = 0;
-  //     currentIndex = 0;
-  //   }
-
-  //   // =========================================================================
-  //   // ОБРАБОТЧИКИ СОБЫТИЙ
-  //   // =========================================================================
-
-  //   // ── Клик по элементу афиши — открываем нужный сторис ──
-  //   items.forEach((el, i) => {
-  //     el.style.cursor = 'pointer';
-  //     el.addEventListener('click', () => openStories(i));
-  //   });
-
-  //   // ── Крестик закрытия ──
-  //   closeBtn.addEventListener('click', closeStories);
-
-  //   // ── Зоны навигации (десктоп, клик мышью) ──
-  //   navNext.addEventListener('click', (e) => {
-  //     e.stopPropagation(); // не даём событию дойти до overlay
-  //     goNext();
-  //   });
-
-  //   navPrev.addEventListener('click', (e) => {
-  //     e.stopPropagation(); // не даём событию дойти до overlay
-  //     if (currentIndex === 0) {
-  //       resumeTimer(); // на первом сторисе просто возобновляем таймер
-  //       return;
-  //     }
-  //     goPrev();
-  //   });
-
-  //   // ── Зоны навигации (тач) ──
-  //   // Обрабатываем touchend на зонах отдельно, чтобы избежать
-  //   // конфликта с общим обработчиком на overlay
-  //   navPrev.addEventListener('touchend', (e) => {
-  //     e.stopPropagation();
-  //     const dx = e.changedTouches[0].clientX - touchStartX;
-  //     const dy = e.changedTouches[0].clientY - touchStartY;
-
-  //     if (Math.abs(dx) > SWIPE_THRESHOLD || Math.abs(dy) > SWIPE_DOWN_THRESHOLD) return;
-
-  //     navHandled = true;
-  //     if (currentIndex === 0) {
-  //       resumeTimer();
-  //       return;
-  //     }
-  //     goPrev();
-  //   }, { passive: true });
-
-  //   navNext.addEventListener('touchend', (e) => {
-  //     e.stopPropagation();
-  //     const dx = e.changedTouches[0].clientX - touchStartX;
-  //     const dy = e.changedTouches[0].clientY - touchStartY;
-
-  //     if (Math.abs(dx) > SWIPE_THRESHOLD || Math.abs(dy) > SWIPE_DOWN_THRESHOLD) return;
-
-  //     navHandled = true;
-  //     goNext();
-  //   }, { passive: true });
-
-  //   // ── Свайпы по оверлею ──
-  //   overlay.addEventListener('touchstart', (e) => {
-  //     touchStartX = e.touches[0].clientX;
-  //     touchStartY = e.touches[0].clientY;
-  //     touchStartTime = Date.now();
-  //     pauseTimer(); // при касании ставим на паузу
-  //   }, { passive: true });
-
-  //   overlay.addEventListener('touchend', (e) => {
-  //     // Если навигационная зона уже обработала этот тач — сбрасываем флаг и выходим
-  //     if (navHandled) {
-  //       navHandled = false;
-  //       return;
-  //     }
-
-  //     const dx = e.changedTouches[0].clientX - touchStartX;
-  //     const dy = e.changedTouches[0].clientY - touchStartY;
-  //     const duration = Date.now() - touchStartTime;
-  //     const absDx = Math.abs(dx);
-  //     const absDy = Math.abs(dy);
-
-  //     // Свайп вниз — закрыть оверлей
-  //     if (absDy > SWIPE_DOWN_THRESHOLD && dy > 0 && absDy > absDx) {
-  //       closeStories();
-  //       return;
-  //     }
-
-  //     // Горизонтальный свайп — навигация
-  //     if (absDx > SWIPE_THRESHOLD && absDx > absDy) {
-  //       if (dx < 0) {
-  //         goNext();
-  //       } else {
-  //         goPrev();
+  //     gsap.timeline({
+  //       scrollTrigger: {
+  //         trigger: wrap,
+  //         start: 'top 85%',
+  //         once: true,
   //       }
-  //       return;
-  //     }
-
-  //     // Короткий тап или отпускание долгого нажатия — возобновляем
-  //     resumeTimer();
-  //   }, { passive: true });
-
-  //   // Если тач прерван системой (звонок, уведомление и т.д.) — возобновляем
-  //   overlay.addEventListener('touchcancel', () => resumeTimer());
-
-  //   // Блокируем нативный скролл страницы пока открыт оверлей (важно для iOS)
-  //   overlay.addEventListener('touchmove', (e) => {
-  //     e.preventDefault();
-  //   }, { passive: false });
-
-  //   // ── Клавиатура (десктоп) ──
-  //   document.addEventListener('keydown', (e) => {
-  //     if (!overlay.classList.contains('is-active')) return;
-  //     if (e.key === 'ArrowRight') goNext();
-  //     if (e.key === 'ArrowLeft') goPrev();
-  //     if (e.key === 'Escape') closeStories();
+  //     })
+  //       .to(rectA, {
+  //         strokeDashoffset: 0,
+  //         duration: 0.9,
+  //         ease: 'power2.out',
+  //       }, 0)
+  //       .to(rectB, {
+  //         strokeDashoffset: 0,
+  //         duration: 0.9,
+  //         ease: 'power2.out',
+  //       }, 0);
   //   });
-
-  //   // ── Клик по затемнённой области вокруг контейнера — закрыть ──
-  //   overlay.addEventListener('click', (e) => {
-  //     if (e.target === overlay) closeStories();
-  //   });
-
   // })();
 
   /**

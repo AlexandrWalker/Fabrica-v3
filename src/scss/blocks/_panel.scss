@@ -44,14 +44,14 @@
 
   &__inner {
     width: 100%;
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAyIiBoZWlnaHQ9Ijc3IiB2aWV3Qm94PSIwIDAgNDAyIDc3IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPHBhdGggZD0iTTAgMjEuNDQ1OEMwIDkuNjAxNjEgOS41OTkwMiAwIDIxLjQ0IDBIMTQ1Ljc5NkMxNTIuNzc0IDAgMTU4LjczNyAyLjAyNjAzIDE2Mi44OSA3LjYzNDc4QzE3MS40MTYgMTkuMTUwNiAxNzguNTQ5IDM1LjM4NTUgMjAxIDM1LjM4NTVDMjIzLjQ5MSAzNS4zODU1IDIzMS4yODQgMTkuMDkyIDI0MC4xMTIgNy41NzI0N0MyNDQuMzU3IDIuMDMzMjcgMjUwLjI5OCAwIDI1Ny4yNzYgMEgzODAuNTZDMzkyLjQwMSAwIDQwMiA5LjYwMTYgNDAyIDIxLjQ0NThWNzdIMFYyMS40NDU4WiIgZmlsbD0iI0ZERjZFQyIvPg0KPC9zdmc+DQo=);
+    // background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAyIiBoZWlnaHQ9Ijc3IiB2aWV3Qm94PSIwIDAgNDAyIDc3IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPHBhdGggZD0iTTAgMjEuNDQ1OEMwIDkuNjAxNjEgOS41OTkwMiAwIDIxLjQ0IDBIMTQ1Ljc5NkMxNTIuNzc0IDAgMTU4LjczNyAyLjAyNjAzIDE2Mi44OSA3LjYzNDc4QzE3MS40MTYgMTkuMTUwNiAxNzguNTQ5IDM1LjM4NTUgMjAxIDM1LjM4NTVDMjIzLjQ5MSAzNS4zODU1IDIzMS4yODQgMTkuMDkyIDI0MC4xMTIgNy41NzI0N0MyNDQuMzU3IDIuMDMzMjcgMjUwLjI5OCAwIDI1Ny4yNzYgMEgzODAuNTZDMzkyLjQwMSAwIDQwMiA5LjYwMTYgNDAyIDIxLjQ0NThWNzdIMFYyMS40NDU4WiIgZmlsbD0iI0ZERjZFQyIvPg0KPC9zdmc+DQo=);
     background-repeat: no-repeat;
     background-size: 100%;
     padding: 0 var(--container-padding);
     height: var(--panel-height);
     pointer-events: all;
 
-        .popup-open & {}
+    .popup-open & {}
 
     /* Вырез под кнопку */
     // mask-image: radial-gradient(circle at 50% 0%, transparent 4.1rem, black 4.1rem);
@@ -81,6 +81,7 @@
     -webkit-perspective: 1000px;
     transform-style: preserve-3d;
     -webkit-transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
 
     i {
       font-size: 3rem;
@@ -143,6 +144,22 @@
       html.popup-open & {
         transform: rotateY(0deg);
       }
+    }
+  }
+
+  &__mask {
+    width: 100%;
+    height: 6.8rem;
+
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
     }
   }
 }

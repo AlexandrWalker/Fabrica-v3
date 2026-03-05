@@ -9,10 +9,12 @@
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease, margin-top 0.3s ease;
+  margin-top: 100%;
 }
 
 .stories-overlay.is-active {
+  margin-top: 0;
   opacity: 1;
   visibility: visible;
 }
@@ -61,7 +63,6 @@
 }
 
 .stories-progress-item.is-active .stories-progress-fill {
-  // animation: progressFill var(--duration, 5s) linear forwards;
   animation: progressFill 5s linear forwards;
 }
 
@@ -94,11 +95,11 @@
   width: 3.6rem;
   height: 3.6rem;
   border-radius: 50%;
-  transition: background 0.2s;
+  transition: background-color 0.2s;
 }
 
 .stories-close:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 /* ===== CONTENT ===== */
@@ -161,7 +162,7 @@
 /* ===== SLIDE ANIMATION ===== */
 @keyframes slideInRight {
   from {
-    transform: translateX(60px);
+    transform: translateX(6rem);
     opacity: 0;
   }
 
@@ -173,7 +174,7 @@
 
 @keyframes slideInLeft {
   from {
-    transform: translateX(-60px);
+    transform: translateX(-6rem);
     opacity: 0;
   }
 

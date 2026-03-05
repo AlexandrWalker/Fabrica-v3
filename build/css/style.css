@@ -139,6 +139,22 @@ li:last-child {
 @font-face {
   font-family: Inter;
   font-display: swap;
+  src: url("../fonts/Inter-Light.woff2") format("woff2"), url("../fonts/Inter-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Inter;
+  font-display: swap;
+  src: url("../fonts/Inter-Medium.woff2") format("woff2"), url("../fonts/Inter-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Inter;
+  font-display: swap;
   src: url("../fonts/Inter-Regular.woff2") format("woff2"), url("../fonts/Inter-Regular.woff") format("woff");
   font-weight: 400;
   font-style: normal;
@@ -147,16 +163,16 @@ li:last-child {
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-Thin.woff2") format("woff2"), url("../fonts/Inter-Thin.woff") format("woff");
-  font-weight: 100;
+  src: url("../fonts/Inter-SemiBold.woff2") format("woff2"), url("../fonts/Inter-SemiBold.woff") format("woff");
+  font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-SemiBold.woff2") format("woff2"), url("../fonts/Inter-SemiBold.woff") format("woff");
-  font-weight: 600;
+  src: url("../fonts/Inter-Thin.woff2") format("woff2"), url("../fonts/Inter-Thin.woff") format("woff");
+  font-weight: 100;
   font-style: normal;
 }
 
@@ -177,26 +193,10 @@ li:last-child {
 }
 
 @font-face {
-  font-family: Inter;
-  font-display: swap;
-  src: url("../fonts/Inter-Medium.woff2") format("woff2"), url("../fonts/Inter-Medium.woff") format("woff");
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
   font-family: LeagueSpartan;
   font-display: swap;
   src: url("../fonts/LeagueSpartan-ExtraBold.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraBold.woff") format("woff");
   font-weight: 800;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: Inter;
-  font-display: swap;
-  src: url("../fonts/Inter-Light.woff2") format("woff2"), url("../fonts/Inter-Light.woff") format("woff");
-  font-weight: 300;
   font-style: normal;
 }
 
@@ -267,8 +267,24 @@ li:last-child {
 @font-face {
   font-family: PlayfairDisplay;
   font-display: swap;
+  src: url("../fonts/PlayfairDisplay-Bold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: PlayfairDisplay;
+  font-display: swap;
   src: url("../fonts/PlayfairDisplay-Medium.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Medium.woff") format("woff");
   font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: PlayfairDisplay;
+  font-display: swap;
+  src: url("../fonts/PlayfairDisplay-Regular.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Regular.woff") format("woff");
+  font-weight: 400;
   font-style: normal;
 }
 
@@ -289,18 +305,18 @@ li:last-child {
 }
 
 @font-face {
-  font-family: PlayfairDisplay;
+  font-family: SFCompact;
   font-display: swap;
-  src: url("../fonts/PlayfairDisplay-Bold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Bold.woff") format("woff");
+  src: url("../fonts/SFCompact-Bold.woff2") format("woff2"), url("../fonts/SFCompact-Bold.woff") format("woff");
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: PlayfairDisplay;
+  font-family: SFCompact;
   font-display: swap;
-  src: url("../fonts/PlayfairDisplay-Regular.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Regular.woff") format("woff");
-  font-weight: 400;
+  src: url("../fonts/SFCompact-Heavy.woff2") format("woff2"), url("../fonts/SFCompact-Heavy.woff") format("woff");
+  font-weight: 800;
   font-style: normal;
 }
 
@@ -323,24 +339,8 @@ li:last-child {
 @font-face {
   font-family: SFCompact;
   font-display: swap;
-  src: url("../fonts/SFCompact-Heavy.woff2") format("woff2"), url("../fonts/SFCompact-Heavy.woff") format("woff");
-  font-weight: 800;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: SFCompact;
-  font-display: swap;
   src: url("../fonts/SFCompact-Regular.woff2") format("woff2"), url("../fonts/SFCompact-Regular.woff") format("woff");
   font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: SFCompact;
-  font-display: swap;
-  src: url("../fonts/SFCompact-Bold.woff2") format("woff2"), url("../fonts/SFCompact-Bold.woff") format("woff");
-  font-weight: 700;
   font-style: normal;
 }
 
@@ -427,6 +427,14 @@ li:last-child {
 @font-face {
   font-family: SFPro;
   font-display: swap;
+  src: url("../fonts/SFPro-Thin.woff2") format("woff2"), url("../fonts/SFPro-Thin.woff") format("woff");
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: SFPro;
+  font-display: swap;
   src: url("../fonts/SFPro-UltraLight.woff2") format("woff2"), url("../fonts/SFPro-UltraLight.woff") format("woff");
   font-weight: 200;
   font-style: normal;
@@ -445,14 +453,6 @@ li:last-child {
   font-display: swap;
   src: url("../fonts/SofiaPro-Bold.woff2") format("woff2"), url("../fonts/SofiaPro-Bold.woff") format("woff");
   font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: SFPro;
-  font-display: swap;
-  src: url("../fonts/SFPro-Thin.woff2") format("woff2"), url("../fonts/SFPro-Thin.woff") format("woff");
-  font-weight: 100;
   font-style: normal;
 }
 
@@ -1791,6 +1791,23 @@ body {
   left: 0;
   z-index: 10;
   height: 15rem;
+  -webkit-transform: translateY(100%);
+  -ms-transform: translateY(100%);
+  transform: translateY(100%);
+  -webkit-transition: -webkit-transform 0.3s ease;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+}
+
+.popup-showed .layout__foot {
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+  -webkit-transition: -webkit-transform 0.5s ease 0.2s;
+  transition: -webkit-transform 0.5s ease 0.2s;
+  transition: transform 0.5s ease 0.2s;
+  transition: transform 0.5s ease 0.2s, -webkit-transform 0.5s ease 0.2s;
 }
 
 .layout__foot::before {
@@ -2485,11 +2502,13 @@ body {
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  -webkit-transition: opacity 0.3s ease, visibility 0.3s ease;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  -webkit-transition: opacity 0.3s ease, visibility 0.3s ease, margin-top 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease, margin-top 0.3s ease;
+  margin-top: 100%;
 }
 
 .stories-overlay.is-active {
+  margin-top: 0;
   opacity: 1;
   visibility: visible;
 }
@@ -2598,12 +2617,12 @@ body {
   width: 3.6rem;
   height: 3.6rem;
   border-radius: 50%;
-  -webkit-transition: background 0.2s;
-  transition: background 0.2s;
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
 }
 
 .stories-close:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 /* ===== CONTENT ===== */
@@ -2675,8 +2694,8 @@ body {
 
 @-webkit-keyframes slideInRight {
   from {
-    -webkit-transform: translateX(60px);
-    transform: translateX(60px);
+    -webkit-transform: translateX(6rem);
+    transform: translateX(6rem);
     opacity: 0;
   }
 
@@ -2689,8 +2708,8 @@ body {
 
 @keyframes slideInRight {
   from {
-    -webkit-transform: translateX(60px);
-    transform: translateX(60px);
+    -webkit-transform: translateX(6rem);
+    transform: translateX(6rem);
     opacity: 0;
   }
 
@@ -2703,8 +2722,8 @@ body {
 
 @-webkit-keyframes slideInLeft {
   from {
-    -webkit-transform: translateX(-60px);
-    transform: translateX(-60px);
+    -webkit-transform: translateX(-6rem);
+    transform: translateX(-6rem);
     opacity: 0;
   }
 
@@ -2717,8 +2736,8 @@ body {
 
 @keyframes slideInLeft {
   from {
-    -webkit-transform: translateX(-60px);
-    transform: translateX(-60px);
+    -webkit-transform: translateX(-6rem);
+    transform: translateX(-6rem);
     opacity: 0;
   }
 
@@ -3609,7 +3628,6 @@ p {
 
 .panel__inner {
   width: 100%;
-  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAyIiBoZWlnaHQ9Ijc3IiB2aWV3Qm94PSIwIDAgNDAyIDc3IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPHBhdGggZD0iTTAgMjEuNDQ1OEMwIDkuNjAxNjEgOS41OTkwMiAwIDIxLjQ0IDBIMTQ1Ljc5NkMxNTIuNzc0IDAgMTU4LjczNyAyLjAyNjAzIDE2Mi44OSA3LjYzNDc4QzE3MS40MTYgMTkuMTUwNiAxNzguNTQ5IDM1LjM4NTUgMjAxIDM1LjM4NTVDMjIzLjQ5MSAzNS4zODU1IDIzMS4yODQgMTkuMDkyIDI0MC4xMTIgNy41NzI0N0MyNDQuMzU3IDIuMDMzMjcgMjUwLjI5OCAwIDI1Ny4yNzYgMEgzODAuNTZDMzkyLjQwMSAwIDQwMiA5LjYwMTYgNDAyIDIxLjQ0NThWNzdIMFYyMS40NDU4WiIgZmlsbD0iI0ZERjZFQyIvPg0KPC9zdmc+DQo=);
   background-repeat: no-repeat;
   background-size: 100%;
   padding: 0 var(--container-padding);
@@ -3658,6 +3676,10 @@ p {
   -webkit-perspective: 1000px;
   transform-style: preserve-3d;
   -webkit-transform-style: preserve-3d;
+  -webkit-transition: -webkit-transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+  transition: -webkit-transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1), -webkit-transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .panel__btn i {
@@ -3744,6 +3766,21 @@ html.popup-open .panel__btn--visible {
 html.popup-open .panel__btn--hidden {
   -webkit-transform: rotateY(0deg);
   transform: rotateY(0deg);
+}
+
+.panel__mask {
+  width: 100%;
+  height: 6.8rem;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: -1;
+}
+
+.panel__mask svg {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .plate {
@@ -4218,7 +4255,7 @@ html.popup-open .panel__btn--hidden {
   -ms-scroll-snap-type: x mandatory;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  padding: 0 var(--container-padding);
+  padding: 0.3rem var(--container-padding);
   margin-left: calc(var(--container-padding) * -1);
   width: 100vw;
   width: calc(100% + var(--container-padding) * 2);
@@ -4236,7 +4273,6 @@ html.popup-open .panel__btn--hidden {
   width: 22rem;
   height: 18rem;
   border-radius: 1.6rem;
-  overflow: hidden;
   -ms-flex-negative: 0;
   flex-shrink: 0;
   /* для snap-effect */
@@ -4254,6 +4290,11 @@ html.popup-open .panel__btn--hidden {
   bottom: 2rem;
 }
 
+.afisha__item-img {
+  border-radius: 1.6rem;
+  overflow: hidden;
+}
+
 .afisha__item-date {
   font-weight: 400;
   font-size: 1.2rem;
@@ -4262,6 +4303,26 @@ html.popup-open .panel__btn--hidden {
   position: absolute;
   bottom: 2.8rem;
   left: 2rem;
+}
+
+/* SVG обводка — поверх блока, чуть больше по размеру */
+
+.card-stroke {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Выносим за пределы блока на половину толщины stroke */
+  width: 22rem;
+  height: 18rem;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.card-stroke rect {
+  fill: none;
+  stroke-width: 3;
+  /* rx/ry чуть больше border-radius блока */
+  rx: 14;
 }
 
 .banner__link {
