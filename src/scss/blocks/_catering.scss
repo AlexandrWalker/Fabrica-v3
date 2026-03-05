@@ -1,0 +1,14 @@
+@use './../mixins' as *;
+
+.catering {
+
+  .layout {
+
+    &__block {
+
+      &-text {
+        gap: 2rem;
+      }
+    }
+  }
+}
