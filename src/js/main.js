@@ -725,6 +725,637 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
   /**
+   * Функция сториса
+   */
+  (function () {
+    // ─── CONFIG ───────────────────────────────────────────────────────────────
+    const STORY_DURATION = 5000; // мс на один сторис
+
+    // ─── COLLECT ITEMS ────────────────────────────────────────────────────────
+    const items = Array.from(document.querySelectorAll('.stories-item'));
+
+    // Собираем данные из каждого элемента
+    const stories = items.map((el) => ({
+      img: el.dataset.storyImg || el.querySelector('.stories-item img')?.src || '',
+      // date: el.querySelector('.afisha__item-date')?.textContent.trim() || '',
+    }));
+
+    // ─── DOM ──────────────────────────────────────────────────────────────────
+    const overlay = document.getElementById('storiesOverlay');
+    const progressEl = document.getElementById('storiesProgress');
+    const closeBtn = document.getElementById('storiesClose');
+    const imgEl = document.getElementById('storiesImg');
+    // const dateEl = document.getElementById('storiesDate');
+    const navPrev = document.getElementById('storiesNavPrev');
+    const navNext = document.getElementById('storiesNavNext');
+
+    // ─── STATE ────────────────────────────────────────────────────────────────
+    let currentIndex = 0;
+    let timer = null;
+    let isPaused = false;
+    let startTime = null;
+    let elapsed = 0;
+
+    // ─── BUILD PROGRESS BARS ──────────────────────────────────────────────────
+    function buildProgressBars() {
+      progressEl.innerHTML = '';
+      stories.forEach((_, i) => {
+        const item = document.createElement('div');
+        item.className = 'stories-progress-item';
+        item.innerHTML = '<div class="stories-progress-fill"></div>';
+        progressEl.appendChild(item);
+      });
+    }
+
+    // ─── UPDATE PROGRESS ──────────────────────────────────────────────────────
+    function updateProgress(index) {
+      const bars = progressEl.querySelectorAll('.stories-progress-item');
+      bars.forEach((bar, i) => {
+        bar.classList.remove('is-done', 'is-active');
+        const fill = bar.querySelector('.stories-progress-fill');
+        fill.style.animation = 'none';
+        fill.style.width = '0%';
+
+        if (i < index) {
+          bar.classList.add('is-done');
+        } else if (i === index) {
+          bar.classList.add('is-active');
+          // CSS-переменная для длительности
+          bar.style.setProperty('--duration', `${(STORY_DURATION - elapsed) / 1000}s`);
+          // Форс reflow чтобы анимация перезапустилась
+          void fill.offsetWidth;
+          fill.style.animation = '';
+        }
+      });
+    }
+
+    // ─── SHOW STORY ───────────────────────────────────────────────────────────
+    function showStory(index, direction = 'next') {
+      if (index < 0 || index >= stories.length) return;
+
+      clearTimer();
+      elapsed = 0;
+      currentIndex = index;
+
+      const story = stories[index];
+
+      // Анимация
+      imgEl.classList.remove('anim-next', 'anim-prev', 'is-loading');
+      void imgEl.offsetWidth;
+      imgEl.classList.add(direction === 'next' ? 'anim-next' : 'anim-prev');
+
+      imgEl.classList.add('is-loading');
+      imgEl.onload = () => imgEl.classList.remove('is-loading');
+      imgEl.src = story.img;
+      // dateEl.textContent = story.date;
+
+      updateProgress(index);
+      startTimer();
+
+      // Скрыть стрелку назад на первом
+      navPrev.style.pointerEvents = index === 0 ? 'none' : 'auto';
+      navPrev.style.opacity = '0'; // зоны всегда невидимы
+    }
+
+    // ─── TIMER ────────────────────────────────────────────────────────────────
+    function startTimer() {
+      isPaused = false;
+      startTime = Date.now();
+
+      timer = setTimeout(() => {
+        goNext();
+      }, STORY_DURATION - elapsed);
+    }
+
+    function clearTimer() {
+      clearTimeout(timer);
+      timer = null;
+    }
+
+    function pauseTimer() {
+      if (isPaused) return;
+      isPaused = true;
+      elapsed += Date.now() - startTime;
+      clearTimer();
+
+      // Пауза CSS-анимации
+      const activeFill = progressEl.querySelector('.stories-progress-item.is-active .stories-progress-fill');
+      if (activeFill) activeFill.style.animationPlayState = 'paused';
+    }
+
+    function resumeTimer() {
+      if (!isPaused) return;
+
+      // Возобновить CSS-анимацию
+      const activeBar = progressEl.querySelector('.stories-progress-item.is-active');
+      if (activeBar) {
+        const remaining = (STORY_DURATION - elapsed) / 1000;
+        activeBar.style.setProperty('--duration', `${remaining}s`);
+        const fill = activeBar.querySelector('.stories-progress-fill');
+        fill.style.animationPlayState = 'running';
+      }
+
+      isPaused = false;
+      startTime = Date.now();
+      timer = setTimeout(() => {
+        goNext();
+      }, STORY_DURATION - elapsed);
+    }
+
+    // ─── NAVIGATION ───────────────────────────────────────────────────────────
+    function goNext() {
+      if (currentIndex + 1 >= stories.length) {
+        closeStories();
+      } else {
+        showStory(currentIndex + 1, 'next');
+      }
+    }
+
+    function goPrev() {
+      if (currentIndex === 0) return;
+      showStory(currentIndex - 1, 'prev');
+    }
+
+    // ─── OPEN / CLOSE ─────────────────────────────────────────────────────────
+    function openStories(index) {
+      buildProgressBars();
+      overlay.classList.add('is-active');
+      document.body.style.overflow = 'hidden';
+      showStory(index, 'next');
+    }
+
+    function closeStories() {
+      clearTimer();
+      overlay.classList.remove('is-active');
+      document.body.style.overflow = '';
+      elapsed = 0;
+    }
+
+    // ─── CLICK ON AFISHA ITEMS ────────────────────────────────────────────────
+    items.forEach((el, i) => {
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', () => openStories(i));
+    });
+
+    // ─── CLOSE BUTTON ─────────────────────────────────────────────────────────
+    closeBtn.addEventListener('click', closeStories);
+
+    // ─── NAV ZONES ────────────────────────────────────────────────────────────
+    navNext.addEventListener('click', goNext);
+    navPrev.addEventListener('click', goPrev);
+
+    // ─── SWIPE ────────────────────────────────────────────────────────────────
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartTime = 0;
+    const SWIPE_THRESHOLD = 50;  // px для горизонтального свайпа
+    const SWIPE_DOWN_THRESHOLD = 80; // px для закрытия свайпом вниз
+    const LONG_TAP_THRESHOLD = 200; // мс — долгое нажатие = пауза
+
+    overlay.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      touchStartTime = Date.now();
+      pauseTimer();
+    }, { passive: true });
+
+    overlay.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      const duration = Date.now() - touchStartTime;
+      const absDx = Math.abs(dx);
+      const absDy = Math.abs(dy);
+
+      // Свайп вниз — закрыть
+      if (absDy > SWIPE_DOWN_THRESHOLD && dy > 0 && absDy > absDx) {
+        closeStories();
+        return;
+      }
+
+      // Горизонтальный свайп
+      if (absDx > SWIPE_THRESHOLD && absDx > absDy) {
+        if (dx < 0) {
+          goNext();
+        } else {
+          goPrev();
+        }
+        return;
+      }
+
+      // Короткий тап — просто возобновить таймер
+      if (duration < LONG_TAP_THRESHOLD) {
+        resumeTimer();
+        return;
+      }
+
+      // Долгое нажатие отпущено — возобновить
+      resumeTimer();
+    }, { passive: true });
+
+    // Долгий тап (удержание) — пауза уже вызвана в touchstart
+    // touchcancel — возобновить
+    overlay.addEventListener('touchcancel', resumeTimer);
+
+    // ─── KEYBOARD ─────────────────────────────────────────────────────────────
+    document.addEventListener('keydown', (e) => {
+      if (!overlay.classList.contains('is-active')) return;
+      if (e.key === 'ArrowRight') goNext();
+      if (e.key === 'ArrowLeft') goPrev();
+      if (e.key === 'Escape') closeStories();
+    });
+
+    // ─── CLICK OUTSIDE ────────────────────────────────────────────────────────
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeStories();
+    });
+
+  })();
+
+  // (function () {
+
+  //   // ─── КОНФИГУРАЦИЯ ─────────────────────────────────────────────────────────
+  //   const STORY_DURATION = 5000; // длительность одного сториса в миллисекундах
+  //   const SWIPE_THRESHOLD = 50;   // минимальное смещение по X для горизонтального свайпа (px)
+  //   const SWIPE_DOWN_THRESHOLD = 80;   // минимальное смещение по Y для закрытия свайпом вниз (px)
+  //   const LONG_TAP_THRESHOLD = 200;  // порог долгого нажатия для паузы (мс)
+
+  //   // ─── СБОР ДАННЫХ ИЗ DOM ───────────────────────────────────────────────────
+  //   // Находим все элементы-сторисы на странице
+  //   const items = Array.from(document.querySelectorAll('.stories-item'));
+
+  //   // Формируем массив объектов с данными каждого сториса
+  //   // data-story-img — путь к полноразмерному баннеру (указывается в HTML)
+  //   // если data-story-img не задан — берём src миниатюры как фоллбэк
+  //   const stories = items.map((el) => ({
+  //     img: el.dataset.storyImg || el.querySelector('img')?.src || '',
+  //   }));
+  //   console.log('[Stories] найдено сторисов:', stories.length, stories);
+
+  //   // ─── ЭЛЕМЕНТЫ DOM ─────────────────────────────────────────────────────────
+  //   const overlay = document.getElementById('storiesOverlay');    // затемнённый оверлей
+  //   const progressEl = document.getElementById('storiesProgress');   // контейнер прогресс-баров
+  //   const closeBtn = document.getElementById('storiesClose');      // кнопка закрытия (крестик)
+  //   const imgEl = document.getElementById('storiesImg');        // тег <img> внутри сториса
+  //   const navPrev = document.getElementById('storiesNavPrev');    // зона нажатия «назад»
+  //   const navNext = document.getElementById('storiesNavNext');    // зона нажатия «вперёд»
+
+  //   // ─── СОСТОЯНИЕ ────────────────────────────────────────────────────────────
+  //   let currentIndex = 0;     // индекс текущего сториса
+  //   let timer = null;  // ссылка на setTimeout для автоперехода
+  //   let isPaused = false; // флаг паузы
+  //   let startTime = null;  // момент последнего старта/возобновления таймера
+  //   let elapsed = 0;     // сколько мс уже прошло для текущего сториса
+  //   let scrollY = 0;     // запомненная позиция скролла страницы (для iOS-фикса)
+  //   let navHandled = false;     // Флаг: навигационная зона уже обработала этот тач
+
+  //   // ─── ПЕРЕМЕННЫЕ ДЛЯ СВАЙПА ────────────────────────────────────────────────
+  //   let touchStartX = 0;
+  //   let touchStartY = 0;
+  //   let touchStartTime = 0;
+
+  //   // =========================================================================
+  //   // ПРОГРЕСС-БАРЫ
+  //   // =========================================================================
+
+  //   // Создаём нужное количество прогресс-баров по количеству сторисов
+  //   function buildProgressBars() {
+  //     progressEl.innerHTML = '';
+  //     stories.forEach(() => {
+  //       const item = document.createElement('div');
+  //       item.className = 'stories-progress-item';
+  //       item.innerHTML = '<div class="stories-progress-fill"></div>';
+  //       progressEl.appendChild(item);
+  //     });
+  //   }
+
+  //   // Обновляем состояние всех прогресс-баров при переходе к сторису index
+  //   function updateProgress(index) {
+  //     const bars = progressEl.querySelectorAll('.stories-progress-item');
+
+  //     bars.forEach((bar, i) => {
+  //       const fill = bar.querySelector('.stories-progress-fill');
+
+  //       // Сначала полностью сбрасываем все классы и стили
+  //       bar.classList.remove('is-done', 'is-active');
+
+  //       // Останавливаем любую текущую анимацию
+  //       fill.style.animation = 'none';
+  //       fill.style.width = '0%';
+
+  //       if (i < index) {
+  //         // Прошедшие сторисы — заполнены полностью
+  //         bar.classList.add('is-done');
+
+  //       } else if (i === index) {
+  //         // Текущий сторис — запускаем анимацию заполнения
+  //         bar.classList.add('is-active');
+
+  //         // Вычисляем оставшееся время (elapsed уже сброшен в 0 перед вызовом)
+  //         const remainingSec = (STORY_DURATION - elapsed) / 1000;
+
+  //         // Форсируем reflow чтобы браузер увидел сброс анимации
+  //         // и корректно запустил её заново (важно для Safari)
+  //         void fill.offsetWidth;
+
+  //         // Устанавливаем длительность напрямую через style (надёжнее CSS-переменных в Safari)
+  //         fill.style.animationDuration = `${remainingSec}s`;
+  //         fill.style.animationName = 'progressFill';
+  //         fill.style.animationTimingFunction = 'linear';
+  //         fill.style.animationFillMode = 'forwards';
+  //         fill.style.animationPlayState = 'running';
+  //       }
+  //       // Будущие сторисы остаются пустыми (width: 0%, no animation)
+  //     });
+  //   }
+
+  //   // =========================================================================
+  //   // ПОКАЗ СТОРИСА
+  //   // =========================================================================
+
+  //   function showStory(index, direction = 'next') {
+  //     // Защита от выхода за границы массива
+  //     if (index < 0 || index >= stories.length) return;
+
+  //     // Останавливаем предыдущий таймер и сбрасываем elapsed
+  //     clearTimer();
+  //     elapsed = 0;
+  //     currentIndex = index;
+
+  //     const story = stories[index];
+
+  //     // ── Анимация смены изображения ──
+  //     // Убираем предыдущие классы анимации
+  //     imgEl.classList.remove('anim-next', 'anim-prev', 'is-loading');
+  //     // Форс reflow для перезапуска анимации
+  //     void imgEl.offsetWidth;
+  //     // Добавляем нужное направление
+  //     imgEl.classList.add(direction === 'next' ? 'anim-next' : 'anim-prev');
+
+  //     // ── Загрузка изображения ──
+  //     // Скрываем пока грузится (класс is-loading делает opacity: 0)
+  //     imgEl.classList.add('is-loading');
+  //     imgEl.onload = () => imgEl.classList.remove('is-loading');
+  //     imgEl.onerror = () => imgEl.classList.remove('is-loading'); // не застрянем при ошибке
+  //     imgEl.src = story.img;
+
+  //     // ── Прогресс-бары ──
+  //     updateProgress(index);
+
+  //     // ── Таймер автоперехода ──
+  //     startTimer();
+
+  //     // ── Зона «назад» ──
+  //     // На первом сторисе отключаем «назад», на последнем — «вперёд»
+  //     navPrev.style.pointerEvents = index === 0 ? 'none' : 'auto';
+  //     navNext.style.pointerEvents = index === stories.length - 1 ? 'none' : 'auto';
+  //   }
+
+  //   // =========================================================================
+  //   // ТАЙМЕР
+  //   // =========================================================================
+
+  //   // Запускаем таймер автоперехода
+  //   function startTimer() {
+  //     isPaused = false;
+  //     startTime = Date.now();
+
+  //     timer = setTimeout(() => {
+  //       goNext();
+  //     }, STORY_DURATION - elapsed);
+  //   }
+
+  //   // Останавливаем таймер
+  //   function clearTimer() {
+  //     clearTimeout(timer);
+  //     timer = null;
+  //   }
+
+  //   // Ставим сторис на паузу (долгое нажатие / touchstart)
+  //   function pauseTimer() {
+  //     // Если уже на паузе — ничего не делаем
+  //     if (isPaused) return;
+
+  //     isPaused = true;
+  //     // Фиксируем сколько времени уже прошло
+  //     elapsed += Date.now() - startTime;
+  //     clearTimer();
+
+  //     // Ставим CSS-анимацию прогресс-бара на паузу
+  //     const activeFill = progressEl.querySelector(
+  //       '.stories-progress-item.is-active .stories-progress-fill'
+  //     );
+  //     if (activeFill) {
+  //       activeFill.style.animationPlayState = 'paused';
+  //     }
+  //   }
+
+  //   // Возобновляем сторис после паузы
+  //   function resumeTimer() {
+  //     // Если не на паузе — ничего не делаем
+  //     if (!isPaused) return;
+
+  //     const activeBar = progressEl.querySelector('.stories-progress-item.is-active');
+  //     if (activeBar) {
+  //       const fill = activeBar.querySelector('.stories-progress-fill');
+  //       const remainingSec = (STORY_DURATION - elapsed) / 1000;
+
+  //       // Обновляем длительность оставшейся анимации и возобновляем её
+  //       fill.style.animationDuration = `${remainingSec}s`;
+  //       fill.style.animationPlayState = 'running';
+  //     }
+
+  //     isPaused = false;
+  //     startTime = Date.now();
+
+  //     // Перезапускаем JS-таймер на оставшееся время
+  //     timer = setTimeout(() => {
+  //       goNext();
+  //     }, STORY_DURATION - elapsed);
+  //   }
+
+  //   // =========================================================================
+  //   // НАВИГАЦИЯ
+  //   // =========================================================================
+
+  //   // Переход к следующему сторису
+  //   // Если это был последний — закрываем оверлей
+  //   function goNext() {
+  //     console.log('[Stories] goNext: currentIndex =', currentIndex, '/ total =', stories.length);
+  //     if (currentIndex + 1 >= stories.length) {
+  //       closeStories();
+  //     } else {
+  //       showStory(currentIndex + 1, 'next');
+  //     }
+  //   }
+
+  //   // Переход к предыдущему сторису
+  //   // Если мы на первом — просто возобновляем таймер (никуда не уходим)
+  //   function goPrev() {
+  //     if (currentIndex === 0) {
+  //       resumeTimer();
+  //       return;
+  //     }
+  //     showStory(currentIndex - 1, 'prev');
+  //   }
+
+  //   // =========================================================================
+  //   // ОТКРЫТИЕ / ЗАКРЫТИЕ
+  //   // =========================================================================
+
+  //   function openStories(index) {
+  //     buildProgressBars();
+  //     overlay.classList.add('is-active');
+
+  //     // ── iOS-фикс: фиксируем body чтобы страница не скроллилась под оверлеем ──
+  //     scrollY = window.scrollY;
+  //     document.body.style.position = 'fixed';
+  //     document.body.style.top = `-${scrollY}px`;
+  //     document.body.style.left = '0';
+  //     document.body.style.right = '0';
+  //     document.body.style.overflow = 'hidden';
+
+  //     showStory(index, 'next');
+  //   }
+
+  //   function closeStories() {
+  //     clearTimer();
+  //     overlay.classList.remove('is-active');
+
+  //     // ── iOS-фикс: возвращаем скролл на место ──
+  //     document.body.style.position = '';
+  //     document.body.style.top = '';
+  //     document.body.style.left = '';
+  //     document.body.style.right = '';
+  //     document.body.style.overflow = '';
+  //     window.scrollTo(0, scrollY);
+
+  //     // Сбрасываем состояние
+  //     elapsed = 0;
+  //     currentIndex = 0;
+  //   }
+
+  //   // =========================================================================
+  //   // ОБРАБОТЧИКИ СОБЫТИЙ
+  //   // =========================================================================
+
+  //   // ── Клик по элементу афиши — открываем нужный сторис ──
+  //   items.forEach((el, i) => {
+  //     el.style.cursor = 'pointer';
+  //     el.addEventListener('click', () => openStories(i));
+  //   });
+
+  //   // ── Крестик закрытия ──
+  //   closeBtn.addEventListener('click', closeStories);
+
+  //   // ── Зоны навигации (десктоп, клик мышью) ──
+  //   navNext.addEventListener('click', (e) => {
+  //     e.stopPropagation(); // не даём событию дойти до overlay
+  //     goNext();
+  //   });
+
+  //   navPrev.addEventListener('click', (e) => {
+  //     e.stopPropagation(); // не даём событию дойти до overlay
+  //     if (currentIndex === 0) {
+  //       resumeTimer(); // на первом сторисе просто возобновляем таймер
+  //       return;
+  //     }
+  //     goPrev();
+  //   });
+
+  //   // ── Зоны навигации (тач) ──
+  //   // Обрабатываем touchend на зонах отдельно, чтобы избежать
+  //   // конфликта с общим обработчиком на overlay
+  //   navPrev.addEventListener('touchend', (e) => {
+  //     e.stopPropagation();
+  //     const dx = e.changedTouches[0].clientX - touchStartX;
+  //     const dy = e.changedTouches[0].clientY - touchStartY;
+
+  //     if (Math.abs(dx) > SWIPE_THRESHOLD || Math.abs(dy) > SWIPE_DOWN_THRESHOLD) return;
+
+  //     navHandled = true;
+  //     if (currentIndex === 0) {
+  //       resumeTimer();
+  //       return;
+  //     }
+  //     goPrev();
+  //   }, { passive: true });
+
+  //   navNext.addEventListener('touchend', (e) => {
+  //     e.stopPropagation();
+  //     const dx = e.changedTouches[0].clientX - touchStartX;
+  //     const dy = e.changedTouches[0].clientY - touchStartY;
+
+  //     if (Math.abs(dx) > SWIPE_THRESHOLD || Math.abs(dy) > SWIPE_DOWN_THRESHOLD) return;
+
+  //     navHandled = true;
+  //     goNext();
+  //   }, { passive: true });
+
+  //   // ── Свайпы по оверлею ──
+  //   overlay.addEventListener('touchstart', (e) => {
+  //     touchStartX = e.touches[0].clientX;
+  //     touchStartY = e.touches[0].clientY;
+  //     touchStartTime = Date.now();
+  //     pauseTimer(); // при касании ставим на паузу
+  //   }, { passive: true });
+
+  //   overlay.addEventListener('touchend', (e) => {
+  //     // Если навигационная зона уже обработала этот тач — сбрасываем флаг и выходим
+  //     if (navHandled) {
+  //       navHandled = false;
+  //       return;
+  //     }
+
+  //     const dx = e.changedTouches[0].clientX - touchStartX;
+  //     const dy = e.changedTouches[0].clientY - touchStartY;
+  //     const duration = Date.now() - touchStartTime;
+  //     const absDx = Math.abs(dx);
+  //     const absDy = Math.abs(dy);
+
+  //     // Свайп вниз — закрыть оверлей
+  //     if (absDy > SWIPE_DOWN_THRESHOLD && dy > 0 && absDy > absDx) {
+  //       closeStories();
+  //       return;
+  //     }
+
+  //     // Горизонтальный свайп — навигация
+  //     if (absDx > SWIPE_THRESHOLD && absDx > absDy) {
+  //       if (dx < 0) {
+  //         goNext();
+  //       } else {
+  //         goPrev();
+  //       }
+  //       return;
+  //     }
+
+  //     // Короткий тап или отпускание долгого нажатия — возобновляем
+  //     resumeTimer();
+  //   }, { passive: true });
+
+  //   // Если тач прерван системой (звонок, уведомление и т.д.) — возобновляем
+  //   overlay.addEventListener('touchcancel', () => resumeTimer());
+
+  //   // Блокируем нативный скролл страницы пока открыт оверлей (важно для iOS)
+  //   overlay.addEventListener('touchmove', (e) => {
+  //     e.preventDefault();
+  //   }, { passive: false });
+
+  //   // ── Клавиатура (десктоп) ──
+  //   document.addEventListener('keydown', (e) => {
+  //     if (!overlay.classList.contains('is-active')) return;
+  //     if (e.key === 'ArrowRight') goNext();
+  //     if (e.key === 'ArrowLeft') goPrev();
+  //     if (e.key === 'Escape') closeStories();
+  //   });
+
+  //   // ── Клик по затемнённой области вокруг контейнера — закрыть ──
+  //   overlay.addEventListener('click', (e) => {
+  //     if (e.target === overlay) closeStories();
+  //   });
+
+  // })();
+
+  /**
    * Кнопка куки
    */
   if (('; ' + document.cookie).split(`; COOKIE_ACCEPT=`).pop().split(';')[0] !== '1') {

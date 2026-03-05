@@ -31,6 +31,13 @@
   --red: #D93128;
   --beige: #EDE4D5;
 
+  --background-color: #1b1d20;
+  --slide-width: 34.4rem;
+  --slide-shadow: 0 4px 20px 2px rgba(0, 0, 0, 0.4);
+  --slide-thumb-height: 0.3rem;
+  --slide-thumb-default-color: rgba(0, 0, 0, 0.4);
+  --slide-thumb-active-color: rgba(255, 255, 255, 0.9);
+
   @include domd {
     --container-padding: 40rem;
     --container-width: 112rem;

@@ -1,0 +1,192 @@
+/* ===== STORIES OVERLAY ===== */
+.stories-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.stories-overlay.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ===== CONTAINER ===== */
+.stories-container {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #000;
+  user-select: none;
+}
+
+/* ===== PROGRESS BARS ===== */
+.stories-progress {
+  position: absolute;
+  top: 1.2rem;
+  left: 1.2rem;
+  right: 1.2rem;
+  display: flex;
+  gap: 0.4rem;
+  z-index: 10;
+}
+
+.stories-progress-item {
+  flex: 1;
+  height: 0.3rem;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 0.3rem;
+  overflow: hidden;
+}
+
+.stories-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #fff;
+  border-radius: 0.3rem;
+  transition: none;
+}
+
+.stories-progress-item.is-done .stories-progress-fill {
+  width: 100%;
+}
+
+.stories-progress-item.is-active .stories-progress-fill {
+  // animation: progressFill var(--duration, 5s) linear forwards;
+  animation: progressFill 5s linear forwards;
+}
+
+@keyframes progressFill {
+  from {
+    width: 0%;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+/* ===== CLOSE BUTTON ===== */
+.stories-close {
+  position: absolute;
+  top: 2.8rem;
+  right: 1.4rem;
+  z-index: 10;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2.2rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.stories-close:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ===== CONTENT ===== */
+.stories-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.stories-img {
+  width: 100%;
+  // height: 100%;
+  height: auto;
+  // object-fit: cover;
+  object-fit: contain;
+  display: block;
+  transition: opacity 0.25s ease;
+}
+
+.stories-img.is-loading {
+  opacity: 0;
+}
+
+.stories-date {
+  position: absolute;
+  bottom: 4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 0.8rem 2rem;
+  border-radius: 2rem;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  white-space: nowrap;
+}
+
+/* ===== NAVIGATION ZONES ===== */
+.stories-nav {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 35%;
+  z-index: 5;
+  cursor: pointer;
+}
+
+.stories-nav--prev {
+  left: 0;
+}
+
+.stories-nav--next {
+  right: 0;
+}
+
+/* ===== SLIDE ANIMATION ===== */
+@keyframes slideInRight {
+  from {
+    transform: translateX(60px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-60px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.stories-img.anim-next {
+  animation: slideInRight 0.25s ease forwards;
+}
+
+.stories-img.anim-prev {
+  animation: slideInLeft 0.25s ease forwards;
+}

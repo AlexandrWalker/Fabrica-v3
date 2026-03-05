@@ -268,7 +268,7 @@
             </div>
 
             <div class="afisha__items">
-              <div class="afisha__item" data-popup-target="afisha">
+              <div class="afisha__item stories-item" data-story-img="./../images/temp/afisha-full-1.png">
                 <div class="afisha__item-img">
                   <img src="./../images/temp/afisha-1.png" alt="">
                 </div>
@@ -277,25 +277,7 @@
                 </div>
                 <i class="icon-chevron-right"></i>
               </div>
-              <div class="afisha__item" data-popup-target="afisha">
-                <div class="afisha__item-img">
-                  <img src="./../images/temp/afisha-2.png" alt="">
-                </div>
-                <div class="afisha__item-date">
-                  10.12.2025
-                </div>
-                <i class="icon-chevron-right"></i>
-              </div>
-              <div class="afisha__item" data-popup-target="afisha">
-                <div class="afisha__item-img">
-                  <img src="./../images/temp/afisha-1.png" alt="">
-                </div>
-                <div class="afisha__item-date">
-                  10.12.2025
-                </div>
-                <i class="icon-chevron-right"></i>
-              </div>
-              <div class="afisha__item" data-popup-target="afisha">
+              <div class="afisha__item stories-item" data-story-img="./../images/temp/afisha-full-2.png">
                 <div class="afisha__item-img">
                   <img src="./../images/temp/afisha-2.png" alt="">
                 </div>
@@ -586,6 +568,30 @@
           </div>
         </div>
       </section>
+
+      <!-- Stories Overlay -->
+      <div class="stories-overlay" id="storiesOverlay">
+        <div class="stories-container">
+          <!-- Progress bars -->
+          <div class="stories-progress" id="storiesProgress"></div>
+
+          <!-- Close button -->
+          <button class="stories-close" id="storiesClose">
+            <i class="icon-x"></i>
+            ✕
+          </button>
+
+          <!-- Story content -->
+          <div class="stories-content" id="storiesContent">
+            <img src="" alt="" class="stories-img" id="storiesImg">
+            <!-- <div class="stories-date" id="storiesDate"></div> -->
+          </div>
+
+          <!-- Navigation zones -->
+          <div class="stories-nav stories-nav--prev" id="storiesNavPrev"></div>
+          <div class="stories-nav stories-nav--next" id="storiesNavNext"></div>
+        </div>
+      </div>
     </main>
     <!-- Плашка кукис -->
     @@include('blocks/plate.html')
