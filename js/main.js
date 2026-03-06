@@ -385,6 +385,54 @@ document.addEventListener('DOMContentLoaded', () => {
     updateActiveSlide();
   })();
 
+  /**
+   * Свайпер слайдер блюда
+   */
+  (function () {
+    const layoutSwipers = document.querySelectorAll('.layout__head-slider');
+    if (layoutSwipers.length > 0) {
+      layoutSwipers.forEach(layoutSwiper => {
+        const swiper = new Swiper(layoutSwiper, {
+          slidesPerGroup: 1,
+          slidesPerView: 1,
+          spaceBetween: 0,
+          grabCursor: true,
+          speed: 300,
+          touchRatio: 1.6,
+          resistance: true,
+          resistanceRatio: 0.4,
+          centeredSlides: false,
+          centeredSlidesBounds: true,
+          loop: true,
+          simulateTouch: true,
+          watchOverflow: true,
+          direction: 'horizontal',
+          touchStartPreventDefault: true,
+          touchMoveStopPropagation: true,
+          threshold: 8,
+          touchAngle: 25,
+          freeMode: {
+            enabled: true,
+            momentum: true,
+            momentumRatio: 0.85,
+            momentumVelocityRatio: 1,
+            momentumBounce: false,
+            sticky: true
+          },
+          mousewheel: {
+            forceToAxis: true,
+            sensitivity: 1,
+            releaseOnEdges: true
+          },
+          pagination: {
+            el: layoutSwiper.querySelector(".swiper-pagination"),
+            clickable: true,
+          },
+        });
+      });
+    }
+  })();
+
   function smoothScrollTo(targetY, duration = SCROLL_DURATION, callback) {
     const startY = window.scrollY;
     const delta = targetY - startY;
@@ -1315,84 +1363,9 @@ document.addEventListener('DOMContentLoaded', () => {
   /**
    * Функция обводки
    */
-  // (function () {
-  //   document.querySelectorAll('.stories-item-stroke').forEach((wrap) => {
-  //     const svg = wrap.querySelector('.card-stroke');
-  //     if (!svg) return;
+  (function () {
 
-  //     const svgRect = svg.getBoundingClientRect();
-  //     const svgW = svgRect.width;
-  //     const svgH = svgRect.height;
-
-  //     const sw = 3;
-  //     const rx = 12;
-  //     const shift = sw / 2;
-  //     const color = wrap.dataset.strokeColor || '#ffffff';
-
-  //     svg.innerHTML = '';
-  //     svg.setAttribute('width', svgW);
-  //     svg.setAttribute('height', svgH);
-
-  //     function makeRect() {
-  //       const r = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-  //       r.setAttribute('x', shift);
-  //       r.setAttribute('y', shift);
-  //       r.setAttribute('width', svgW - sw);
-  //       r.setAttribute('height', svgH - sw);
-  //       r.setAttribute('rx', rx);
-  //       r.setAttribute('ry', rx);
-  //       r.setAttribute('fill', 'none');
-  //       r.setAttribute('stroke', color);
-  //       r.setAttribute('stroke-width', sw);
-  //       r.setAttribute('stroke-dasharray', `0 9999`);
-  //       r.setAttribute('stroke-dashoffset', 0);
-  //       return r;
-  //     }
-
-  //     const rectA = makeRect();
-  //     const rectB = makeRect();
-  //     svg.appendChild(rectA);
-  //     svg.appendChild(rectB);
-
-  //     const perimeter = rectA.getTotalLength();
-  //     const halfP = perimeter / 2;
-
-  //     // rectA: стартует из верхнего левого угла, идёт по часовой
-  //     // скрыт: dash=halfP, offset=halfP (линия за краем)
-  //     // финал: offset=0 (линия на месте)
-  //     gsap.set(rectA, {
-  //       strokeDasharray: `${halfP} ${perimeter}`,
-  //       strokeDashoffset: halfP,
-  //     });
-
-  //     // rectB: стартует из противоположной точки (нижний правый угол)
-  //     // offset = -halfP ставит начало паттерна на середину периметра
-  //     // скрыт: dash=halfP, offset=-halfP (линия за краем в другую сторону)
-  //     // финал: offset=0 (линия на месте, встречается с rectA)
-  //     gsap.set(rectB, {
-  //       strokeDasharray: `${halfP} ${perimeter}`,
-  //       strokeDashoffset: -halfP,
-  //     });
-
-  //     gsap.timeline({
-  //       scrollTrigger: {
-  //         trigger: wrap,
-  //         start: 'top 85%',
-  //         once: true,
-  //       }
-  //     })
-  //       .to(rectA, {
-  //         strokeDashoffset: 0,
-  //         duration: 0.9,
-  //         ease: 'power2.out',
-  //       }, 0)
-  //       .to(rectB, {
-  //         strokeDashoffset: 0,
-  //         duration: 0.9,
-  //         ease: 'power2.out',
-  //       }, 0);
-  //   });
-  // })();
+  })();
 
   /**
    * Кнопка куки
