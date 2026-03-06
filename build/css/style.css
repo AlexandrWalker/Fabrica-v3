@@ -195,16 +195,16 @@ li:last-child {
 @font-face {
   font-family: LeagueSpartan;
   font-display: swap;
-  src: url("../fonts/LeagueSpartan-ExtraLight.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraLight.woff") format("woff");
-  font-weight: 200;
+  src: url("../fonts/LeagueSpartan-ExtraBold.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraBold.woff") format("woff");
+  font-weight: 800;
   font-style: normal;
 }
 
 @font-face {
   font-family: LeagueSpartan;
   font-display: swap;
-  src: url("../fonts/LeagueSpartan-ExtraBold.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraBold.woff") format("woff");
-  font-weight: 800;
+  src: url("../fonts/LeagueSpartan-ExtraLight.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraLight.woff") format("woff");
+  font-weight: 200;
   font-style: normal;
 }
 
@@ -227,6 +227,14 @@ li:last-child {
 @font-face {
   font-family: LeagueSpartan;
   font-display: swap;
+  src: url("../fonts/LeagueSpartan-Regular.woff2") format("woff2"), url("../fonts/LeagueSpartan-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: LeagueSpartan;
+  font-display: swap;
   src: url("../fonts/LeagueSpartan-SemiBold.woff2") format("woff2"), url("../fonts/LeagueSpartan-SemiBold.woff") format("woff");
   font-weight: 600;
   font-style: normal;
@@ -237,14 +245,6 @@ li:last-child {
   font-display: swap;
   src: url("../fonts/LeagueSpartan-Thin.woff2") format("woff2"), url("../fonts/LeagueSpartan-Thin.woff") format("woff");
   font-weight: 100;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: LeagueSpartan;
-  font-display: swap;
-  src: url("../fonts/LeagueSpartan-Regular.woff2") format("woff2"), url("../fonts/LeagueSpartan-Regular.woff") format("woff");
-  font-weight: 400;
   font-style: normal;
 }
 
@@ -411,8 +411,24 @@ li:last-child {
 @font-face {
   font-family: SFPro;
   font-display: swap;
+  src: url("../fonts/SFPro-Regular.woff2") format("woff2"), url("../fonts/SFPro-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: SFPro;
+  font-display: swap;
   src: url("../fonts/SFPro-SemiBold.woff2") format("woff2"), url("../fonts/SFPro-SemiBold.woff") format("woff");
   font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: SFPro;
+  font-display: swap;
+  src: url("../fonts/SFPro-Thin.woff2") format("woff2"), url("../fonts/SFPro-Thin.woff") format("woff");
+  font-weight: 100;
   font-style: normal;
 }
 
@@ -425,10 +441,10 @@ li:last-child {
 }
 
 @font-face {
-  font-family: SFPro;
+  font-family: SofiaPro;
   font-display: swap;
-  src: url("../fonts/SFPro-Regular.woff2") format("woff2"), url("../fonts/SFPro-Regular.woff") format("woff");
-  font-weight: 400;
+  src: url("../fonts/SofiaPro-Black.woff2") format("woff2"), url("../fonts/SofiaPro-Black.woff") format("woff");
+  font-weight: 900;
   font-style: normal;
 }
 
@@ -485,22 +501,6 @@ li:last-child {
   font-display: swap;
   src: url("../fonts/SofiaPro-UltraLight.woff2") format("woff2"), url("../fonts/SofiaPro-UltraLight.woff") format("woff");
   font-weight: 200;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: SFPro;
-  font-display: swap;
-  src: url("../fonts/SFPro-Thin.woff2") format("woff2"), url("../fonts/SFPro-Thin.woff") format("woff");
-  font-weight: 100;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: SofiaPro;
-  font-display: swap;
-  src: url("../fonts/SofiaPro-Black.woff2") format("woff2"), url("../fonts/SofiaPro-Black.woff") format("woff");
-  font-weight: 900;
   font-style: normal;
 }
 
@@ -3684,10 +3684,6 @@ p {
   pointer-events: all;
 }
 
-.panel__inner {
-  /* Вырез под кнопку */
-}
-
 .panel__btns {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -3734,12 +3730,18 @@ p {
 .panel__btn i {
   font-size: 3rem;
   color: var(--green);
+  position: relative;
 }
 
 .panel__btn span {
   font-weight: 700;
   font-size: 1rem;
   line-height: 120%;
+}
+
+.panel__btn .btn--count {
+  top: 0.5rem;
+  right: 1.5rem;
 }
 
 .panel__btn--mid {
@@ -3762,8 +3764,9 @@ p {
   transform: translateY(-0.5rem);
 }
 
-.panel__btn {
-  /* 3D контейнер */
+.panel__btn--mid .btn--count {
+  top: 0;
+  right: 0;
 }
 
 .panel__btn > .panel__btn {
@@ -3788,10 +3791,6 @@ p {
   position: absolute;
 }
 
-.panel__btn {
-  /* Лицевая сторона */
-}
-
 .panel__btn--visible {
   -webkit-transform: rotateY(0deg);
   transform: rotateY(0deg);
@@ -3801,10 +3800,6 @@ p {
 html.popup-open .panel__btn--visible {
   -webkit-transform: rotateY(180deg);
   transform: rotateY(180deg);
-}
-
-.panel__btn {
-  /* Обратная сторона */
 }
 
 .panel__btn--hidden {
@@ -4319,13 +4314,28 @@ html.popup-open .panel__btn--hidden {
 }
 
 .afisha__item {
+  --progress: 0;
   width: 22rem;
   height: 18rem;
   border-radius: 1.6rem;
   -ms-flex-negative: 0;
   flex-shrink: 0;
   scroll-snap-align: center;
+  isolation: isolate;
   position: relative;
+}
+
+.afisha__item::before {
+  content: "";
+  position: absolute;
+  inset: -0.3rem;
+  border-radius: 1.9rem;
+  border: 0.2rem solid #ff9f5f;
+  pointer-events: none;
+  --start: 45deg;
+  --spread: calc(var(--progress) * 180deg);
+  -webkit-mask-image: conic-gradient(from var(--start), white 0deg, white var(--spread), transparent var(--spread), transparent calc(360deg - var(--spread)), white calc(360deg - var(--spread)), white 360deg);
+  mask-image: conic-gradient(from var(--start), white 0deg, white var(--spread), transparent var(--spread), transparent calc(360deg - var(--spread)), white calc(360deg - var(--spread)), white 360deg);
 }
 
 .afisha__item i {
@@ -4351,6 +4361,17 @@ html.popup-open .panel__btn--hidden {
   position: absolute;
   bottom: 2.8rem;
   left: 2rem;
+}
+
+.trigger-line {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  width: 0.1rem;
+  height: 100%;
+  background: transparent;
+  pointer-events: none;
+  z-index: 999;
 }
 
 .banner__link {

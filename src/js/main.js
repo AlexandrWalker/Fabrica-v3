@@ -1361,9 +1361,112 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
   /**
-   * Функция обводки
+   * Функция анимации обводки
    */
   (function () {
+
+    // ─── Анимации ─────────────────────────────────────────────────────────────────
+
+    function animateBannerIn(banner) {
+      // Если уже полностью обведён — ничего не делаем
+      if (banner._done) return;
+      if (banner._tween) banner._tween.kill();
+
+      const proxy = {
+        progress: parseFloat(banner.style.getPropertyValue("--progress")) || 0,
+      };
+
+      banner._tween = gsap.to(proxy, {
+        progress: 1,
+        duration: 0.5,
+        ease: "power2.inOut",
+        onUpdate() {
+          banner.style.setProperty("--progress", proxy.progress);
+        },
+        onComplete() {
+          banner._done = true; // помечаем — больше не трогаем
+        },
+      });
+    }
+
+    // ─── Триггерные элементы ──────────────────────────────────────────────────────
+
+    const banners = document.querySelectorAll(".banner");
+    const triggerMap = new WeakMap();
+
+    banners.forEach((banner) => {
+      banner._done = false;
+      banner.style.setProperty("--progress", "0");
+
+      const trigger = document.createElement("div");
+
+      Object.assign(trigger.style, {
+        position: "absolute",
+        top: "0",
+        left: "0",
+        width: "1px",
+        height: "100%",
+        pointerEvents: "none",
+        visibility: "hidden",
+      });
+
+      banner.style.position = "relative";
+      banner.appendChild(trigger);
+      triggerMap.set(trigger, banner);
+    });
+
+    // ─── IntersectionObserver ─────────────────────────────────────────────────────
+
+    function createObserver() {
+      // iOS не поддерживает rootMargin в процентах для IntersectionObserver —
+      // используем px, вычисленные на момент создания observer.
+      const halfWidth = Math.round(window.innerWidth / 2);
+
+      return new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const banner = triggerMap.get(entry.target);
+            if (!banner) return;
+
+            // Срабатываем только на вход, выход игнорируем
+            if (entry.isIntersecting) {
+              animateBannerIn(banner);
+            }
+          });
+        },
+        {
+          // Обрезаем правую половину экрана → триггер срабатывает
+          // когда левый край баннера пересекает середину экрана
+          rootMargin: `0px -${halfWidth}px 0px 0px`,
+          threshold: 0,
+        }
+      );
+    }
+
+    let observer = createObserver();
+
+    document.querySelectorAll(".banner > div").forEach((trigger) => {
+      observer.observe(trigger);
+    });
+
+    // ─── Ресайз ───────────────────────────────────────────────────────────────────
+
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        observer.disconnect();
+        observer = createObserver();
+
+        document.querySelectorAll(".banner > div").forEach((trigger) => {
+          // Если баннер уже обведён — не наблюдаем за ним повторно
+          const banner = triggerMap.get(trigger);
+          if (banner && !banner._done) {
+            observer.observe(trigger);
+          }
+        });
+      }, 150);
+    });
 
   })();
 

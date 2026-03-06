@@ -32,17 +32,47 @@
   }
 
   &__item {
+    --progress: 0;
+
     width: 22rem;
     height: 18rem;
     border-radius: 1.6rem;
     flex-shrink: 0;
     scroll-snap-align: center;
+    isolation: isolate;
 
     position: relative;
 
     @include domd {
       width: calc(25% - (6rem / 4));
       height: 22rem;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -0.3rem;
+      border-radius: calc(1.6rem + 0.3rem);
+      border: 0.2rem solid #ff9f5f;
+      pointer-events: none;
+
+      --start: 45deg;
+      --spread: calc(var(--progress) * 180deg);
+
+      -webkit-mask-image: conic-gradient(from var(--start),
+          white 0deg,
+          white var(--spread),
+          transparent var(--spread),
+          transparent calc(360deg - var(--spread)),
+          white calc(360deg - var(--spread)),
+          white 360deg);
+      mask-image: conic-gradient(from var(--start),
+          white 0deg,
+          white var(--spread),
+          transparent var(--spread),
+          transparent calc(360deg - var(--spread)),
+          white calc(360deg - var(--spread)),
+          white 360deg);
     }
 
     i {
@@ -93,4 +123,15 @@
       left: 2rem;
     }
   }
+}
+
+.trigger-line {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  width: 0.1rem;
+  height: 100%;
+  background: transparent;
+  pointer-events: none;
+  z-index: 999;
 }
