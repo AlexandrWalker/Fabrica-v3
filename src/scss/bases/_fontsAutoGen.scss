@@ -8,6 +8,13 @@
 @font-face {
 	font-family: Inter;
 	font-display: swap;
+	src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
+	font-weight: 700;
+	font-style: normal;
+}
+@font-face {
+	font-family: Inter;
+	font-display: swap;
 	src: url("../fonts/Inter-ExtraBold.woff2") format("woff2"), url("../fonts/Inter-ExtraBold.woff") format("woff");
 	font-weight: 800;
 	font-style: normal;
@@ -17,13 +24,6 @@
 	font-display: swap;
 	src: url("../fonts/Inter-ExtraLight.woff2") format("woff2"), url("../fonts/Inter-ExtraLight.woff") format("woff");
 	font-weight: 200;
-	font-style: normal;
-}
-@font-face {
-	font-family: Inter;
-	font-display: swap;
-	src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
-	font-weight: 700;
 	font-style: normal;
 }
 @font-face {
@@ -78,15 +78,15 @@
 @font-face {
 	font-family: LeagueSpartan;
 	font-display: swap;
-	src: url("../fonts/LeagueSpartan-ExtraBold.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraBold.woff") format("woff");
-	font-weight: 800;
+	src: url("../fonts/LeagueSpartan-ExtraLight.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraLight.woff") format("woff");
+	font-weight: 200;
 	font-style: normal;
 }
 @font-face {
 	font-family: LeagueSpartan;
 	font-display: swap;
-	src: url("../fonts/LeagueSpartan-ExtraLight.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraLight.woff") format("woff");
-	font-weight: 200;
+	src: url("../fonts/LeagueSpartan-ExtraBold.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraBold.woff") format("woff");
+	font-weight: 800;
 	font-style: normal;
 }
 @font-face {
@@ -106,13 +106,6 @@
 @font-face {
 	font-family: LeagueSpartan;
 	font-display: swap;
-	src: url("../fonts/LeagueSpartan-Regular.woff2") format("woff2"), url("../fonts/LeagueSpartan-Regular.woff") format("woff");
-	font-weight: 400;
-	font-style: normal;
-}
-@font-face {
-	font-family: LeagueSpartan;
-	font-display: swap;
 	src: url("../fonts/LeagueSpartan-SemiBold.woff2") format("woff2"), url("../fonts/LeagueSpartan-SemiBold.woff") format("woff");
 	font-weight: 600;
 	font-style: normal;
@@ -125,6 +118,13 @@
 	font-style: normal;
 }
 @font-face {
+	font-family: LeagueSpartan;
+	font-display: swap;
+	src: url("../fonts/LeagueSpartan-Regular.woff2") format("woff2"), url("../fonts/LeagueSpartan-Regular.woff") format("woff");
+	font-weight: 400;
+	font-style: normal;
+}
+@font-face {
 	font-family: PlayfairDisplay;
 	font-display: swap;
 	src: url("../fonts/PlayfairDisplay-Black.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Black.woff") format("woff");
@@ -134,15 +134,15 @@
 @font-face {
 	font-family: PlayfairDisplay;
 	font-display: swap;
-	src: url("../fonts/PlayfairDisplay-ExtraBold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-ExtraBold.woff") format("woff");
-	font-weight: 800;
+	src: url("../fonts/PlayfairDisplay-Bold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Bold.woff") format("woff");
+	font-weight: 700;
 	font-style: normal;
 }
 @font-face {
 	font-family: PlayfairDisplay;
 	font-display: swap;
-	src: url("../fonts/PlayfairDisplay-Bold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Bold.woff") format("woff");
-	font-weight: 700;
+	src: url("../fonts/PlayfairDisplay-ExtraBold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-ExtraBold.woff") format("woff");
+	font-weight: 800;
 	font-style: normal;
 }
 @font-face {
@@ -267,22 +267,8 @@
 @font-face {
 	font-family: SFPro;
 	font-display: swap;
-	src: url("../fonts/SFPro-Regular.woff2") format("woff2"), url("../fonts/SFPro-Regular.woff") format("woff");
-	font-weight: 400;
-	font-style: normal;
-}
-@font-face {
-	font-family: SFPro;
-	font-display: swap;
 	src: url("../fonts/SFPro-SemiBold.woff2") format("woff2"), url("../fonts/SFPro-SemiBold.woff") format("woff");
 	font-weight: 600;
-	font-style: normal;
-}
-@font-face {
-	font-family: SFPro;
-	font-display: swap;
-	src: url("../fonts/SFPro-Thin.woff2") format("woff2"), url("../fonts/SFPro-Thin.woff") format("woff");
-	font-weight: 100;
 	font-style: normal;
 }
 @font-face {
@@ -293,10 +279,10 @@
 	font-style: normal;
 }
 @font-face {
-	font-family: SofiaPro;
+	font-family: SFPro;
 	font-display: swap;
-	src: url("../fonts/SofiaPro-Black.woff2") format("woff2"), url("../fonts/SofiaPro-Black.woff") format("woff");
-	font-weight: 900;
+	src: url("../fonts/SFPro-Regular.woff2") format("woff2"), url("../fonts/SFPro-Regular.woff") format("woff");
+	font-weight: 400;
 	font-style: normal;
 }
 @font-face {
@@ -346,5 +332,19 @@
 	font-display: swap;
 	src: url("../fonts/SofiaPro-UltraLight.woff2") format("woff2"), url("../fonts/SofiaPro-UltraLight.woff") format("woff");
 	font-weight: 200;
+	font-style: normal;
+}
+@font-face {
+	font-family: SFPro;
+	font-display: swap;
+	src: url("../fonts/SFPro-Thin.woff2") format("woff2"), url("../fonts/SFPro-Thin.woff") format("woff");
+	font-weight: 100;
+	font-style: normal;
+}
+@font-face {
+	font-family: SofiaPro;
+	font-display: swap;
+	src: url("../fonts/SofiaPro-Black.woff2") format("woff2"), url("../fonts/SofiaPro-Black.woff") format("woff");
+	font-weight: 900;
 	font-style: normal;
 }

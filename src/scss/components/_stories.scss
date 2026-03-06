@@ -1,4 +1,5 @@
-/* ===== STORIES OVERLAY ===== */
+@use './../mixins' as *;
+
 .stories-overlay {
   position: fixed;
   inset: 0;
@@ -9,17 +10,16 @@
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease, margin-top 0.3s ease;
-  margin-top: 100%;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  transform: translateY(10rem);
+
+  &.is-active {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
-.stories-overlay.is-active {
-  margin-top: 0;
-  opacity: 1;
-  visibility: visible;
-}
-
-/* ===== CONTAINER ===== */
 .stories-container {
   position: relative;
   width: 100%;
@@ -31,7 +31,6 @@
   user-select: none;
 }
 
-/* ===== PROGRESS BARS ===== */
 .stories-progress {
   position: absolute;
   top: 1.2rem;
@@ -40,30 +39,30 @@
   display: flex;
   gap: 0.4rem;
   z-index: 10;
-}
 
-.stories-progress-item {
-  flex: 1;
-  height: 0.3rem;
-  background: rgba(255, 255, 255, 0.35);
-  border-radius: 0.3rem;
-  overflow: hidden;
-}
+  &-item {
+    flex: 1;
+    height: 0.3rem;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 0.3rem;
+    overflow: hidden;
+  }
 
-.stories-progress-fill {
-  height: 100%;
-  width: 0%;
-  background: #fff;
-  border-radius: 0.3rem;
-  transition: none;
-}
+  &-fill {
+    height: 100%;
+    width: 0%;
+    background: #fff;
+    border-radius: 0.3rem;
+    transition: none;
 
-.stories-progress-item.is-done .stories-progress-fill {
-  width: 100%;
-}
+    .stories-progress-item.is-done & {
+      width: 100%;
+    }
 
-.stories-progress-item.is-active .stories-progress-fill {
-  animation: progressFill 5s linear forwards;
+    .stories-progress-item.is-active & {
+      animation: progressFill 5s linear forwards;
+    }
+  }
 }
 
 @keyframes progressFill {
@@ -76,7 +75,6 @@
   }
 }
 
-/* ===== CLOSE BUTTON ===== */
 .stories-close {
   position: absolute;
   top: 2.8rem;
@@ -96,13 +94,12 @@
   height: 3.6rem;
   border-radius: 50%;
   transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
 }
 
-.stories-close:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-}
-
-/* ===== CONTENT ===== */
 .stories-content {
   display: flex;
   align-items: center;
@@ -119,10 +116,10 @@
   object-fit: contain;
   display: block;
   transition: opacity 0.25s ease;
-}
 
-.stories-img.is-loading {
-  opacity: 0;
+  &.is-loading {
+    opacity: 0;
+  }
 }
 
 .stories-date {
@@ -141,7 +138,6 @@
   white-space: nowrap;
 }
 
-/* ===== NAVIGATION ZONES ===== */
 .stories-nav {
   position: absolute;
   top: 0;
@@ -149,17 +145,16 @@
   width: 35%;
   z-index: 5;
   cursor: pointer;
+
+  &--prev {
+    left: 0;
+  }
+
+  &--next {
+    right: 0;
+  }
 }
 
-.stories-nav--prev {
-  left: 0;
-}
-
-.stories-nav--next {
-  right: 0;
-}
-
-/* ===== SLIDE ANIMATION ===== */
 @keyframes slideInRight {
   from {
     transform: translateX(6rem);

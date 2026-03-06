@@ -24,10 +24,18 @@
 
         font-weight: 900;
         font-size: 1.6rem;
-        line-height: 120%;
+        line-height: 100%;
 
         p {
           font-size: 1rem;
+        }
+      }
+
+      &-wrap {
+        gap: 1rem;
+
+        &--2 {
+          gap: 1.5rem;
         }
       }
     }

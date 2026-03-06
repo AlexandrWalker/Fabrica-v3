@@ -115,6 +115,14 @@ li:last-child {
 @font-face {
   font-family: Inter;
   font-display: swap;
+  src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Inter;
+  font-display: swap;
   src: url("../fonts/Inter-ExtraBold.woff2") format("woff2"), url("../fonts/Inter-ExtraBold.woff") format("woff");
   font-weight: 800;
   font-style: normal;
@@ -125,14 +133,6 @@ li:last-child {
   font-display: swap;
   src: url("../fonts/Inter-ExtraLight.woff2") format("woff2"), url("../fonts/Inter-ExtraLight.woff") format("woff");
   font-weight: 200;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: Inter;
-  font-display: swap;
-  src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
-  font-weight: 700;
   font-style: normal;
 }
 
@@ -195,16 +195,16 @@ li:last-child {
 @font-face {
   font-family: LeagueSpartan;
   font-display: swap;
-  src: url("../fonts/LeagueSpartan-ExtraBold.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraBold.woff") format("woff");
-  font-weight: 800;
+  src: url("../fonts/LeagueSpartan-ExtraLight.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraLight.woff") format("woff");
+  font-weight: 200;
   font-style: normal;
 }
 
 @font-face {
   font-family: LeagueSpartan;
   font-display: swap;
-  src: url("../fonts/LeagueSpartan-ExtraLight.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraLight.woff") format("woff");
-  font-weight: 200;
+  src: url("../fonts/LeagueSpartan-ExtraBold.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraBold.woff") format("woff");
+  font-weight: 800;
   font-style: normal;
 }
 
@@ -227,14 +227,6 @@ li:last-child {
 @font-face {
   font-family: LeagueSpartan;
   font-display: swap;
-  src: url("../fonts/LeagueSpartan-Regular.woff2") format("woff2"), url("../fonts/LeagueSpartan-Regular.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: LeagueSpartan;
-  font-display: swap;
   src: url("../fonts/LeagueSpartan-SemiBold.woff2") format("woff2"), url("../fonts/LeagueSpartan-SemiBold.woff") format("woff");
   font-weight: 600;
   font-style: normal;
@@ -249,6 +241,14 @@ li:last-child {
 }
 
 @font-face {
+  font-family: LeagueSpartan;
+  font-display: swap;
+  src: url("../fonts/LeagueSpartan-Regular.woff2") format("woff2"), url("../fonts/LeagueSpartan-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
   font-family: PlayfairDisplay;
   font-display: swap;
   src: url("../fonts/PlayfairDisplay-Black.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Black.woff") format("woff");
@@ -259,16 +259,16 @@ li:last-child {
 @font-face {
   font-family: PlayfairDisplay;
   font-display: swap;
-  src: url("../fonts/PlayfairDisplay-ExtraBold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-ExtraBold.woff") format("woff");
-  font-weight: 800;
+  src: url("../fonts/PlayfairDisplay-Bold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Bold.woff") format("woff");
+  font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
   font-family: PlayfairDisplay;
   font-display: swap;
-  src: url("../fonts/PlayfairDisplay-Bold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Bold.woff") format("woff");
-  font-weight: 700;
+  src: url("../fonts/PlayfairDisplay-ExtraBold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-ExtraBold.woff") format("woff");
+  font-weight: 800;
   font-style: normal;
 }
 
@@ -411,24 +411,8 @@ li:last-child {
 @font-face {
   font-family: SFPro;
   font-display: swap;
-  src: url("../fonts/SFPro-Regular.woff2") format("woff2"), url("../fonts/SFPro-Regular.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: SFPro;
-  font-display: swap;
   src: url("../fonts/SFPro-SemiBold.woff2") format("woff2"), url("../fonts/SFPro-SemiBold.woff") format("woff");
   font-weight: 600;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: SFPro;
-  font-display: swap;
-  src: url("../fonts/SFPro-Thin.woff2") format("woff2"), url("../fonts/SFPro-Thin.woff") format("woff");
-  font-weight: 100;
   font-style: normal;
 }
 
@@ -441,10 +425,10 @@ li:last-child {
 }
 
 @font-face {
-  font-family: SofiaPro;
+  font-family: SFPro;
   font-display: swap;
-  src: url("../fonts/SofiaPro-Black.woff2") format("woff2"), url("../fonts/SofiaPro-Black.woff") format("woff");
-  font-weight: 900;
+  src: url("../fonts/SFPro-Regular.woff2") format("woff2"), url("../fonts/SFPro-Regular.woff") format("woff");
+  font-weight: 400;
   font-style: normal;
 }
 
@@ -504,12 +488,56 @@ li:last-child {
   font-style: normal;
 }
 
+@font-face {
+  font-family: SFPro;
+  font-display: swap;
+  src: url("../fonts/SFPro-Thin.woff2") format("woff2"), url("../fonts/SFPro-Thin.woff") format("woff");
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: SofiaPro;
+  font-display: swap;
+  src: url("../fonts/SofiaPro-Black.woff2") format("woff2"), url("../fonts/SofiaPro-Black.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+}
+
 .login .layout__card-img [data-color=light] {
   display: none;
 }
 
 .login .layout__card-img [data-color=dark] {
   display: block;
+}
+
+.swiper-pagination {
+  width: -webkit-fit-content !important;
+  width: -moz-fit-content !important;
+  width: fit-content !important;
+  height: auto;
+  padding: 0.4rem;
+  border-radius: 3rem;
+  background-color: var(--bg);
+  line-height: 0;
+  bottom: 1rem;
+  right: unset;
+  left: 50% !important;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.swiper-pagination-bullet {
+  width: 0.7rem;
+  height: 0.7rem;
+  margin: 0 0.2rem !important;
+  background-color: var(--green-50) !important;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: var(--green) !important;
 }
 
 /* Reset and base styles  */
@@ -1060,6 +1088,13 @@ body {
   color: var(--black-50);
 }
 
+.form-textarea.filled,
+.form-textarea:focus,
+.form-textarea:active {
+  border-color: var(--green);
+  background-color: var(--white);
+}
+
 .form-file {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1407,6 +1442,12 @@ body {
   transition: all 0.5s ease;
 }
 
+.layout .container {
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
 .layout--carousel .layout__inner {
   gap: 1.5rem;
 }
@@ -1459,12 +1500,6 @@ body {
   font-size: 1.2rem;
 }
 
-.layout .container {
-  height: -webkit-fit-content;
-  height: -moz-fit-content;
-  height: fit-content;
-}
-
 .layout__inner {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1499,6 +1534,20 @@ body {
   font-style: italic;
 }
 
+.layout__head-slider {
+  border-radius: 1.6rem;
+  overflow: hidden;
+  width: 100%;
+  height: 24.8rem;
+}
+
+.layout__head-slide img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
 .layout__head-cover {
   border-radius: 1.6rem;
   overflow: hidden;
@@ -1524,8 +1573,8 @@ body {
   gap: 0.5rem;
   pointer-events: none;
   position: absolute;
-  top: 1.5rem;
-  left: 0;
+  top: 1rem;
+  left: 1rem;
   z-index: 1;
 }
 
@@ -2484,8 +2533,6 @@ body {
   right: 2rem;
 }
 
-/* ===== STORIES OVERLAY ===== */
-
 .stories-overlay {
   position: fixed;
   inset: 0;
@@ -2502,18 +2549,22 @@ body {
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  -webkit-transition: opacity 0.3s ease, visibility 0.3s ease, margin-top 0.3s ease;
-  transition: opacity 0.3s ease, visibility 0.3s ease, margin-top 0.3s ease;
-  margin-top: 100%;
+  -webkit-transition: opacity 0.3s ease, visibility 0.3s ease, -webkit-transform 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease, -webkit-transform 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, -webkit-transform 0.3s ease;
+  -webkit-transform: translateY(10rem);
+  -ms-transform: translateY(10rem);
+  transform: translateY(10rem);
 }
 
 .stories-overlay.is-active {
-  margin-top: 0;
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
   opacity: 1;
   visibility: visible;
 }
-
-/* ===== CONTAINER ===== */
 
 .stories-container {
   position: relative;
@@ -2528,8 +2579,6 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
-
-/* ===== PROGRESS BARS ===== */
 
 .stories-progress {
   position: absolute;
@@ -2591,8 +2640,6 @@ body {
   }
 }
 
-/* ===== CLOSE BUTTON ===== */
-
 .stories-close {
   position: absolute;
   top: 2.8rem;
@@ -2624,8 +2671,6 @@ body {
 .stories-close:hover {
   background-color: rgba(255, 255, 255, 0.15);
 }
-
-/* ===== CONTENT ===== */
 
 .stories-content {
   display: -webkit-box;
@@ -2671,8 +2716,6 @@ body {
   white-space: nowrap;
 }
 
-/* ===== NAVIGATION ZONES ===== */
-
 .stories-nav {
   position: absolute;
   top: 0;
@@ -2689,8 +2732,6 @@ body {
 .stories-nav--next {
   right: 0;
 }
-
-/* ===== SLIDE ANIMATION ===== */
 
 @-webkit-keyframes slideInRight {
   from {
@@ -3188,11 +3229,19 @@ p {
   gap: 0.8rem;
   font-weight: 900;
   font-size: 1.6rem;
-  line-height: 120%;
+  line-height: 100%;
 }
 
 .dish .layout__block-title p {
   font-size: 1rem;
+}
+
+.dish .layout__block-wrap {
+  gap: 1rem;
+}
+
+.dish .layout__block-wrap--2 {
+  gap: 1.5rem;
 }
 
 .dish .btn {
@@ -4275,7 +4324,6 @@ html.popup-open .panel__btn--hidden {
   border-radius: 1.6rem;
   -ms-flex-negative: 0;
   flex-shrink: 0;
-  /* для snap-effect */
   scroll-snap-align: center;
   position: relative;
 }
@@ -4303,26 +4351,6 @@ html.popup-open .panel__btn--hidden {
   position: absolute;
   bottom: 2.8rem;
   left: 2rem;
-}
-
-/* SVG обводка — поверх блока, чуть больше по размеру */
-
-.card-stroke {
-  position: absolute;
-  top: 0;
-  left: 0;
-  /* Выносим за пределы блока на половину толщины stroke */
-  width: 22rem;
-  height: 18rem;
-  pointer-events: none;
-  overflow: visible;
-}
-
-.card-stroke rect {
-  fill: none;
-  stroke-width: 3;
-  /* rx/ry чуть больше border-radius блока */
-  rx: 14;
 }
 
 .banner__link {

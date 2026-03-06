@@ -36,7 +36,6 @@
     height: 18rem;
     border-radius: 1.6rem;
     flex-shrink: 0;
-    /* для snap-effect */
     scroll-snap-align: center;
 
     position: relative;
@@ -45,27 +44,6 @@
       width: calc(25% - (6rem / 4));
       height: 22rem;
     }
-
-    // &:nth-child(1) {
-    //   --stories-border-color: var(--orange-light);
-    // }
-
-    // &:nth-child(2) {
-    //   --stories-border-color: var(--red);
-    // }
-
-    // &::before {
-    //   content: "";
-    //   border: 0.2rem solid var(--stories-border-color);
-    //   border-radius: 1.6rem;
-    //   width: calc(100% + 0.6rem);
-    //   height: calc(100% + 0.6rem);
-    //   pointer-events: none;
-
-    //   position: absolute;
-    //   top: -0.3rem;
-    //   left: -0.3rem;
-    // }
 
     i {
       background-color: var(--white);
@@ -115,28 +93,4 @@
       left: 2rem;
     }
   }
-}
-
-/* SVG обводка — поверх блока, чуть больше по размеру */
-.card-stroke {
-  position: absolute;
-  top: 0;
-  left: 0;
-  // top: -0.3rem;
-  // left: -0.3rem;
-  /* Выносим за пределы блока на половину толщины stroke */
-  // inset: -0.3rem;
-  // width: calc(100% + 0.6rem);
-  // height: calc(100% + 0.6rem);
-  width: 22rem;
-  height: 18rem;
-  pointer-events: none;
-  overflow: visible;
-}
-
-.card-stroke rect {
-  fill: none;
-  stroke-width: 3;
-  /* rx/ry чуть больше border-radius блока */
-  rx: 14;
 }
