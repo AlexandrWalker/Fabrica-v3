@@ -233,13 +233,67 @@ document.addEventListener('DOMContentLoaded', () => {
      * При отпускании — либо закрываем (если достаточно далеко/быстро),
      * либо возвращаем на место.
      */
+    // document.addEventListener('touchstart', e => {
+    //   const popup = e.target.closest('.popup');
+
+    //   // Реагируем только на тач внутри верхнего (активного) попапа
+    //   if (!popup || stack.at(-1) !== popup) return;
+
+    //   // Если пользователь скроллит контент внутри попапа — не перехватываем жест
+    //   const scrollParent = e.target.closest('[data-popup-scroll]');
+    //   if (scrollParent?.scrollTop > 0) return;
+
+    //   const startY = e.touches[0].clientY;
+    //   let lastY = startY;
+    //   const startTime = performance.now();
+
+    //   // Попап следует за пальцем
+    //   function onMove(ev) {
+    //     // Math.max(0) запрещает тянуть попап вверх
+    //     const delta = Math.max(0, ev.touches[0].clientY - startY);
+    //     popup.style.transition = 'none'; // отключаем transition во время тяги
+    //     popup.style.top = `${delta}px`;
+
+    //     // Оверлей плавно исчезает по мере смещения попапа
+    //     overlay.style.opacity = 1 - Math.min(delta / popup.offsetHeight, 1);
+    //     lastY = ev.touches[0].clientY;
+    //   }
+
+    //   function onEnd() {
+    //     const delta = lastY - startY;
+    //     const velocity = delta / (performance.now() - startTime); // px/мс
+
+    //     popup.style.transition = ''; // возвращаем transition
+
+    //     if (delta > 120 || velocity > 0.6) {
+    //       // Достаточно далеко или быстро — закрываем через историю браузера
+    //       // (history.back вызовет popstate → closeTopPopup)
+    //       history.back();
+    //     } else {
+    //       // Недостаточно — возвращаем попап на место
+    //       const d = 0.3;
+    //       popup.style.transition = `top ${d}s ease, opacity ${d}s ease`;
+    //       popup.style.top = '0';
+    //       updateOverlay(true, d);
+    //     }
+
+    //     document.removeEventListener('touchmove', onMove);
+    //     document.removeEventListener('touchend', onEnd);
+    //   }
+
+    //   document.addEventListener('touchmove', onMove, { passive: true });
+    //   document.addEventListener('touchend', onEnd);
+    // });
+
     document.addEventListener('touchstart', e => {
       const popup = e.target.closest('.popup');
 
-      // Реагируем только на тач внутри верхнего (активного) попапа
       if (!popup || stack.at(-1) !== popup) return;
 
-      // Если пользователь скроллит контент внутри попапа — не перехватываем жест
+      // ─── Блокируем если тач внутри swiper ────────────────────────────────────
+      if (e.target.closest('.swiper')) return;
+      // ─────────────────────────────────────────────────────────────────────────
+
       const scrollParent = e.target.closest('[data-popup-scroll]');
       if (scrollParent?.scrollTop > 0) return;
 
@@ -247,30 +301,23 @@ document.addEventListener('DOMContentLoaded', () => {
       let lastY = startY;
       const startTime = performance.now();
 
-      // Попап следует за пальцем
       function onMove(ev) {
-        // Math.max(0) запрещает тянуть попап вверх
         const delta = Math.max(0, ev.touches[0].clientY - startY);
-        popup.style.transition = 'none'; // отключаем transition во время тяги
+        popup.style.transition = 'none';
         popup.style.top = `${delta}px`;
-
-        // Оверлей плавно исчезает по мере смещения попапа
         overlay.style.opacity = 1 - Math.min(delta / popup.offsetHeight, 1);
         lastY = ev.touches[0].clientY;
       }
 
       function onEnd() {
         const delta = lastY - startY;
-        const velocity = delta / (performance.now() - startTime); // px/мс
+        const velocity = delta / (performance.now() - startTime);
 
-        popup.style.transition = ''; // возвращаем transition
+        popup.style.transition = '';
 
         if (delta > 120 || velocity > 0.6) {
-          // Достаточно далеко или быстро — закрываем через историю браузера
-          // (history.back вызовет popstate → closeTopPopup)
           history.back();
         } else {
-          // Недостаточно — возвращаем попап на место
           const d = 0.3;
           popup.style.transition = `top ${d}s ease, opacity ${d}s ease`;
           popup.style.top = '0';
@@ -408,11 +455,13 @@ document.addEventListener('DOMContentLoaded', () => {
           watchOverflow: true,
           direction: 'horizontal',
           touchStartPreventDefault: true,
-          touchMoveStopPropagation: true,
+          // touchMoveStopPropagation: true,
+          touchMoveStopPropagation: false,
           threshold: 8,
           touchAngle: 25,
           freeMode: {
-            enabled: true,
+            // enabled: true,
+            enabled: false,
             momentum: true,
             momentumRatio: 0.85,
             momentumVelocityRatio: 1,
