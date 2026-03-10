@@ -387,21 +387,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const updateActiveSlide = () => {
       let currentSection = null;
-      const scrollPos = window.scrollY + window.innerHeight * 0.25;
+      const viewportTop = window.scrollY;
+      const viewportBottom = window.scrollY + window.innerHeight;
 
       sections.forEach(section => {
-        if (scrollPos >= section.offsetTop) currentSection = section;
+        const sectionTop = section.offsetTop;
+        const sectionBottom = sectionTop + section.offsetHeight;
+        const isVisible = sectionBottom > viewportTop && sectionTop < viewportBottom;
+        if (isVisible) currentSection = section;
       });
 
-      if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4) {
-        currentSection = sections[sections.length - 1];
-      }
+      // Даже если currentSection = null — проходим по слайдам и снимаем все is-active
+      const targetId = currentSection ? currentSection.id : null;
 
-      if (!currentSection) return;
-      const targetId = currentSection.id;
-
-      slides.forEach((slide, index) => {
-        const isActive = slide.dataset.id === targetId;
+      slides.forEach((slide) => {
+        const isActive = targetId !== null && slide.dataset.id === targetId;
         slide.classList.toggle('is-active', isActive);
 
         if (isActive) {
@@ -419,8 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
 
           if (targetTranslate !== swiper.translate) {
-            // Добавляем плавность
-            swiper.setTransition(300); // скорость анимации в мс
+            swiper.setTransition(300);
             swiper.setTranslate(targetTranslate);
           }
         }
@@ -910,43 +909,69 @@ document.addEventListener('DOMContentLoaded', () => {
    * Функция сториса
    */
   (function () {
-    // ─── КОНФИГУРАЦИЯ ─────────────────────────────────────────────────────────
-    // Длительность показа одного сториса в миллисекундах
-    const STORY_DURATION = 5000;
+    // ─── КОНФИГУРАЦИЯ ───────────────────────────────────────────────────────────
+    const STORY_DURATION = 5000; // сколько мс показывается один сторис
+    const SWIPE_THRESHOLD = 50;   // минимальный сдвиг по X (px) для горизонтального свайпа
+    const SWIPE_DOWN_THRESHOLD = 80;   // минимальный сдвиг по Y вниз (px) для закрытия свайпом
+    const LONG_TAP_THRESHOLD = 200;  // мс: касание дольше этого = долгое нажатие (пауза)
 
-    // ─── СБОР ЭЛЕМЕНТОВ ───────────────────────────────────────────────────────
-    // Все карточки сторисов на странице
+    // ─── ДАННЫЕ ─────────────────────────────────────────────────────────────────
     const items = Array.from(document.querySelectorAll('.stories-item'));
 
-    /**
-     * Данные каждого сториса.
-     * img — приоритет: data-story-img атрибут, затем src тега <img> внутри элемента.
-     */
+    // Для каждой карточки берём путь к полноразмерному изображению:
+    // приоритет — data-story-img, фоллбэк — src миниатюры внутри карточки
     const stories = items.map((el) => ({
-      img: el.dataset.storyImg || el.querySelector('.stories-item img')?.src || '',
+      img: el.dataset.storyImg || el.querySelector('img')?.src || '',
     }));
 
-    // ─── DOM-ЭЛЕМЕНТЫ ─────────────────────────────────────────────────────────
-    const overlay = document.getElementById('storiesOverlay');   // обёртка всего просмотрщика
-    const progressEl = document.getElementById('storiesProgress');  // контейнер полосок прогресса
-    const closeBtn = document.getElementById('storiesClose');     // кнопка закрытия
-    const imgEl = document.getElementById('storiesImg');       // тег <img> для фото сториса
-    const navPrev = document.getElementById('storiesNavPrev');   // зона нажатия «назад»
-    const navNext = document.getElementById('storiesNavNext');   // зона нажатия «вперёд»
+    // ─── DOM-ЭЛЕМЕНТЫ ───────────────────────────────────────────────────────────
+    const overlay = document.getElementById('storiesOverlay');
+    const progressEl = document.getElementById('storiesProgress');
+    const closeBtn = document.getElementById('storiesClose');
+    const navPrev = document.getElementById('storiesNavPrev');
+    const navNext = document.getElementById('storiesNavNext');
 
-    // ─── СОСТОЯНИЕ ────────────────────────────────────────────────────────────
-    let currentIndex = 0;     // индекс текущего сториса
-    let timer = null;  // id setTimeout для авто-перехода
-    let isPaused = false; // флаг паузы (долгое нажатие / свайп)
-    let startTime = null;  // момент старта/возобновления таймера (Date.now())
-    let elapsed = 0;     // уже прошедшее время текущего сториса в мс
+    // Два <img> для двойного буфера — устраняет моргание при смене фото.
+    // Один всегда виден, второй грузит следующее фото за кулисами.
+    const imgA = document.getElementById('storiesImgA');
+    const imgB = document.getElementById('storiesImgB');
 
-    // ─── ПОЛОСЫ ПРОГРЕССА ─────────────────────────────────────────────────────
+    // ─── СОСТОЯНИЕ ──────────────────────────────────────────────────────────────
+    let activeBuffer = 'A';  // какой буфер сейчас показан ('A' или 'B')
+    let currentIndex = 0;    // индекс текущего сториса
+    let timer = null; // id от setTimeout для автоперехода
+    let isPaused = false;// true пока сторис на паузе
+    let startTime = null; // Date.now() в момент старта/возобновления таймера
+    let elapsed = 0;   // сколько мс уже «сгорело» у текущего сториса
+    let scrollY = 0;   // позиция скролла до открытия (iOS-фикс)
 
-    /**
-     * Пересоздаёт все полосы прогресса по количеству сторисов.
-     * Вызывается каждый раз при открытии просмотрщика.
-     */
+    // Флаг: тач уже обработан зоной navNext/navPrev.
+    // Нужен потому что на мобильных touchend всплывает до overlay
+    // даже после e.stopPropagation() с passive:true.
+    // Overlay видит флаг и пропускает обработку.
+    let navHandled = false;
+
+    // Время последнего touchend на зонах навигации.
+    // Используется чтобы отфильтровать синтетический click,
+    // который браузер автоматически генерирует после touchend —
+    // без этого goNext() вызывался бы дважды (touchend + click).
+    let lastTouchEnd = 0;
+
+    // ─── КООРДИНАТЫ ТАЧА ────────────────────────────────────────────────────────
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartTime = 0;
+
+    // ─── ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ БУФЕРА ────────────────────────────────────────
+    function getActiveImg() { return activeBuffer === 'A' ? imgA : imgB; }
+    function getInactiveImg() { return activeBuffer === 'A' ? imgB : imgA; }
+
+    // =========================================================================
+    // ПРОГРЕСС-БАРЫ
+    // =========================================================================
+
+    // Пересоздаёт полоски прогресса по количеству сторисов.
+    // Вызывается при каждом openStories() — чтобы не было мусора от предыдущей сессии.
     function buildProgressBars() {
       progressEl.innerHTML = '';
       stories.forEach(() => {
@@ -957,117 +982,109 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    /**
-     * Обновляет визуальное состояние полос прогресса для заданного индекса:
-     * - пройденные (i < index) → класс is-done (заполнены полностью)
-     * - текущий (i === index)  → класс is-active + запуск CSS-анимации заполнения
-     * - будущие                → без класса (пустые)
-     *
-     * CSS-переменная --duration управляет длительностью анимации,
-     * что позволяет корректно возобновлять с середины.
-     *
-     * @param {number} index - индекс текущего сториса
-     */
+    // Расставляет классы и запускает анимацию нужной полоски:
+    //   i < index  → is-done   (пройдено, заполнена полностью)
+    //   i === index → is-active (анимируется прямо сейчас)
+    //   i > index  → пусто     (ещё не дошли)
+    //
+    // Длительность анимации задаётся через style напрямую —
+    // это позволяет корректно учесть elapsed при возобновлении с паузы.
     function updateProgress(index) {
       const bars = progressEl.querySelectorAll('.stories-progress-item');
+
       bars.forEach((bar, i) => {
-        bar.classList.remove('is-done', 'is-active');
         const fill = bar.querySelector('.stories-progress-fill');
 
-        // Сбрасываем анимацию перед изменением состояния
+        bar.classList.remove('is-done', 'is-active');
         fill.style.animation = 'none';
         fill.style.width = '0%';
 
         if (i < index) {
           bar.classList.add('is-done');
+
         } else if (i === index) {
           bar.classList.add('is-active');
 
-          // Оставшееся время в секундах для CSS-анимации
-          bar.style.setProperty('--duration', `${(STORY_DURATION - elapsed) / 1000}s`);
+          const remainingSec = (STORY_DURATION - elapsed) / 1000;
 
-          // Форс-reflow: заставляем браузер применить animation: none
-          // перед снятием этого правила, иначе анимация не перезапустится
+          // Форс-reflow: без этого браузер склеивает animation:none
+          // с последующим присвоением — анимация не перезапустится (особенно Safari)
           void fill.offsetWidth;
-          fill.style.animation = '';
+
+          fill.style.animationDuration = `${remainingSec}s`;
+          fill.style.animationName = 'progressFill';
+          fill.style.animationTimingFunction = 'linear';
+          fill.style.animationFillMode = 'forwards';
+          fill.style.animationPlayState = 'running';
         }
       });
     }
 
-    // ─── ПОКАЗ СТОРИСА ────────────────────────────────────────────────────────
+    // =========================================================================
+    // ПОКАЗ СТОРИСА
+    // =========================================================================
 
-    /**
-     * Переключает просмотрщик на сторис с заданным индексом.
-     * @param {number} index     - индекс сториса в массиве stories
-     * @param {string} direction - 'next' или 'prev' (направление анимации)
-     */
-    function showStory(index, direction = 'next') {
+    // Переключает на сторис с заданным индексом через двойной буфер:
+    // новое фото грузится в скрытый <img>, после загрузки буферы меняются местами
+    // через CSS opacity transition — без моргания.
+    function showStory(index) {
       if (index < 0 || index >= stories.length) return;
 
       clearTimer();
       elapsed = 0;
       currentIndex = index;
 
-      const story = stories[index];
+      const nextImg = getInactiveImg();
+      const currentImg = getActiveImg();
 
-      // ── Анимация смены картинки ──────────────────────────────────────────────
-      // Сначала убираем все классы анимации и is-loading
-      imgEl.classList.remove('anim-next', 'anim-prev', 'is-loading');
+      nextImg.classList.remove('is-visible');
+      nextImg.src = stories[index].img;
 
-      // Форс-reflow чтобы классы точно удалились до добавления новых
-      void imgEl.offsetWidth;
+      // Срабатывает и при успешной загрузке, и при ошибке —
+      // просмотрщик не зависнет если картинка не найдена
+      const onLoaded = () => {
+        nextImg.removeEventListener('load', onLoaded);
+        nextImg.removeEventListener('error', onLoaded);
 
-      // Добавляем класс анимации только если overlay уже открыт (is-active).
-      // При первом открытии overlay ещё не имеет is-active —
-      // картинка появится без анимации slide, сразу на месте.
-      if (overlay.classList.contains('is-active')) {
-        imgEl.classList.add(direction === 'next' ? 'anim-next' : 'anim-prev');
-      }
+        nextImg.classList.add('is-visible');
+        currentImg.classList.remove('is-visible');
 
-      // Показываем спиннер загрузки пока картинка не загрузилась
-      imgEl.classList.add('is-loading');
-      imgEl.onload = () => imgEl.classList.remove('is-loading');
-      imgEl.src = story.img;
+        activeBuffer = activeBuffer === 'A' ? 'B' : 'A';
+      };
+
+      nextImg.addEventListener('load', onLoaded);
+      nextImg.addEventListener('error', onLoaded);
 
       updateProgress(index);
       startTimer();
 
-      // На первом сторисе прячем зону «назад» (визуально она всегда прозрачна,
-      // но pointer-events отключаем чтобы случайный тап не вызвал goPrev)
+      // На первом сторисе отключаем зону «назад» — некуда идти
       navPrev.style.pointerEvents = index === 0 ? 'none' : 'auto';
-      navPrev.style.opacity = '0';
+      navNext.style.pointerEvents = 'auto';
     }
 
-    // ─── ТАЙМЕР ───────────────────────────────────────────────────────────────
+    // =========================================================================
+    // ТАЙМЕР АВТОПЕРЕХОДА
+    // =========================================================================
 
-    /**
-     * Запускает таймер авто-перехода на следующий сторис.
-     * Учитывает уже прошедшее время (elapsed), чтобы корректно
-     * возобновляться после паузы.
-     */
+    // Запускает отсчёт до goNext().
+    // Вычитаем elapsed чтобы продолжить с того места где остановились.
     function startTimer() {
       isPaused = false;
       startTime = Date.now();
-
-      timer = setTimeout(() => {
-        goNext();
-      }, STORY_DURATION - elapsed);
+      timer = setTimeout(goNext, STORY_DURATION - elapsed);
     }
 
-    /** Останавливает таймер без сброса elapsed. */
+    // Отменяет таймер без сброса elapsed — при возобновлении продолжим с той же точки.
     function clearTimer() {
       clearTimeout(timer);
       timer = null;
     }
 
-    /**
-     * Ставит сторис на паузу:
-     * - останавливает JS-таймер
-     * - замораживает CSS-анимацию полосы прогресса
-     * - накапливает elapsed для корректного возобновления
-     */
+    // Пауза: останавливает таймер, замораживает анимацию, накапливает elapsed.
     function pauseTimer() {
       if (isPaused) return;
+
       isPaused = true;
       elapsed += Date.now() - startTime;
       clearTimer();
@@ -1078,158 +1095,199 @@ document.addEventListener('DOMContentLoaded', () => {
       if (activeFill) activeFill.style.animationPlayState = 'paused';
     }
 
-    /**
-     * Возобновляет сторис после паузы:
-     * - пересчитывает --duration с учётом elapsed
-     * - размораживает CSS-анимацию
-     * - перезапускает JS-таймер
-     */
+    // Возобновление: пересчитывает длительность анимации и перезапускает таймер.
     function resumeTimer() {
       if (!isPaused) return;
 
       const activeBar = progressEl.querySelector('.stories-progress-item.is-active');
       if (activeBar) {
-        const remaining = (STORY_DURATION - elapsed) / 1000;
-        activeBar.style.setProperty('--duration', `${remaining}s`);
-
         const fill = activeBar.querySelector('.stories-progress-fill');
-        if (fill) fill.style.animationPlayState = 'running';
+        const remainingSec = (STORY_DURATION - elapsed) / 1000;
+
+        // Обновляем длительность — без этого анимация ускорится (посчитает с начала)
+        fill.style.animationDuration = `${remainingSec}s`;
+        fill.style.animationPlayState = 'running';
       }
 
       isPaused = false;
       startTime = Date.now();
-
-      timer = setTimeout(() => {
-        goNext();
-      }, STORY_DURATION - elapsed);
+      timer = setTimeout(goNext, STORY_DURATION - elapsed);
     }
 
-    // ─── НАВИГАЦИЯ ────────────────────────────────────────────────────────────
+    // =========================================================================
+    // НАВИГАЦИЯ
+    // =========================================================================
 
-    /**
-     * Переход к следующему сторису.
-     * Если текущий последний — закрываем просмотрщик.
-     */
     function goNext() {
       if (currentIndex + 1 >= stories.length) {
         closeStories();
       } else {
-        showStory(currentIndex + 1, 'next');
+        showStory(currentIndex + 1);
       }
     }
 
-    /**
-     * Переход к предыдущему сторису.
-     * На первом сторисе ничего не делает.
-     */
     function goPrev() {
-      if (currentIndex === 0) return;
-      showStory(currentIndex - 1, 'prev');
+      if (currentIndex === 0) {
+        resumeTimer();
+        return;
+      }
+      showStory(currentIndex - 1);
     }
 
-    // ─── ОТКРЫТИЕ / ЗАКРЫТИЕ ──────────────────────────────────────────────────
+    // =========================================================================
+    // ОТКРЫТИЕ / ЗАКРЫТИЕ
+    // =========================================================================
 
-    /**
-     * Открывает просмотрщик сторисов с заданного индекса.
-     * Порядок важен: сначала строим прогресс-бары, потом добавляем is-active
-     * (чтобы showStory знал что overlay ещё закрыт и не добавлял анимацию),
-     * затем показываем сторис и только потом открываем overlay.
-     * @param {number} index - с какого сториса начать
-     */
     function openStories(index) {
       buildProgressBars();
 
-      // showStory вызываем ДО добавления is-active —
-      // внутри showStory проверяется overlay.classList.contains('is-active'),
-      // и при первом открытии анимация slide не добавляется
-      showStory(index, 'next');
+      imgA.classList.remove('is-visible');
+      imgB.classList.remove('is-visible');
+      imgA.src = '';
+      imgB.src = '';
+      activeBuffer = 'A';
 
-      // Теперь открываем overlay
       overlay.classList.add('is-active');
+
+      // iOS-фикс: фиксируем body чтобы страница не скроллилась под оверлеем
+      scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
       document.body.style.overflow = 'hidden';
+
+      showStory(index);
     }
 
-    /**
-     * Закрывает просмотрщик и сбрасывает состояние.
-     */
     function closeStories() {
       clearTimer();
       overlay.classList.remove('is-active');
+
+      // iOS-фикс: снимаем фиксацию и восстанавливаем позицию скролла
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
       document.body.style.overflow = '';
+      window.scrollTo(0, scrollY);
+
       elapsed = 0;
+      currentIndex = 0;
     }
 
-    // ─── КЛИКИ ПО КАРТОЧКАМ ───────────────────────────────────────────────────
+    // =========================================================================
+    // СОБЫТИЯ
+    // =========================================================================
+
+    // Клик по карточке на странице
     items.forEach((el, i) => {
       el.style.cursor = 'pointer';
       el.addEventListener('click', () => openStories(i));
     });
 
-    // ─── КНОПКА ЗАКРЫТИЯ ──────────────────────────────────────────────────────
+    // Крестик
     closeBtn.addEventListener('click', closeStories);
 
-    // ─── ЗОНЫ НАВИГАЦИИ ───────────────────────────────────────────────────────
-    navNext.addEventListener('click', goNext);
-    navPrev.addEventListener('click', goPrev);
+    // ── Зоны навигации: мышь ──────────────────────────────────────────────────
+    // stopPropagation — чтобы клик не дошёл до overlay и не закрыл просмотрщик.
+    // Проверка lastTouchEnd — чтобы отфильтровать синтетический click после touchend:
+    // мобильные браузеры генерируют его автоматически, и без фильтра goNext()
+    // вызывался бы дважды (сначала из touchend, затем из этого click).
+    navNext.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (Date.now() - lastTouchEnd < 500) return;
+      goNext();
+    });
 
-    // ─── СВАЙПЫ И ТАПЫ ────────────────────────────────────────────────────────
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let touchStartTime = 0;
+    navPrev.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (Date.now() - lastTouchEnd < 500) return;
+      if (currentIndex === 0) { resumeTimer(); return; }
+      goPrev();
+    });
 
-    const SWIPE_THRESHOLD = 50;  // минимальный горизонтальный сдвиг для навигации (px)
-    const SWIPE_DOWN_THRESHOLD = 80;  // минимальный вертикальный сдвиг вниз для закрытия (px)
-    const LONG_TAP_THRESHOLD = 200; // мс: дольше = долгое нажатие (пауза), короче = тап
+    // ── Зоны навигации: тач ───────────────────────────────────────────────────
+    // navHandled = true сообщает обработчику overlay.touchend что тап уже обработан.
+    // lastTouchEnd фиксирует время — защита от синтетического click (см. выше).
+    // Если палец сдвинулся дальше порога — это свайп, пусть обрабатывает overlay.
+    navNext.addEventListener('touchend', (e) => {
+      e.stopPropagation();
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(dx) > SWIPE_THRESHOLD || Math.abs(dy) > SWIPE_DOWN_THRESHOLD) return;
 
+      navHandled = true;
+      lastTouchEnd = Date.now();
+      goNext();
+    }, { passive: true });
+
+    navPrev.addEventListener('touchend', (e) => {
+      e.stopPropagation();
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(dx) > SWIPE_THRESHOLD || Math.abs(dy) > SWIPE_DOWN_THRESHOLD) return;
+
+      navHandled = true;
+      lastTouchEnd = Date.now();
+      if (currentIndex === 0) { resumeTimer(); return; }
+      goPrev();
+    }, { passive: true });
+
+    // ── Оверлей: тач ──────────────────────────────────────────────────────────
+
+    // Любое касание → пауза; возобновим в touchend
     overlay.addEventListener('touchstart', (e) => {
       touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
       touchStartTime = Date.now();
-
-      // Любое касание сразу ставит на паузу — возобновим в touchend
       pauseTimer();
     }, { passive: true });
 
     overlay.addEventListener('touchend', (e) => {
+      // Тап уже обработан зоной навигации — сбрасываем флаг и выходим
+      if (navHandled) { navHandled = false; return; }
+
       const dx = e.changedTouches[0].clientX - touchStartX;
       const dy = e.changedTouches[0].clientY - touchStartY;
-      const dt = Date.now() - touchStartTime;
       const absDx = Math.abs(dx);
       const absDy = Math.abs(dy);
 
-      // Приоритет 1: свайп вниз — закрыть просмотрщик
+      // Свайп вниз → закрыть (вертикаль доминирует)
       if (absDy > SWIPE_DOWN_THRESHOLD && dy > 0 && absDy > absDx) {
         closeStories();
         return;
       }
 
-      // Приоритет 2: горизонтальный свайп — навигация
+      // Горизонтальный свайп → навигация (горизонталь доминирует)
       if (absDx > SWIPE_THRESHOLD && absDx > absDy) {
         dx < 0 ? goNext() : goPrev();
         return;
       }
 
-      // Приоритет 3: короткий тап — просто возобновить (пользователь «пробуждает»)
-      // Приоритет 4: долгое нажатие отпущено — тоже возобновить
-      // В обоих случаях действие одинаковое
+      // Обычный тап или отпускание долгого нажатия → возобновить
       resumeTimer();
     }, { passive: true });
 
-    // touchcancel срабатывает, например, при входящем звонке —
-    // возобновляем чтобы сторис не завис навсегда
+    // Тач прерван системой (звонок, уведомление) — не даём сторису зависнуть на паузе
     overlay.addEventListener('touchcancel', resumeTimer);
 
-    // ─── КЛАВИАТУРА ───────────────────────────────────────────────────────────
+    // Блокируем нативный скролл страницы пока открыт оверлей.
+    // passive: false обязателен чтобы preventDefault() сработал.
+    overlay.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+    }, { passive: false });
+
+    // ── Клавиатура ────────────────────────────────────────────────────────────
     document.addEventListener('keydown', (e) => {
-      // Реагируем только когда просмотрщик открыт
       if (!overlay.classList.contains('is-active')) return;
       if (e.key === 'ArrowRight') goNext();
       if (e.key === 'ArrowLeft') goPrev();
       if (e.key === 'Escape') closeStories();
     });
 
-    // ─── КЛИК ПО ФОНУ ─────────────────────────────────────────────────────────
-    // Закрываем если клик пришёл напрямую по оверлею (не по дочернему элементу)
+    // ── Клик по затемнённому фону ─────────────────────────────────────────────
+    // e.target === overlay — клик строго по фону, не по картинке или кнопкам
     overlay.addEventListener('click', (e) => {
       if (e.target === overlay) closeStories();
     });
