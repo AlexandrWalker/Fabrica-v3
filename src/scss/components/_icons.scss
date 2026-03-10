@@ -4,4 +4,5 @@
 [class^="icon-"],
 [class*=" icon-"] {
   transition: all 0.5s ease;
+  flex-shrink: 0;
 }

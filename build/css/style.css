@@ -115,16 +115,16 @@ li:last-child {
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-ExtraBold.woff2") format("woff2"), url("../fonts/Inter-ExtraBold.woff") format("woff");
-  font-weight: 800;
+  src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
+  font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
-  font-weight: 700;
+  src: url("../fonts/Inter-ExtraBold.woff2") format("woff2"), url("../fonts/Inter-ExtraBold.woff") format("woff");
+  font-weight: 800;
   font-style: normal;
 }
 
@@ -139,8 +139,8 @@ li:last-child {
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-Regular.woff2") format("woff2"), url("../fonts/Inter-Regular.woff") format("woff");
-  font-weight: 400;
+  src: url("../fonts/Inter-Light.woff2") format("woff2"), url("../fonts/Inter-Light.woff") format("woff");
+  font-weight: 300;
   font-style: normal;
 }
 
@@ -155,8 +155,8 @@ li:last-child {
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-Light.woff2") format("woff2"), url("../fonts/Inter-Light.woff") format("woff");
-  font-weight: 300;
+  src: url("../fonts/Inter-Regular.woff2") format("woff2"), url("../fonts/Inter-Regular.woff") format("woff");
+  font-weight: 400;
   font-style: normal;
 }
 
@@ -259,22 +259,6 @@ li:last-child {
 @font-face {
   font-family: PlayfairDisplay;
   font-display: swap;
-  src: url("../fonts/PlayfairDisplay-ExtraBold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-ExtraBold.woff") format("woff");
-  font-weight: 800;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: PlayfairDisplay;
-  font-display: swap;
-  src: url("../fonts/PlayfairDisplay-Regular.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Regular.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: PlayfairDisplay;
-  font-display: swap;
   src: url("../fonts/PlayfairDisplay-Bold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Bold.woff") format("woff");
   font-weight: 700;
   font-style: normal;
@@ -283,8 +267,24 @@ li:last-child {
 @font-face {
   font-family: PlayfairDisplay;
   font-display: swap;
+  src: url("../fonts/PlayfairDisplay-ExtraBold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-ExtraBold.woff") format("woff");
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: PlayfairDisplay;
+  font-display: swap;
   src: url("../fonts/PlayfairDisplay-Medium.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Medium.woff") format("woff");
   font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: PlayfairDisplay;
+  font-display: swap;
+  src: url("../fonts/PlayfairDisplay-Regular.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Regular.woff") format("woff");
+  font-weight: 400;
   font-style: normal;
 }
 
@@ -307,16 +307,16 @@ li:last-child {
 @font-face {
   font-family: SFCompact;
   font-display: swap;
-  src: url("../fonts/SFCompact-Heavy.woff2") format("woff2"), url("../fonts/SFCompact-Heavy.woff") format("woff");
-  font-weight: 800;
+  src: url("../fonts/SFCompact-Bold.woff2") format("woff2"), url("../fonts/SFCompact-Bold.woff") format("woff");
+  font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
   font-family: SFCompact;
   font-display: swap;
-  src: url("../fonts/SFCompact-Bold.woff2") format("woff2"), url("../fonts/SFCompact-Bold.woff") format("woff");
-  font-weight: 700;
+  src: url("../fonts/SFCompact-Heavy.woff2") format("woff2"), url("../fonts/SFCompact-Heavy.woff") format("woff");
+  font-weight: 800;
   font-style: normal;
 }
 
@@ -419,14 +419,6 @@ li:last-child {
 @font-face {
   font-family: SFPro;
   font-display: swap;
-  src: url("../fonts/SFPro-UltraLight.woff2") format("woff2"), url("../fonts/SFPro-UltraLight.woff") format("woff");
-  font-weight: 200;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: SFPro;
-  font-display: swap;
   src: url("../fonts/SFPro-SemiBold.woff2") format("woff2"), url("../fonts/SFPro-SemiBold.woff") format("woff");
   font-weight: 600;
   font-style: normal;
@@ -437,6 +429,14 @@ li:last-child {
   font-display: swap;
   src: url("../fonts/SFPro-Thin.woff2") format("woff2"), url("../fonts/SFPro-Thin.woff") format("woff");
   font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: SFPro;
+  font-display: swap;
+  src: url("../fonts/SFPro-UltraLight.woff2") format("woff2"), url("../fonts/SFPro-UltraLight.woff") format("woff");
+  font-weight: 200;
   font-style: normal;
 }
 
@@ -1440,6 +1440,8 @@ body {
 [class*=" icon-"] {
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .layout .container {
@@ -2684,14 +2686,28 @@ body {
   position: relative;
 }
 
+.stories-img-wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
 .stories-img {
   width: 100%;
   height: auto;
   -o-object-fit: contain;
   object-fit: contain;
   display: block;
+  opacity: 0;
   -webkit-transition: opacity 0.25s ease;
   transition: opacity 0.25s ease;
+  margin: auto 0;
+  position: absolute;
+  inset: 0;
+}
+
+.stories-img.is-visible {
+  opacity: 1;
 }
 
 .stories-img.is-loading {
@@ -2843,7 +2859,7 @@ h6,
 p {
   font-weight: 400;
   font-size: 1.2rem;
-  line-height: 120%;
+  line-height: 140%;
 }
 
 /* Modules */
@@ -4276,6 +4292,10 @@ html.popup-open .panel__btn--hidden {
 
 .rules .layout__body {
   gap: 1.5rem;
+}
+
+.slang .layout__body {
+  gap: 2rem;
 }
 
 /* Elements */

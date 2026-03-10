@@ -1,0 +1,8 @@
+@use './../mixins' as *;
+
+.slang {
+
+  .layout__body {
+    gap: 2rem;
+  }
+}
