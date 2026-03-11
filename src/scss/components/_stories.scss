@@ -54,24 +54,11 @@
     background: #fff;
     border-radius: 0.3rem;
     transition: none;
+    animation: none !important;
 
     .stories-progress-item.is-done & {
       width: 100%;
     }
-
-    .stories-progress-item.is-active & {
-      animation: progressFill 5s linear forwards;
-    }
-  }
-}
-
-@keyframes progressFill {
-  from {
-    width: 0%;
-  }
-
-  to {
-    width: 100%;
   }
 }
 
