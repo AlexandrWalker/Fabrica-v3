@@ -131,16 +131,16 @@ li:last-child {
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
-  font-weight: 700;
+  src: url("../fonts/Inter-Light.woff2") format("woff2"), url("../fonts/Inter-Light.woff") format("woff");
+  font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-Light.woff2") format("woff2"), url("../fonts/Inter-Light.woff") format("woff");
-  font-weight: 300;
+  src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
+  font-weight: 700;
   font-style: normal;
 }
 
@@ -267,16 +267,16 @@ li:last-child {
 @font-face {
   font-family: PlayfairDisplay;
   font-display: swap;
-  src: url("../fonts/PlayfairDisplay-Bold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Bold.woff") format("woff");
-  font-weight: 700;
+  src: url("../fonts/PlayfairDisplay-Medium.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Medium.woff") format("woff");
+  font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: PlayfairDisplay;
   font-display: swap;
-  src: url("../fonts/PlayfairDisplay-Medium.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Medium.woff") format("woff");
-  font-weight: 500;
+  src: url("../fonts/PlayfairDisplay-Bold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Bold.woff") format("woff");
+  font-weight: 700;
   font-style: normal;
 }
 
@@ -1484,10 +1484,13 @@ body {
 
 .layout--carousel .card {
   width: 14.4rem;
+  width: 16rem;
 }
 
 .layout--carousel .card__items {
   grid-template-columns: 1fr auto;
+  grid-template-columns: auto auto;
+  gap: 0.5rem;
 }
 
 .layout--first {
@@ -3085,9 +3088,15 @@ p {
   font-weight: 500;
   font-size: 1rem;
   line-height: 120%;
+  white-space: nowrap;
 }
 
 .card__desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-weight: 500;
   font-size: 1rem;
   line-height: 120%;
@@ -3120,10 +3129,15 @@ p {
   align-items: center;
   padding: 0.7rem 1.25rem;
   border-radius: 1.6rem;
-  background-color: var(--white);
+  background-color: var(--green);
   font-weight: 700;
   font-size: 1.2rem;
   line-height: 100%;
+  color: var(--white);
+}
+
+.card__price:hover {
+  background-color: var(--white);
   color: var(--aqua);
 }
 
@@ -3140,6 +3154,11 @@ p {
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
+  background-color: var(--white);
+  color: var(--green);
+}
+
+.card__like:hover {
   background-color: var(--green);
   color: var(--white);
 }
@@ -4608,16 +4627,6 @@ html.popup-open .panel__btn--hidden {
 
   .card__name {
     font-size: 1.4rem;
-  }
-
-  .card__price:hover {
-    background-color: var(--green);
-    color: var(--white);
-  }
-
-  .card__like:hover {
-    background-color: var(--white);
-    color: var(--green);
   }
 
   .header .container {
