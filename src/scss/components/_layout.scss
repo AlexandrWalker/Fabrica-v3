@@ -45,6 +45,7 @@
 
     .card {
       width: 14.4rem;
+      width: 16rem;
 
       @include domd {
         width: calc(25% - (6rem / 4));
@@ -52,6 +53,8 @@
 
       &__items {
         grid-template-columns: 1fr auto;
+        grid-template-columns: auto auto;
+        gap: 0.5rem;
       }
     }
   }

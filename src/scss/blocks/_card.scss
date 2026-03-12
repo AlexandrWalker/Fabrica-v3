@@ -22,8 +22,6 @@
     transition: all 0.3s ease;
   }
 
-  &__head {}
-
   &__tags {
     display: flex;
     flex-direction: column;
@@ -158,10 +156,17 @@
       font-weight: 500;
       font-size: 1rem;
       line-height: 120%;
+      white-space: nowrap;
     }
   }
 
   &__desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
     font-weight: 500;
     font-size: 1rem;
     line-height: 120%;
@@ -181,19 +186,16 @@
     align-items: center;
     padding: 0.7rem 1.25rem;
     border-radius: 1.6rem;
-    background-color: var(--white);
+    background-color: var(--green);
 
     font-weight: 700;
     font-size: 1.2rem;
     line-height: 100%;
-    color: var(--aqua);
+    color: var(--white);
 
     &:hover {
-
-      @include domd {
-        background-color: var(--green);
-        color: var(--white);
-      }
+      background-color: var(--white);
+      color: var(--aqua);
     }
   }
 
@@ -204,16 +206,14 @@
     width: 3rem;
     height: 3rem;
     border-radius: 50%;
-    background-color: var(--green);
+    background-color: var(--white);
 
-    color: var(--white);
+    color: var(--green);
 
     &:hover {
+      background-color: var(--green);
 
-      @include domd {
-        background-color: var(--white);
-        color: var(--green);
-      }
+      color: var(--white);
     }
 
     i {
