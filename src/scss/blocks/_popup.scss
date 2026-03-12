@@ -92,6 +92,28 @@
       left: 50%;
       transform: translateX(-50%);
     }
+
+    .popup__close {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 50%;
+      background-color: var(--green-30);
+
+      font-size: 2.4rem;
+      color: var(--white);
+
+      position: absolute;
+      top: 50%;
+      right: var(--container-padding);
+      transform: translateY(-50%);
+
+      .html-not-touched & {
+        display: flex;
+      }
+    }
   }
 
   &.favorite {

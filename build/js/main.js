@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+  const checkEditMode = document.querySelector('.bx-panel-toggle-on') ?? null;
+
   // Глобальные константы
   // Длительность плавного скролла страницы (мс) - используется в smoothScrollTo
   const SCROLL_DURATION = 1500;
@@ -73,6 +75,109 @@ document.addEventListener('DOMContentLoaded', () => {
     // Позиция скролла страницы в момент открытия первого попапа.
     // Нужна для корректного восстановления после снятия класса no-scroll.
     let scrollY = 0;
+
+    // ─── Определение поддержки тач-устройств ────────────────────────────────────
+
+    /**
+     * Флаг: было ли зафиксировано хотя бы одно касание (touchstart).
+     *
+     * Используется для различия двух сценариев:
+     * - true  → устройство поддерживает touch (смартфон, планшет, тачпад в DevTools)
+     * - false → touch не обнаружен (обычный браузер без тачпада)
+     *
+     * Флаг устанавливается один раз при первом touchstart и дальше не сбрасывается.
+     */
+    let hasTouchSupport = false;
+
+    /**
+     * Обновляет класс `html-not-touched` на теге <html>.
+     *
+     * Логика:
+     * - Если touch НЕ поддерживается → добавляем класс `html-not-touched`
+     * - Если touch поддерживается    → убираем класс `html-not-touched`
+     *
+     * Вызывается:
+     * 1. При инициализации — чтобы сразу установить корректное состояние
+     * 2. При первом touchstart — когда обнаруживаем реальный тач
+     * 3. При изменении mediaQuery pointer:coarse — когда среда меняется
+     *    (например, пользователь закрыл DevTools с эмуляцией мобильного)
+     */
+    function updateTouchClass() {
+      document.documentElement.classList.toggle('html-not-touched', !hasTouchSupport);
+    }
+
+    /**
+     * Проверяет поддержку touch через Media Query `pointer: coarse`.
+     *
+     * `pointer: coarse` означает, что основной указатель — неточный (палец).
+     * Это верно для смартфонов, планшетов и DevTools с эмуляцией мобильного.
+     * На десктопе без тачпада — `pointer: fine` (мышь).
+     *
+     * Почему именно это медиавыражение:
+     * - `window.ontouchstart` и `navigator.maxTouchPoints` не меняются динамически
+     *   при переключении DevTools, поэтому ненадёжны для нашей задачи.
+     * - MediaQueryList.addEventListener('change') — единственный способ поймать
+     *   момент, когда браузер «теряет» эмуляцию тача (закрытие DevTools).
+     */
+    const pointerCoarseQuery = window.matchMedia('(pointer: coarse)');
+
+    /**
+     * Обработчик изменения медиавыражения `pointer: coarse`.
+     *
+     * Срабатывает когда:
+     * - Пользователь открыл DevTools и включил эмуляцию мобильного (matches = true)
+     * - Пользователь закрыл DevTools или выключил эмуляцию (matches = false)
+     * - На реальном устройстве — не срабатывает (среда не меняется)
+     *
+     * @param {MediaQueryListEvent} e - событие изменения медиавыражения
+     */
+    function onPointerTypeChange(e) {
+      // Обновляем флаг в соответствии с текущим состоянием pointer
+      hasTouchSupport = e.matches;
+      updateTouchClass();
+    }
+
+    // Подписываемся на изменения pointer: coarse.
+    // Это позволяет реагировать на включение/выключение эмуляции в DevTools.
+    pointerCoarseQuery.addEventListener('change', onPointerTypeChange);
+
+    /**
+     * Инициализация начального состояния touch-флага.
+     *
+     * Проверяем сразу два признака:
+     * 1. `pointerCoarseQuery.matches` — текущее значение pointer: coarse
+     *    (true на смартфонах, планшетах и в DevTools с мобильной эмуляцией)
+     * 2. `navigator.maxTouchPoints > 0` — браузер сообщает о наличии точек касания.
+     *    Нужен как дополнительная проверка для браузеров, которые не поддерживают
+     *    pointer media query (старые версии Safari, некоторые Android-браузеры).
+     *
+     * Оба условия через || (ИЛИ): достаточно одного совпадения.
+     */
+    hasTouchSupport = pointerCoarseQuery.matches || navigator.maxTouchPoints > 0;
+
+    /**
+     * Страховочный слушатель touchstart на случай, если медиавыражение
+     * и maxTouchPoints не дали правильного результата.
+     *
+     * Некоторые устройства (гибриды ноутбук + тачскрин) могут иметь
+     * pointer: fine (мышь как основной указатель), но при этом поддерживать
+     * тач. Первый реальный touchstart — неоспоримое доказательство.
+     *
+     * { once: true } — слушатель автоматически удаляется после первого вызова,
+     * так как повторное срабатывание не нужно.
+     */
+    document.addEventListener('touchstart', () => {
+      if (!hasTouchSupport) {
+        // Зафиксировали реальный тач — обновляем флаг и класс
+        hasTouchSupport = true;
+        updateTouchClass();
+      }
+    }, { once: true, passive: true });
+
+    // Устанавливаем начальное состояние класса сразу при загрузке скрипта
+    updateTouchClass();
+
+    // ─── Конец блока определения тач-устройств ──────────────────────────────────
 
     // Вспомогательные функции
 
@@ -1826,6 +1931,42 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 150);
     });
 
+  })();
+
+  /**
+   * ПРИСВОЕНИЕ АКТИВНОГО КЛАССА ДЛЯ LIKE
+   * 
+   * Присваивает активный класс при клике. При повторном клике снимает класс.
+   */
+  (function () {
+    const cardLikes = document.querySelectorAll('.card__like');
+
+    cardLikes.forEach(item => {
+      let isTouched = false;
+
+      const stopBubbling = (e) => {
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+      };
+
+      item.addEventListener('touchstart', stopBubbling, { passive: false });
+
+      item.addEventListener('touchend', (e) => {
+        stopBubbling(e);
+        isTouched = true;
+        item.classList.toggle('like-is-active');
+
+        // Сбрасываем флаг после задержки синтетического click
+        setTimeout(() => { isTouched = false; }, 500);
+      }, { passive: false });
+
+      item.addEventListener('click', (e) => {
+        stopBubbling(e);
+        if (!isTouched) {
+          item.classList.toggle('like-is-active');
+        }
+      });
+    });
   })();
 
   /**
