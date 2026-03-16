@@ -2014,8 +2014,8 @@ document.addEventListener('DOMContentLoaded', () => {
     logoWhite.onerror = onImageLoaded;
     logoCyan.onerror = onImageLoaded;
 
-    logoWhite.src = './../images/logo/preloader-logo-white.svg';
-    logoCyan.src = './../images/logo/preloader-logo-cyan.svg';
+    logoWhite.src = './Fabrica-v3/images/logo/preloader-logo-white.svg';
+    logoCyan.src = './Fabrica-v3/images/logo/preloader-logo-cyan.svg';
 
     function draw() {
       ctx.clearRect(0, 0, logoWidth, logoHeight);
