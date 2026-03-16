@@ -9,6 +9,7 @@ html {
 
   // scroll-behavior: smooth;
   scroll-padding-top: 16.5rem;
+  background-color: var(--white);
 
   @include domd {
     --refRes: 1920;

@@ -1968,6 +1968,142 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
   /**
+   * Прелоадер
+   */
+  (function () {
+    document.body.classList.add('no-scroll');
+
+    var safetyTimer = setTimeout(function () {
+      var preloader = document.querySelector('.preloader');
+      if (preloader && preloader.style.display !== 'none') {
+        preloader.style.display = 'none';
+        restoreScroll();
+      }
+    }, 8000);
+
+    function restoreScroll() {
+      document.body.classList.remove('no-scroll');
+    }
+
+    var canvas = document.getElementById('logo-canvas');
+    var ctx = canvas.getContext('2d');
+
+    var logoWidth = 185;
+    var logoHeight = 179;
+
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = logoWidth * dpr;
+    canvas.height = logoHeight * dpr;
+    ctx.scale(dpr, dpr);
+
+    var fillHeight = 0;
+
+    var logoWhite = new Image();
+    var logoCyan = new Image();
+    var loadedImages = 0;
+
+    function onImageLoaded() {
+      loadedImages++;
+      if (loadedImages === 2) {
+        startPreloader();
+      }
+    }
+
+    logoWhite.onload = onImageLoaded;
+    logoCyan.onload = onImageLoaded;
+    logoWhite.onerror = onImageLoaded;
+    logoCyan.onerror = onImageLoaded;
+
+    logoWhite.src = './../images/logo/preloader-logo-white.svg';
+    logoCyan.src = './../images/logo/preloader-logo-cyan.svg';
+
+    function draw() {
+      ctx.clearRect(0, 0, logoWidth, logoHeight);
+
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.drawImage(logoWhite, 0, 0, logoWidth, logoHeight);
+
+      ctx.globalCompositeOperation = 'source-atop';
+      ctx.fillStyle = '#06A5AA';
+
+      var rectY = logoHeight - fillHeight;
+      ctx.fillRect(0, rectY, logoWidth, fillHeight);
+
+      ctx.globalCompositeOperation = 'source-over';
+    }
+
+    function startPreloader() {
+      draw();
+
+      var progress = { val: 0 };
+
+      gsap.to(progress, {
+        val: 30,
+        duration: 0.4,
+        ease: 'power2.out',
+        onUpdate: function () {
+          fillHeight = (progress.val / 100) * logoHeight;
+          draw();
+        }
+      });
+
+      gsap.to(progress, {
+        val: 85,
+        duration: 2.5,
+        ease: 'power1.out',
+        delay: 0.4,
+        onUpdate: function () {
+          fillHeight = (progress.val / 100) * logoHeight;
+          draw();
+        }
+      });
+
+      window.addEventListener('load', function () {
+
+        gsap.killTweensOf(progress);
+
+        gsap.to(progress, {
+          val: 100,
+          duration: 0.4,
+          ease: 'power2.out',
+          onUpdate: function () {
+            fillHeight = (progress.val / 100) * logoHeight;
+            draw();
+          },
+          onComplete: function () {
+            setTimeout(hidePreloader, 600);
+          }
+        });
+      });
+    }
+
+    function hidePreloader() {
+      var preloader = document.querySelector('.preloader');
+
+      gsap.set(canvas, { opacity: 0 });
+
+      gsap.to(preloader, {
+        scaleY: 0,
+        duration: 0.7,
+        ease: 'power2.inOut',
+        transformOrigin: 'top center',
+        onComplete: function () {
+          preloader.style.display = 'none';
+          restoreScroll();
+        }
+      });
+
+      gsap.to(canvas, {
+        scaleY: 2,
+        duration: 0.7,
+        ease: 'power2.inOut',
+        transformOrigin: 'bottom center'
+      });
+    }
+
+  })();
+
+  /**
    * УВЕДОМЛЕНИЕ О COOKIE (.plate-cookie)                           
    *    
    * Показывает плашку если cookie COOKIE_ACCEPT ≠ '1'.            
