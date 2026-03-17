@@ -1,3 +1,21 @@
 @use './../mixins' as *;
 
-.loyalty {}
+.loyalty {
+
+  .layout__inner {
+    padding-bottom: 8rem;
+  }
+
+  .layout__body {
+    gap: 2rem;
+  }
+
+  .layout__block-text {
+    gap: 1.5rem;
+
+    span {
+      font-style: italic;
+      color: var(--green);
+    }
+  }
+}

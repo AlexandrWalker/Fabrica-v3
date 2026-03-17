@@ -10,7 +10,7 @@
       <div class="layout" data-popup-scroll>
         <div class="container">
           <div class="layout__inner">
-            <div class="layout__head">
+            <div class="layout__head layout__head--sticky">
               <!-- <div class="layout__head-cover">
                 <img src="./../../images/temp/dish-img.png" alt="">
               </div> -->
@@ -186,44 +186,44 @@
                     </ul>
                   </div>
                 </div>
-                <div class="layout__btns">
-                  <button class="layout__btn btn btn--green" data-popup-target="favorite">
-                    <i class="icon-like"></i>
-                    Нравится
-                  </button>
-                  <button class="layout__btn btn" data-popup-target="reviewsWrite">
-                    Оставить отзыв
-                  </button>
+              </div>
+            </div>
+          </div>
+          <div class="layout__btns">
+            <button class="layout__btn btn btn--green" data-popup-target="favorite">
+              <i class="icon-like"></i>
+              Нравится
+            </button>
+            <button class="layout__btn btn" data-popup-target="reviewsWrite">
+              Оставить отзыв
+            </button>
+          </div>
+          <div class="layout__banner">
+            <div class="layout__head">
+              <div class="layout__head-title">
+                <h2>
+                  Выгодное комбо
+                </h2>
+              </div>
+            </div>
+            <div class="layout__body">
+              <div class="layout__banner-link" data-popup-target="offersInner">
+                <img src="./../../images/temp/banner-1.png" alt="">
+                <i class="icon-chevron-right"></i>
+              </div>
+            </div>
+          </div>
+          <div class="layout layout--carousel">
+            <div class="layout__inner">
+              <div class="layout__head">
+                <div class="layout__title">
+                  <h2>
+                    Вам понравится
+                  </h2>
                 </div>
               </div>
-              <div class="layout__banner">
-                <div class="layout__head">
-                  <div class="layout__head-title">
-                    <h2>
-                      Выгодное комбо
-                    </h2>
-                  </div>
-                </div>
-                <div class="layout__body">
-                  <div class="layout__banner-link" data-popup-target="offersInner">
-                    <img src="./../../images/temp/banner-1.png" alt="">
-                    <i class="icon-chevron-right"></i>
-                  </div>
-                </div>
-              </div>
-              <div class="layout layout--carousel">
-                <div class="layout__inner">
-                  <div class="layout__head">
-                    <div class="layout__title">
-                      <h2>
-                        Вам понравится
-                      </h2>
-                    </div>
-                  </div>
-                  <div class="layout__items">
-                    @@loop('./../elements/card-item.html', './data/card-items.json')
-                  </div>
-                </div>
+              <div class="layout__items">
+                @@loop('./../elements/card-item.html', './data/card-items.json')
               </div>
             </div>
           </div>

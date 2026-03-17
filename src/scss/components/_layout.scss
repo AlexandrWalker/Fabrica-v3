@@ -85,7 +85,6 @@
   &__title {
 
     span {
-      // font-style: italic;
       color: var(--red);
     }
   }
@@ -94,6 +93,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+
     position: relative;
 
     &-title {
@@ -112,7 +112,8 @@
     }
 
     &-slide {
-      
+      height: 100%;
+
       img {
         width: 100%;
         height: 100%;

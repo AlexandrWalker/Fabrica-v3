@@ -116,6 +116,14 @@ li:last-child {
 @font-face {
   font-family: Inter;
   font-display: swap;
+  src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Inter;
+  font-display: swap;
   src: url("../fonts/Inter-ExtraBold.woff2") format("woff2"), url("../fonts/Inter-ExtraBold.woff") format("woff");
   font-weight: 800;
   font-style: normal;
@@ -126,14 +134,6 @@ li:last-child {
   font-display: swap;
   src: url("../fonts/Inter-ExtraLight.woff2") format("woff2"), url("../fonts/Inter-ExtraLight.woff") format("woff");
   font-weight: 200;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: Inter;
-  font-display: swap;
-  src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
-  font-weight: 700;
   font-style: normal;
 }
 
@@ -260,6 +260,14 @@ li:last-child {
 @font-face {
   font-family: PlayfairDisplay;
   font-display: swap;
+  src: url("../fonts/PlayfairDisplay-Bold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: PlayfairDisplay;
+  font-display: swap;
   src: url("../fonts/PlayfairDisplay-ExtraBold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-ExtraBold.woff") format("woff");
   font-weight: 800;
   font-style: normal;
@@ -270,14 +278,6 @@ li:last-child {
   font-display: swap;
   src: url("../fonts/PlayfairDisplay-Medium.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Medium.woff") format("woff");
   font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: PlayfairDisplay;
-  font-display: swap;
-  src: url("../fonts/PlayfairDisplay-Bold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Bold.woff") format("woff");
-  font-weight: 700;
   font-style: normal;
 }
 
@@ -1403,9 +1403,9 @@ body {
   height: 1.6rem;
   border-radius: 50%;
   border: 0.1rem solid var(--green);
-  position: relative;
   -ms-flex-negative: 0;
   flex-shrink: 0;
+  position: relative;
 }
 
 .form-checkbox--item::before {
@@ -1416,6 +1416,12 @@ body {
   background-color: var(--green);
   -ms-flex-negative: 0;
   flex-shrink: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .form-checkbox--item::after {
@@ -1424,16 +1430,16 @@ body {
   height: 0.8rem;
   border-radius: 50%;
   background-color: var(--white);
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
   position: absolute;
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  -webkit-transition: all 0.3s ease;
-  transition: all 0.3s ease;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
 }
 
 /* Стили для иконок */
@@ -1545,6 +1551,10 @@ body {
   overflow: hidden;
   width: 100%;
   height: 24.8rem;
+}
+
+.layout__head-slide {
+  height: 100%;
 }
 
 .layout__head-slide img {
@@ -2902,7 +2912,7 @@ p {
   scroll-snap-align: center;
   -ms-flex-negative: 0;
   flex-shrink: 0;
-  min-height: 30.3rem;
+  height: auto;
   border-radius: 1.6rem;
   overflow: hidden;
   background: var(--bg);
@@ -2946,7 +2956,7 @@ p {
   align-items: center;
   gap: 0.2rem;
   border-radius: 1.6rem;
-  padding: 0.6rem 0.55rem;
+  padding: 0.4rem 0.55rem;
   background-color: var(--aqua);
   width: -webkit-fit-content;
   width: -moz-fit-content;
@@ -3159,8 +3169,7 @@ p {
   color: var(--green);
 }
 
-.card__like.like-is-active,
-.card__like:hover {
+.card__like.like-is-active {
   background-color: var(--green);
   color: var(--white);
 }
@@ -3226,6 +3235,49 @@ p {
   text-decoration: none;
 }
 
+.dish .container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.dish .layout__head--sticky {
+  position: sticky;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.dish .layout__head--sticky::before {
+  content: "";
+  width: calc(100% + var(--container-padding) * 2);
+  height: var(--container-padding);
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0rem, transparent), to(var(--white)));
+  background: linear-gradient(to top, transparent 0rem, var(--white) var(--container-padding));
+  pointer-events: none;
+  position: absolute;
+  bottom: calc(var(--container-padding) * -1);
+  left: calc(var(--container-padding) * -1);
+  z-index: 2;
+}
+
+.dish .layout__head--sticky::after {
+  content: "";
+  display: block;
+  width: calc(100% + var(--container-padding) * 2);
+  height: calc(100% + var(--container-padding));
+  background-color: var(--white);
+  pointer-events: none;
+  position: absolute;
+  inset: calc(var(--container-padding) * -1);
+}
+
 .dish .layout__head-cover {
   width: calc(100% + var(--container-padding) * 2);
   height: 26.8rem;
@@ -3266,8 +3318,37 @@ p {
   font-weight: 700;
 }
 
+.favorite .card__like {
+  background-color: var(--green);
+}
+
+.favorite .card__like i {
+  font-weight: 700;
+  font-size: 2.2rem;
+  color: var(--white);
+}
+
+.favorite .card__like i::before {
+  content: "\e906";
+}
+
 .filter .layout__inner {
-  padding-bottom: 8rem;
+  padding-bottom: 14rem;
+}
+
+.filter .layout__foot {
+  height: calc(var(--panel-height) + 15rem);
+}
+
+.filter .layout__foot-inner {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.filter .btn--remove {
+  font-weight: 700;
 }
 
 .filter .popup__wrap {
@@ -3360,6 +3441,10 @@ p {
   right: 0;
   left: 0;
   z-index: 1000;
+}
+
+.popup-open .header {
+  background-color: transparent;
 }
 
 .header-out:not(.popup-open) .header {
@@ -3504,6 +3589,23 @@ p {
   object-fit: contain;
 }
 
+.loyalty .layout__inner {
+  padding-bottom: 8rem;
+}
+
+.loyalty .layout__body {
+  gap: 2rem;
+}
+
+.loyalty .layout__block-text {
+  gap: 1.5rem;
+}
+
+.loyalty .layout__block-text span {
+  font-style: italic;
+  color: var(--green);
+}
+
 .menu .popup__wrap {
   background-image: url(./../images/temp/menu-bg.png);
 }
@@ -3563,7 +3665,6 @@ p {
   font-weight: 800;
   font-size: 1.4rem;
   line-height: 100%;
-  color: var(--green);
 }
 
 .nav__slider {

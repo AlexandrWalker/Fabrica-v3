@@ -3,8 +3,20 @@
   .layout {
 
     &__inner {
-      padding-bottom: 8rem;
+      padding-bottom: 14rem;
     }
+
+    &__foot {
+      height: calc(var(--panel-height) + 15rem);
+
+      &-inner {
+        flex-direction: column;
+      }
+    }
+  }
+
+  .btn--remove {
+    font-weight: 700;
   }
 
   .popup__wrap {

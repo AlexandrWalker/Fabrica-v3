@@ -2,9 +2,48 @@
 
 .dish {
 
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
   .layout {
 
     &__head {
+
+      &--sticky {
+        position: sticky;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1;
+
+        &::before {
+          content: "";
+          width: calc(100% + (var(--container-padding) * 2));
+          height: var(--container-padding);
+          background: linear-gradient(to top, transparent 0rem, var(--white) var(--container-padding));
+          pointer-events: none;
+
+          position: absolute;
+          bottom: calc(var(--container-padding) * -1);
+          left: calc(var(--container-padding) * -1);
+          z-index: 2;
+        }
+
+        &::after {
+          content: "";
+          display: block;
+          width: calc(100% + (var(--container-padding) * 2));
+          height: calc(100% + var(--container-padding));
+          background-color: var(--white);
+          pointer-events: none;
+
+          position: absolute;
+          inset: calc(var(--container-padding) * -1);
+        }
+      }
 
       &-cover {
         // width: 100vw;

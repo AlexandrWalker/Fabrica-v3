@@ -317,8 +317,9 @@
       height: 1.6rem;
       border-radius: 50%;
       border: 0.1rem solid var(--green);
-      position: relative;
       flex-shrink: 0;
+
+      position: relative;
 
       &::before {
         content: "";
@@ -327,6 +328,11 @@
         border-radius: 50%;
         background-color: var(--green);
         flex-shrink: 0;
+
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
       }
 
       &::after {
@@ -335,12 +341,13 @@
         height: 0.8rem;
         border-radius: 50%;
         background-color: var(--white);
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        transition: all 0.3s ease;
-        flex-shrink: 0;
       }
     }
   }

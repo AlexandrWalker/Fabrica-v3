@@ -14,6 +14,10 @@
   left: 0;
   z-index: 1000;
 
+  .popup-open & {
+    background-color: transparent;
+  }
+
   .header-out:not(.popup-open) & {
     top: calc(var(--header-height) * -1);
   }
