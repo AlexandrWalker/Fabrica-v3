@@ -413,46 +413,111 @@ document.addEventListener('DOMContentLoaded', () => {
     // Свайп вниз для закрытия
 
     /**
-     * Закрытие попапа свайпом вниз.
-     *
-     * Логика:
-     * - touchstart - запоминаем стартовую Y-координату пальца
-     * - touchmove  - смещаем попап вслед за пальцем, затемняем оверлей пропорционально
-     * - touchend   - если смещение > 120px или скорость > 0.6px/мс -- закрываем,
-     *                иначе возвращаем на место (пружина)
-     *
-     * Исключения (не перехватываем жест):
-     * - тач внутри .swiper - Swiper обрабатывает его сам
-     * - тач на прокручиваемом контенте ([data-popup-scroll]) если уже проскроллен вниз
-     *
-     * Направление тача намеренно не фильтруется в touchmove (passive: true),
-     * поэтому попап следует за пальцем только вниз (Math.max(0, delta)).
-     */
+ * Закрытие попапа свайпом вниз.
+ *
+ * Логика:
+ * - touchstart - запоминаем стартовую Y-координату пальца
+ * - touchmove  - смещаем попап вслед за пальцем, затемняем оверлей пропорционально
+ * - touchend   - если смещение > 120px или скорость > 0.6px/мс -- закрываем,
+ *                иначе возвращаем на место (пружина)
+ *
+ * Исключения (не перехватываем жест):
+ * - тач на прокручиваемом контенте ([data-popup-scroll]) если уже проскроллен вниз
+ *
+ * Слайдер (.swiper):
+ * - горизонтальный свайп над слайдером -- попап не реагирует, Swiper работает нативно
+ * - вертикальный свайп над слайдером -- попап реагирует, Swiper блокируется
+ *
+ * Направление определяется однократно после первого смещения > 10px.
+ * Порог 10px -- стандарт тач-библиотек (Hammer.js, Swiper), компенсирует
+ * естественное дрожание пальца на iOS и небольшую задержку touchmove на Android.
+ */
     document.addEventListener('touchstart', e => {
       const popup = e.target.closest('.popup');
 
       // Реагируем только на тач внутри верхнего (активного) попапа
       if (!popup || stack[stack.length - 1] !== popup) return;
 
-      // Swiper управляет своими тачами самостоятельно - не вмешиваемся
-      if (e.target.closest('.swiper')) return;
-
       // Если пользователь уже проскроллил контент вниз - не перехватываем,
       // иначе закрытие будет срабатывать вместо скролла вверх
       const scrollParent = e.target.closest('[data-popup-scroll]');
       if (scrollParent && scrollParent.scrollTop > 0) return;
 
+      const startX = e.touches[0].clientX;
       const startY = e.touches[0].clientY;
       let lastY = startY;
       const startTime = performance.now();
 
       /**
+       * Флаг направления жеста. Определяется однократно после первого значимого
+       * смещения и не меняется до touchend.
+       *
+       * null         - направление ещё не определено
+       * 'horizontal' - горизонтальный жест: попап не реагирует, Swiper работает нативно
+       * 'vertical'   - вертикальный жест: попап реагирует, Swiper блокируется через stopPropagation
+       *
+       * Почему stopPropagation, а не preventDefault:
+       * - listener зарегистрирован с passive:true, preventDefault будет проигнорирован
+       *   и выбросит предупреждение в консоль
+       * - stopPropagation останавливает всплытие к Swiper, но не блокирует нативный скролл
+       * - iOS и Android одинаково корректно реагируют на stopPropagation в passive-листенере
+       */
+      let gestureDirection = null;
+
+      /**
+       * Флаг: определено ли направление как вертикальное.
+       * Кэшируем отдельно чтобы не сравнивать строки на каждый touchmove.
+       */
+      let isVertical = false;
+
+      /**
+       * Флаг: находится ли тач внутри .swiper.
+       * Вычисляется один раз в touchstart -- дешевле чем closest на каждый touchmove.
+       */
+      const isInsideSwiper = !!e.target.closest('.swiper');
+
+      /**
        * Обновляет позицию попапа и прозрачность оверлея в реальном времени.
        * Вызывается при каждом движении пальца.
+       *
+       * Если тач внутри .swiper -- сначала определяем направление:
+       * - горизонталь: выходим, Swiper обрабатывает жест нативно
+       * - вертикаль: блокируем Swiper через stopPropagation, двигаем попап
+       *
+       * Если тач вне .swiper -- двигаем попап сразу, без определения направления.
+       *
+       * iOS: touchmove может прийти с минимальным смещением сразу после touchstart,
+       * порог 10px исключает ложное определение направления в этот момент.
+       * Android: touchmove иногда приходит с небольшой задержкой, порог компенсирует это.
        */
       function onMove(ev) {
+        const currentX = ev.touches[0].clientX;
+        const currentY = ev.touches[0].clientY;
+
+        // Определяем направление только если тач внутри Swiper
+        if (isInsideSwiper) {
+          if (gestureDirection === null) {
+            const dx = Math.abs(currentX - startX);
+            const dy = Math.abs(currentY - startY);
+
+            // Ждём пока смещение не превысит порог - иначе направление ненадёжно
+            if (dx < 10 && dy < 10) return;
+
+            gestureDirection = dx > dy ? 'horizontal' : 'vertical';
+            isVertical = gestureDirection === 'vertical';
+          }
+
+          // Горизонтальный жест над Swiper -- попап не реагирует
+          if (!isVertical) return;
+
+          // Вертикальный жест над Swiper -- блокируем всплытие к Swiper.
+          // Swiper слушает touchmove на своём контейнере, stopPropagation
+          // не даст событию до него дойти.
+          ev.stopPropagation();
+        }
+
         // Math.max(0) запрещает тянуть попап вверх (только вниз)
-        const delta = Math.max(0, ev.touches[0].clientY - startY);
+        const delta = Math.max(0, currentY - startY);
 
         // Отключаем transition во время тяги - попап должен следовать мгновенно
         popup.style.transition = 'none';
@@ -461,13 +526,23 @@ document.addEventListener('DOMContentLoaded', () => {
         // Оверлей темнеет -- светлеет пропорционально смещению (от 1 до 0)
         overlay.style.opacity = 1 - Math.min(delta / popup.offsetHeight, 1);
 
-        lastY = ev.touches[0].clientY;
+        lastY = currentY;
       }
 
       /**
        * Определяет исход свайпа: закрыть попап или вернуть на место.
+       *
+       * Если жест был горизонтальным (isInsideSwiper && !isVertical) --
+       * попап не двигался, ничего восстанавливать не нужно.
        */
       function onEnd() {
+        // Горизонтальный жест над Swiper -- попап не трогали, просто снимаем листенеры
+        if (isInsideSwiper && gestureDirection === 'horizontal') {
+          document.removeEventListener('touchmove', onMove);
+          document.removeEventListener('touchend', onEnd);
+          return;
+        }
+
         const delta = lastY - startY;
         const velocity = delta / (performance.now() - startTime); // px/мс
 
@@ -643,7 +718,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resistanceRatio: 0.4,
         centeredSlides: false,
         centeredSlidesBounds: true,
-        loop: true,      // бесконечная прокрутка
+        loop: true, // бесконечная прокрутка
         simulateTouch: true,
         watchOverflow: true,
         direction: 'horizontal',
@@ -653,7 +728,7 @@ document.addEventListener('DOMContentLoaded', () => {
         threshold: 8,
         touchAngle: 25,
         freeMode: {
-          enabled: false,             // выключен: слайды защёлкиваются на каждом
+          enabled: false, // выключен: слайды защёлкиваются на каждом
           momentum: true,
           momentumRatio: 0.85,
           momentumVelocityRatio: 1,
@@ -668,7 +743,7 @@ document.addEventListener('DOMContentLoaded', () => {
         pagination: {
           // Ищем пагинацию внутри конкретного экземпляра слайдера
           el: layoutSwiper.querySelector('.swiper-pagination'),
-          clickable: true,           // точки кликабельны
+          clickable: true, // точки кликабельны
         },
       });
     });
@@ -1632,6 +1707,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Клик по фону оверлея (вне контента) - закрыть
     overlay.addEventListener('click', e => {
       if (e.target === overlay) closeStories();
+    });
+
+    document.addEventListener('stories:open', e => {
+      const index = e.detail?.index ?? 0;
+      openStories(index);
+    });
+
+    // Открытие сторисов через data-атрибут на любом элементе страницы
+    // <div data-stories-open="0"> откроет с первого сториса
+    // <div data-stories-open="2"> откроет с третьего
+    document.querySelectorAll('[data-stories-open]').forEach(el => {
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', () => {
+        const index = parseInt(el.dataset.storiesOpen, 10) || 0;
+        openStories(index);
+      });
     });
 
   })();

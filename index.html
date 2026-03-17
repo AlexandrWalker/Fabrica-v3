@@ -112,7 +112,6 @@
     </div>
   </div>
 </header>
-
     <!-- Попапы -->
     <!-- Меню -->
     <div id="menu" class="menu popup" data-lenis-prevent>
@@ -174,7 +173,7 @@
                     <i class="icon-menu-loyalty-system"></i>
                   </div>
                   <div class="menu__item-title">
-                    Система лояльности
+                    Система лояльности (регистрация)
                   </div>
                 </div>
                 <div class="menu__item" data-popup-target="contacts">
@@ -216,7 +215,7 @@
       <div class="layout" data-popup-scroll>
         <div class="container">
           <div class="layout__inner">
-            <div class="layout__head">
+            <div class="layout__head layout__head--sticky">
               <!-- <div class="layout__head-cover">
                 <img src="./images/temp/dish-img.png" alt="">
               </div> -->
@@ -392,42 +391,44 @@
                     </ul>
                   </div>
                 </div>
-                <div class="layout__btns">
-                  <button class="layout__btn btn btn--green" data-popup-target="favorite">
-                    <i class="icon-like"></i>
-                    Нравится
-                  </button>
-                  <button class="layout__btn btn" data-popup-target="reviewsWrite">
-                    Оставить отзыв
-                  </button>
+              </div>
+            </div>
+          </div>
+          <div class="layout__btns">
+            <button class="layout__btn btn btn--green" data-popup-target="favorite">
+              <i class="icon-like"></i>
+              Нравится
+            </button>
+            <button class="layout__btn btn" data-popup-target="reviewsWrite">
+              Оставить отзыв
+            </button>
+          </div>
+          <div class="layout__banner">
+            <div class="layout__head">
+              <div class="layout__head-title">
+                <h2>
+                  Выгодное комбо
+                </h2>
+              </div>
+            </div>
+            <div class="layout__body">
+              <div class="layout__banner-link" data-popup-target="offersInner">
+                <img src="./images/temp/banner-1.png" alt="">
+                <i class="icon-chevron-right"></i>
+              </div>
+            </div>
+          </div>
+          <div class="layout layout--carousel">
+            <div class="layout__inner">
+              <div class="layout__head">
+                <div class="layout__title">
+                  <h2>
+                    Вам понравится
+                  </h2>
                 </div>
               </div>
-              <div class="layout__banner">
-                <div class="layout__head">
-                  <div class="layout__head-title">
-                    <h2>
-                      Выгодное комбо
-                    </h2>
-                  </div>
-                </div>
-                <div class="layout__body">
-                  <div class="layout__banner-link" data-popup-target="offersInner">
-                    <img src="./images/temp/banner-1.png" alt="">
-                    <i class="icon-chevron-right"></i>
-                  </div>
-                </div>
-              </div>
-              <div class="layout layout--carousel">
-                <div class="layout__inner">
-                  <div class="layout__head">
-                    <div class="layout__title">
-                      <h2>
-                        Вам понравится
-                      </h2>
-                    </div>
-                  </div>
-                  <div class="layout__items">
-                    <div class="card" data-popup-target="dish">
+              <div class="layout__items">
+                <div class="card" data-popup-target="dish">
   <div class="card__head">
     <div class="card__tags">
       <div class="card__tags-item card__tags-top"><i class="icon-top"></i>Топчик</div><div class="card__tags-item card__tags-hot"><i class="icon-hot"></i>Островато</div>
@@ -664,8 +665,6 @@
     </div>
   </div>
 </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -829,6 +828,9 @@
               <div class="layout__foot-inner">
                 <button class="btn btn--green">
                   Показать (10)
+                </button>
+                <button class="btn btn--remove">
+                  Сбросить фильтр
                 </button>
               </div>
             </div>
@@ -1279,7 +1281,7 @@
     <!-- Программа лояльности -->
     <div id="loyalty" class="loyalty popup" data-lenis-prevent>
   <div class="popup__wrap">
-        <div class="popup__area" data-popup-head>
+    <div class="popup__area" data-popup-head>
       <div class="popup__close">
         <i class="icon-close"></i>
       </div>
@@ -1308,6 +1310,15 @@
                       Возврат части стоимости заказов, который вы получаете в баллах. Процент кэшбэка зависит от общей
                       суммы заказов за всё время.
                     </p>
+                    <p>
+                      3% - сразу после регистрации <br>
+                      5% - от 80 000 ₽ <br>
+                      7% - от 200 000 ₽ <br>
+                      9% - от 380 000 ₽
+                    </p>
+                    <span>
+                      *Оплатить баллами можно до 20% от суммы заказа
+                    </span>
                   </div>
                 </div>
               </div>
@@ -1336,6 +1347,13 @@
                     </p>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div class="layout__foot">
+              <div class="layout__foot-inner">
+                <button class="btn btn--green">
+                  Зарегистрироваться
+                </button>
               </div>
             </div>
 
@@ -2786,7 +2804,7 @@
     <!-- Афиша -->
     <div id="afisha" class="afisha popup" data-lenis-prevent>
   <div class="popup__wrap">
-        <div class="popup__area" data-popup-head>
+    <div class="popup__area" data-popup-head>
       <div class="popup__close">
         <i class="icon-close"></i>
       </div>
@@ -2798,7 +2816,7 @@
           <div class="layout__inner">
 
             <div class="layout__head">
-              <div class="layout__head-banner">
+              <div class="layout__head-banner" data-stories-open="0">
                 <img src="./images/temp/Афиша марта.png" alt="">
               </div>
             </div>
@@ -5422,7 +5440,7 @@
           Фильтр
         </span>
         <div class="btn--count">
-          8
+          10
         </div>
       </button>
       <button class="panel__btn" data-popup-target="favorite">
@@ -5471,8 +5489,11 @@
                   href="javascript: void(0)" data-popup-target="reg">зарегистрируйтесь</a>
               </div>
               <div class="btn__text btn__text--login">
-                ​Советская улица, 33 <a href="javascript: void(0)" data-popup-target="branch">Изменить</a>
+                ​Советская улица, 33
               </div>
+              <!-- <div class="btn__text btn__text--login">
+                ​Советская улица, 33 <a href="javascript: void(0)" data-popup-target="branch">Изменить</a>
+              </div> -->
               <i class="icon-chevron-right"></i>
             </button>
           </div>
@@ -6195,89 +6216,19 @@
             </div>
 
             <div class="layout__nav">
-              <button class="layout__nav-item active" type="button" data-nav="business-hookahs">
-                Бизнес кальяны
-              </button>
-              <button class="layout__nav-item" type="button" data-nav="bowl-hookahs">
+              <button class="layout__nav-item active" type="button" data-nav="bowl-hookahs">
                 Кальяны на чаше
               </button>
               <button class="layout__nav-item" type="button" data-nav="fruit-hookahs">
                 Кальяны на фруктах
               </button>
+              <button class="layout__nav-item" type="button" data-nav="business-hookahs">
+                Бизнес кальяны
+              </button>
             </div>
 
             <div class="layout__items">
-              <div class="card" data-popup-target="dish" data-dish="business-hookahs">
-  <div class="card__head">
-    <div class="card__tags">
-      <div class="card__tags-item card__tags-top"><i class="icon-top"></i>Топчик</div>
-    </div>
-    <div class="card__img">
-      <img src="./images/temp/hookahs-1.png" alt="">
-    </div>
-  </div>
-  <div class="card__body">
-    <div class="card__content">
-      <div class="card__rating">
-        <div class="card__rating-text">
-          4.8
-        </div>
-        <i class="icon-star-fill"></i>
-      </div>
-      <div class="card__name">
-        Один кальян на грейпфруте + один кальян на чаше
-      </div>
-      <div class="card__desc">
-        <p>
-          При единовременном заказе
-        </p>
-      </div>
-    </div>
-    <div class="card__foot">
-      <div class="card__price">
-        3 500 ₽
-      </div>
-      <div class="card__like">
-        <i class="icon-like"></i>
-      </div>
-    </div>
-  </div>
-</div><div class="card" data-popup-target="dish" data-dish="business-hookahs">
-  <div class="card__head">
-    <div class="card__tags">
-      <div class="card__tags-item card__tags-top"><i class="icon-top"></i>Топчик</div>
-    </div>
-    <div class="card__img">
-      <img src="./images/temp/hookahs-2.png" alt="">
-    </div>
-  </div>
-  <div class="card__body">
-    <div class="card__content">
-      <div class="card__rating">
-        <div class="card__rating-text">
-          4.8
-        </div>
-        <i class="icon-star-fill"></i>
-      </div>
-      <div class="card__name">
-        Два кальяна на грейпфруте
-      </div>
-      <div class="card__desc">
-        <p>
-          При единовременном заказе
-        </p>
-      </div>
-    </div>
-    <div class="card__foot">
-      <div class="card__price">
-        4 200 ₽
-      </div>
-      <div class="card__like">
-        <i class="icon-like"></i>
-      </div>
-    </div>
-  </div>
-</div><div class="card" data-popup-target="dish" data-dish="bowl-hookahs">
+              <div class="card" data-popup-target="dish" data-dish="bowl-hookahs">
   <div class="card__head">
     <div class="card__tags">
       <div class="card__tags-item card__tags-top"><i class="icon-top"></i>Топчик</div>
@@ -6417,6 +6368,76 @@
       </div>
     </div>
   </div>
+</div><div class="card" data-popup-target="dish" data-dish="business-hookahs">
+  <div class="card__head">
+    <div class="card__tags">
+      <div class="card__tags-item card__tags-top"><i class="icon-top"></i>Топчик</div>
+    </div>
+    <div class="card__img">
+      <img src="./images/temp/hookahs-1.png" alt="">
+    </div>
+  </div>
+  <div class="card__body">
+    <div class="card__content">
+      <div class="card__rating">
+        <div class="card__rating-text">
+          4.8
+        </div>
+        <i class="icon-star-fill"></i>
+      </div>
+      <div class="card__name">
+        Один кальян на грейпфруте + один кальян на чаше
+      </div>
+      <div class="card__desc">
+        <p>
+          При единовременном заказе
+        </p>
+      </div>
+    </div>
+    <div class="card__foot">
+      <div class="card__price">
+        3 500 ₽
+      </div>
+      <div class="card__like">
+        <i class="icon-like"></i>
+      </div>
+    </div>
+  </div>
+</div><div class="card" data-popup-target="dish" data-dish="business-hookahs">
+  <div class="card__head">
+    <div class="card__tags">
+      <div class="card__tags-item card__tags-top"><i class="icon-top"></i>Топчик</div>
+    </div>
+    <div class="card__img">
+      <img src="./images/temp/hookahs-2.png" alt="">
+    </div>
+  </div>
+  <div class="card__body">
+    <div class="card__content">
+      <div class="card__rating">
+        <div class="card__rating-text">
+          4.8
+        </div>
+        <i class="icon-star-fill"></i>
+      </div>
+      <div class="card__name">
+        Два кальяна на грейпфруте
+      </div>
+      <div class="card__desc">
+        <p>
+          При единовременном заказе
+        </p>
+      </div>
+    </div>
+    <div class="card__foot">
+      <div class="card__price">
+        4 200 ₽
+      </div>
+      <div class="card__like">
+        <i class="icon-like"></i>
+      </div>
+    </div>
+  </div>
 </div>
             </div>
 
@@ -6424,7 +6445,7 @@
         </div>
       </section>
       <!-- Завтраки -->
-      <!-- <section class="layout" id="lunch">
+      <section class="layout" id="lunch">
         <div class="container">
           <div class="layout__inner">
 
@@ -6434,11 +6455,12 @@
                   Завтраки
                 </h2>
               </div>
-              <div class="layout__time">
-                <i class="icon-clock"></i>
-                <div class="layout__time-text">
-                  с 10:00 до 11:00
-                </div>
+            </div>
+
+            <div class="layout__time">
+              <i class="icon-clock"></i>
+              <div class="layout__time-text">
+                Ежедневно с 8:00 до 16:00
               </div>
             </div>
 
@@ -6576,7 +6598,7 @@
 
           </div>
         </div>
-      </section> -->
+      </section>
       <!-- Бизнес-ланч -->
       <section class="layout" id="business-lunch">
         <div class="container">
@@ -6588,11 +6610,12 @@
                   Бизнес-ланч
                 </h2>
               </div>
-              <div class="layout__time">
-                <i class="icon-clock"></i>
-                <div class="layout__time-text">
-                  с 12:00 до 14:00
-                </div>
+            </div>
+
+            <div class="layout__time">
+              <i class="icon-clock"></i>
+              <div class="layout__time-text">
+                По будням с 12:00 до 17:00. Меню обновляется каждую неделю
               </div>
             </div>
 
