@@ -1520,7 +1520,6 @@ body {
 }
 
 .layout__title span {
-  font-style: italic;
   color: var(--red);
 }
 
@@ -3762,8 +3761,8 @@ p {
 }
 
 .panel__btn .btn--count {
-  top: 0.5rem;
-  right: 1.5rem;
+  top: 0.4rem;
+  right: 1.3rem;
 }
 
 .panel__btn--mid {
@@ -3846,7 +3845,8 @@ html.popup-open .panel__btn--hidden {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 500;
+  z-index: 1000;
+  display: none;
 }
 
 .plate__inner {
@@ -3857,7 +3857,7 @@ html.popup-open .panel__btn--hidden {
   -ms-flex-align: end;
   align-items: flex-end;
   height: 100%;
-  padding-bottom: 12rem;
+  padding-bottom: calc(var(--panel-height) + 2rem);
 }
 
 .plate__content {
