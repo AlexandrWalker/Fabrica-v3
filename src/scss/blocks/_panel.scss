@@ -6,13 +6,15 @@
   align-items: flex-end;
   width: 100vw;
   width: 100dvw;
-  height: 100vh;
-  height: 100dvh;
+  // height: 100vh;
+  // height: 100dvh;
   pointer-events: none;
 
   position: fixed;
   top: 0;
   right: 0;
+  left: 0;
+  bottom: 0;
   z-index: 500;
   z-index: 1000;
 
@@ -49,6 +51,7 @@
     background-size: 100%;
     background-color: var(--white);
     padding: 0 var(--container-padding);
+    padding-bottom: env(safe-area-inset-bottom);
     height: var(--panel-height);
     pointer-events: all;
     border-radius: 2.4rem 2.4rem 0 0;
