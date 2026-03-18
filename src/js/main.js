@@ -97,9 +97,9 @@ document.addEventListener('DOMContentLoaded', () => {
      * - Если touch поддерживается -- убираем класс `html-not-touched`
      *
      * Вызывается:
-     * 1. При инициализации — чтобы сразу установить корректное состояние
-     * 2. При первом touchstart — когда обнаруживаем реальный тач
-     * 3. При изменении mediaQuery pointer:coarse — когда среда меняется
+     * 1. При инициализации - чтобы сразу установить корректное состояние
+     * 2. При первом touchstart - когда обнаруживаем реальный тач
+     * 3. При изменении mediaQuery pointer:coarse - когда среда меняется
      *    (например, пользователь закрыл DevTools с эмуляцией мобильного)
      */
     function updateTouchClass() {
@@ -109,14 +109,14 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Проверяет поддержку touch через Media Query `pointer: coarse`.
      *
-     * `pointer: coarse` означает, что основной указатель — неточный (палец).
+     * `pointer: coarse` означает, что основной указатель - неточный (палец).
      * Это верно для смартфонов, планшетов и DevTools с эмуляцией мобильного.
-     * На десктопе без тачпада — `pointer: fine` (мышь).
+     * На десктопе без тачпада - `pointer: fine` (мышь).
      *
      * Почему именно это медиавыражение:
      * - `window.ontouchstart` и `navigator.maxTouchPoints` не меняются динамически
      *   при переключении DevTools, поэтому ненадёжны для нашей задачи.
-     * - MediaQueryList.addEventListener('change') — единственный способ поймать
+     * - MediaQueryList.addEventListener('change') - единственный способ поймать
      *   момент, когда браузер «теряет» эмуляцию тача (закрытие DevTools).
      */
     const pointerCoarseQuery = window.matchMedia('(pointer: coarse)');
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * Срабатывает когда:
      * - Пользователь открыл DevTools и включил эмуляцию мобильного (matches = true)
      * - Пользователь закрыл DevTools или выключил эмуляцию (matches = false)
-     * - На реальном устройстве — не срабатывает (среда не меняется)
+     * - На реальном устройстве - не срабатывает (среда не меняется)
      *
      * @param {MediaQueryListEvent} e - событие изменения медиавыражения
      */
@@ -145,9 +145,9 @@ document.addEventListener('DOMContentLoaded', () => {
      * Инициализация начального состояния touch-флага.
      *
      * Проверяем сразу два признака:
-     * 1. `pointerCoarseQuery.matches` — текущее значение pointer: coarse
+     * 1. `pointerCoarseQuery.matches` - текущее значение pointer: coarse
      *    (true на смартфонах, планшетах и в DevTools с мобильной эмуляцией)
-     * 2. `navigator.maxTouchPoints > 0` — браузер сообщает о наличии точек касания.
+     * 2. `navigator.maxTouchPoints > 0` - браузер сообщает о наличии точек касания.
      *    Нужен как дополнительная проверка для браузеров, которые не поддерживают
      *    pointer media query (старые версии Safari, некоторые Android-браузеры).
      *
@@ -161,14 +161,14 @@ document.addEventListener('DOMContentLoaded', () => {
      *
      * Некоторые устройства (гибриды ноутбук + тачскрин) могут иметь
      * pointer: fine (мышь как основной указатель), но при этом поддерживать
-     * тач. Первый реальный touchstart — неоспоримое доказательство.
+     * тач. Первый реальный touchstart - неоспоримое доказательство.
      *
-     * { once: true } — слушатель автоматически удаляется после первого вызова,
+     * { once: true } - слушатель автоматически удаляется после первого вызова,
      * так как повторное срабатывание не нужно.
      */
     document.addEventListener('touchstart', () => {
       if (!hasTouchSupport) {
-        // Зафиксировали реальный тач — обновляем флаг и класс
+        // Зафиксировали реальный тач - обновляем флаг и класс
         hasTouchSupport = true;
         updateTouchClass();
       }
@@ -287,6 +287,58 @@ document.addEventListener('DOMContentLoaded', () => {
       history.pushState({ popupId: popup.id }, '');
     }
 
+    /**
+     * Поднимает уже открытый попап наверх стека с анимацией.
+     *
+     * Используется когда кликают на кнопку попапа, который уже открыт,
+     * но перекрыт другими попапами сверху.
+     *
+     * Что происходит:
+     * 1. Вырезаем попап из середины стека
+     * 2. Сдвигаем его чуть вниз (небольшой отскок), чтобы анимация была заметна
+     * 3. Через rAF возвращаем наверх с transition - выглядит как "всплытие"
+     * 4. Пересчитываем z-index всех попапов в стеке
+     *
+     * @param {HTMLElement} popup - попап который надо поднять наверх
+     */
+    function bringPopupToTop(popup) {
+      // Убираем попап из стека - он сейчас где-то в середине
+      const idx = stack.indexOf(popup);
+      stack.splice(idx, 1);
+
+      // Пересчитываем z-index оставшихся попапов
+      stack.forEach((p, i) => {
+        p.style.zIndex = BASE_Z + i + 1;
+      });
+
+      // Кладём наверх стека с новым z-index сразу
+      stack.push(popup);
+      popup.style.zIndex = BASE_Z + stack.length;
+
+      updatePointerEvents();
+      updateHtmlClasses();
+
+      // Фаза 1: попап быстро уходит чуть вверх
+      const upDuration = 0.12;
+      popup.style.transition = `top \${upDuration}s ease`;
+      popup.style.top = '-2rem';
+
+      setTimeout(() => {
+        // Фаза 2: возвращается на место - как будто только что открылся
+        const downDuration = 0.2;
+        popup.style.transition = `top \${downDuration}s ease`;
+        popup.style.top = '0';
+
+        setTimeout(() => {
+          // Сбрасываем transition чтобы не мешал следующим анимациям
+          popup.style.transition = '';
+        }, downDuration * 1000);
+      }, upDuration * 1000);
+
+      // Добавляем запись в историю - попап стал верхним
+      history.pushState({ popupId: popup.id }, '');
+    }
+
     // Закрытие верхнего попапа
 
     /**
@@ -321,6 +373,48 @@ document.addEventListener('DOMContentLoaded', () => {
         popup.style.pointerEvents = 'none';
         popup.style.zIndex = '';
         overlay.style.transition = ''; // сбрасываем, чтобы следующий open работал чисто
+        popup.classList.remove('popup-showed');
+      }, duration * 1000);
+
+      updatePointerEvents();
+      unlockBodyScroll();
+      updateHtmlClasses();
+    }
+
+    /**
+     * Закрывает конкретный попап из стека по его элементу.
+     *
+     * В отличие от closeTopPopup, закрывает именно тот попап за который
+     * отвечает кнопка с data-popup-toggle, независимо от его позиции в стеке.
+     *
+     * Если попап не верхний - просто убираем его из стека и скрываем.
+     * Если попап верхний - используем обычный closeTopPopup для правильной
+     * работы оверлея и скролла.
+     *
+     * @param {HTMLElement} popup - попап который надо закрыть
+     */
+    function closePopup(popup) {
+      const idx = stack.indexOf(popup);
+      if (idx === -1) return;
+
+      // Если это верхний попап - идем через обычное закрытие
+      if (idx === stack.length - 1) {
+        closeTopPopup();
+        return;
+      }
+
+      // Попап не верхний - вырезаем его из стека и скрываем
+      stack.splice(idx, 1);
+
+      const duration = POPUP_ANIM_DURATION;
+      popup.style.transition = `top \${duration}s ease, opacity \${duration}s ease`;
+      popup.style.top = '100%';
+      popup.style.opacity = '0';
+
+      setTimeout(() => {
+        popup.style.visibility = 'hidden';
+        popup.style.pointerEvents = 'none';
+        popup.style.zIndex = '';
         popup.classList.remove('popup-showed');
       }, duration * 1000);
 
@@ -374,10 +468,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Обработчики кликов
 
     /**
-     * Единый делегированный обработчик кликов для трёх сценариев:
+     * Единый делегированный обработчик кликов для четырёх сценариев:
      *
      * 1. [data-close-all-popups]  - закрыть все попапы сразу
      * 2. [data-popup-target="id"] - открыть попап с указанным id
+     *    2а. если попап уже верхний и есть data-popup-toggle - закрыть его
+     *    2б. если попап уже открыт но не верхний - поднять наверх
      * 3. .popup__close            - закрыть попап, в котором находится кнопка
      *
      * Делегирование на document позволяет работать с динамически
@@ -395,7 +491,26 @@ document.addEventListener('DOMContentLoaded', () => {
       const openBtn = e.target.closest('[data-popup-target]');
       if (openBtn) {
         const popup = document.getElementById(openBtn.dataset.popupTarget);
-        if (popup) openPopup(popup);
+        if (!popup) return;
+
+        // Попап уже открыт - нужно решить что делать
+        if (stack.includes(popup)) {
+          const isTop = stack[stack.length - 1] === popup;
+
+          // data-popup-toggle разрешает закрывать попап повторным кликом на кнопку
+          // Закрываем только если попап верхний - иначе поднимаем его наверх
+          if (isTop && openBtn.hasAttribute('data-popup-toggle')) {
+            // Попап верхний и кнопка помечена как toggle - закрываем
+            history.back();
+          } else if (!isTop) {
+            // Попап открыт, но не верхний - поднимаем наверх с анимацией
+            bringPopupToTop(popup);
+          }
+          // Если попап верхний но нет toggle - ничего не делаем (текущее поведение)
+          return;
+        }
+
+        openPopup(popup);
         return;
       }
 
@@ -413,25 +528,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // Свайп вниз для закрытия
 
     /**
- * Закрытие попапа свайпом вниз.
- *
- * Логика:
- * - touchstart - запоминаем стартовую Y-координату пальца
- * - touchmove  - смещаем попап вслед за пальцем, затемняем оверлей пропорционально
- * - touchend   - если смещение > 120px или скорость > 0.6px/мс -- закрываем,
- *                иначе возвращаем на место (пружина)
- *
- * Исключения (не перехватываем жест):
- * - тач на прокручиваемом контенте ([data-popup-scroll]) если уже проскроллен вниз
- *
- * Слайдер (.swiper):
- * - горизонтальный свайп над слайдером -- попап не реагирует, Swiper работает нативно
- * - вертикальный свайп над слайдером -- попап реагирует, Swiper блокируется
- *
- * Направление определяется однократно после первого смещения > 10px.
- * Порог 10px -- стандарт тач-библиотек (Hammer.js, Swiper), компенсирует
- * естественное дрожание пальца на iOS и небольшую задержку touchmove на Android.
- */
+     * Закрытие попапа свайпом вниз.
+     *
+     * Логика:
+     * - touchstart - запоминаем стартовую Y-координату пальца
+     * - touchmove  - смещаем попап вслед за пальцем, затемняем оверлей пропорционально
+     * - touchend   - если смещение > 120px или скорость > 0.6px/мс -- закрываем,
+     *                иначе возвращаем на место (пружина)
+     *
+     * Исключения (не перехватываем жест):
+     * - тач на прокручиваемом контенте ([data-popup-scroll]) если уже проскроллен вниз
+     *
+     * Слайдер (.swiper):
+     * - горизонтальный свайп над слайдером -- попап не реагирует, Swiper работает нативно
+     * - вертикальный свайп над слайдером -- попап реагирует, Swiper блокируется
+     *
+     * Направление определяется однократно после первого смещения > 10px.
+     * Порог 10px -- стандарт тач-библиотек (Hammer.js, Swiper), компенсирует
+     * естественное дрожание пальца на iOS и небольшую задержку touchmove на Android.
+     */
     document.addEventListener('touchstart', e => {
       const popup = e.target.closest('.popup');
 
@@ -826,8 +941,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  //
-
   /**
    * LOGIN / LOGOUT
    * 
@@ -936,8 +1049,6 @@ document.addEventListener('DOMContentLoaded', () => {
       checkInputs(); // Начальное состояние кнопки
     });
   })();
-
-  //
 
   /**
    * КЛАСС filled ДЛЯ ТЕКСТОВЫХ ПОЛЕЙ                               
@@ -1275,8 +1386,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   })();
 
-  //
-
   /**
    * ИКОНКА ПАНЕЛИ ПРИ ОТКРЫТИИ ПОПАПА                              
    *    
@@ -1349,6 +1458,10 @@ document.addEventListener('DOMContentLoaded', () => {
    * - iOS-фикс: фиксируем body на время просмотра                  
    */
   (function () {
+    // РЕЖИМ РАЗРАБОТКИ
+    // true - localStorage игнорируется, просмотренные не сохраняются и не загружаются
+    // false - обычная работа, просмотренные помнятся между сессиями
+    const DEV_MODE = true;
 
     const STORY_DURATION = 5000;
     const SWIPE_THRESHOLD = 50;
@@ -1373,11 +1486,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let activeBuffer = 'A';
     let currentIndex = 0;
-    let autoTimer = null;  // setTimeout для автоперехода
-    let rafId = null;  // requestAnimationFrame для прогресс-бара
+    let autoTimer = null; // setTimeout для автоперехода
+    let rafId = null; // requestAnimationFrame для прогресс-бара
     let isPaused = false;
-    let startTime = null;  // момент последнего start/resume
-    let elapsed = 0;     // накопленное время паузами в мс
+    let startTime = null; // момент последнего start/resume
+    let elapsed = 0; // накопленное время паузами в мс
     let storiesScrollY = 0;
     let navHandled = false;
     let lastTouchEnd = 0;
@@ -1546,6 +1659,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function goNext() {
+      viewedSet.add(currentIndex);
+      saveViewed(viewedSet);
+
       if (currentIndex + 1 >= stories.length) {
         closeStories();
       } else {
@@ -1595,6 +1711,9 @@ document.addEventListener('DOMContentLoaded', () => {
       stopRaf();
       clearAutoTimer();
 
+      viewedSet.add(currentIndex);
+      saveViewed(viewedSet);
+
       overlay.classList.remove('is-active');
 
       // iOS-фикс: снимаем position:fixed и возвращаем позицию скролла
@@ -1608,6 +1727,8 @@ document.addEventListener('DOMContentLoaded', () => {
       elapsed = 0;
       currentIndex = 0;
       isPaused = false;
+
+      updateItemsVisualState();
     }
 
     // Клик по карточке на странице
@@ -1724,6 +1845,55 @@ document.addEventListener('DOMContentLoaded', () => {
         openStories(index);
       });
     });
+
+    // Множество просмотренных индексов - сохраняется между сессиями через localStorage
+    const VIEWED_KEY = 'stories_viewed';
+
+    function loadViewed() {
+      if (DEV_MODE) return new Set();
+      try {
+        return new Set(JSON.parse(localStorage.getItem(VIEWED_KEY)) || []);
+      } catch { return new Set(); }
+    }
+
+    function saveViewed(set) {
+      if (DEV_MODE) return;
+      try {
+        localStorage.setItem(VIEWED_KEY, JSON.stringify([...set]));
+      } catch { }
+    }
+
+    const viewedSet = loadViewed();
+
+    // Вызывается при закрытии и при инициализации.
+    // Добавляет класс is-viewed просмотренным карточкам,
+    // затем скроллит контейнер так чтобы просмотренные ушли за левый край.
+    // Временно для теста - убрать после проверки
+    function updateItemsVisualState() {
+      requestAnimationFrame(() => {
+        const container = document.querySelector('.afisha__items');
+        if (!container) return;
+
+        items.forEach((el, i) => {
+          el.classList.toggle('is-viewed', viewedSet.has(i));
+        });
+
+        const firstUnviewed = items.find((_, i) => !viewedSet.has(i));
+
+        if (!firstUnviewed) {
+          container.scrollLeft = 0;
+          return;
+        }
+
+        const paddingLeft = parseFloat(getComputedStyle(container).paddingLeft) || 0;
+        const scrollTarget = firstUnviewed.offsetLeft - paddingLeft;
+
+        container.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
+      });
+    }
+
+    // Вызови сразу на странице
+    updateItemsVisualState();
 
   })();
 
@@ -1933,7 +2103,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const triggerMap = new WeakMap();
 
     function animateBannerIn(banner) {
-      if (banner._done) return;
       if (banner._tween) banner._tween.kill();
 
       const proxy = {
@@ -1949,26 +2118,44 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         onComplete() {
           banner._done = true;
+          banner._tween = null;
         },
       });
     }
 
-    // Массив триггеров - чтобы потом переподписывать при ресайзе
+    function animateBannerOut(banner) {
+      if (banner._tween) banner._tween.kill();
+
+      const proxy = {
+        progress: parseFloat(banner.style.getPropertyValue('--progress')) || 1,
+      };
+
+      banner._tween = gsap.to(proxy, {
+        progress: 0,
+        duration: 0.5,
+        ease: 'power2.inOut',
+        onUpdate() {
+          banner.style.setProperty('--progress', proxy.progress);
+        },
+        onComplete() {
+          banner._tween = null;
+        },
+      });
+    }
+
     const triggers = [];
 
     banners.forEach(banner => {
-      banner._done = false;
       banner._tween = null;
+      banner._done = false;
       banner.style.setProperty('--progress', '0');
       banner.style.position = 'relative';
 
+      // Триггер во всю ширину и высоту баннера
       const trigger = document.createElement('div');
       Object.assign(trigger.style, {
         position: 'absolute',
-        top: '0',
-        left: '0',
-        width: '1px',
-        height: '100%',
+        inset: '0',
         pointerEvents: 'none',
         visibility: 'hidden',
       });
@@ -1978,30 +2165,53 @@ document.addEventListener('DOMContentLoaded', () => {
       triggers.push(trigger);
     });
 
-    function createObserver() {
-      const halfWidth = Math.floor(window.innerWidth / 2);
+    // MutationObserver следит за появлением/снятием is-viewed
+    const mutationObserver = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') return;
 
+        const banner = mutation.target;
+        if (!banner.classList.contains('banner')) return;
+
+        if (banner.classList.contains('is-viewed')) {
+          animateBannerOut(banner);
+        } else {
+          banner._done = false;
+          const trigger = [...triggers].find(t => triggerMap.get(t) === banner);
+          if (!trigger) return;
+
+          const rect = trigger.getBoundingClientRect();
+          if (rect.left <= rightEdge) {
+            animateBannerIn(banner);
+          }
+        }
+      });
+    });
+
+    banners.forEach(banner => {
+      mutationObserver.observe(banner, { attributes: true, attributeFilter: ['class'] });
+    });
+
+    function createObserver() {
       return new IntersectionObserver(
         entries => {
           entries.forEach(entry => {
-            if (!entry.isIntersecting) return;
-
             const banner = triggerMap.get(entry.target);
             if (!banner) return;
 
-            // Проверяем вручную: левый край триггера левее середины экрана
-            const rect = entry.target.getBoundingClientRect();
-            if (rect.left <= halfWidth) {
+            if (banner.classList.contains('is-viewed')) return;
+            if (banner._done) return;
+
+            if (entry.isIntersecting) {
               animateBannerIn(banner);
             }
           });
         },
-        { threshold: 0 }
+        { threshold: 0.5 }
       );
     }
 
     let observer = createObserver();
-
     triggers.forEach(trigger => observer.observe(trigger));
 
     let resizeTimer;
@@ -2012,10 +2222,7 @@ document.addEventListener('DOMContentLoaded', () => {
         observer = createObserver();
 
         triggers.forEach(trigger => {
-          const banner = triggerMap.get(trigger);
-          if (banner && !banner._done) {
-            observer.observe(trigger);
-          }
+          observer.observe(trigger);
         });
       }, 150);
     });

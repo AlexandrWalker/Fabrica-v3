@@ -12,6 +12,7 @@
     -ms-overflow-style: none;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
+    scroll-padding-left: var(--container-padding);
 
     padding: 0.3rem var(--container-padding);
     margin-left: calc(var(--container-padding) * -1);
@@ -38,7 +39,8 @@
     height: 18rem;
     border-radius: 1.6rem;
     flex-shrink: 0;
-    scroll-snap-align: center;
+    // scroll-snap-align: center;
+    scroll-snap-align: start;
     isolation: isolate;
 
     position: relative;
@@ -128,7 +130,7 @@
 .trigger-line {
   position: fixed;
   top: 0;
-  left: 50%;
+  right: 0;
   width: 0.1rem;
   height: 100%;
   background: transparent;
