@@ -34,23 +34,5 @@
     "name": "Название фабричного напитка",
     "weight": "220 мл  / 18 °",
     "price": "500 ₽"
-  },
-  {
-    "dish": "togo-cocktail",
-    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div>",
-    "img": "./../../images/temp/cocktails-3.png",
-    "rating": "4.8",
-    "name": "Название фабричного напитка",
-    "weight": "220 мл  / 18 °",
-    "price": "500 ₽"
-  },
-  {
-    "dish": "togo-cocktail",
-    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div>",
-    "img": "./../../images/temp/cocktails-4.png",
-    "rating": "4.8",
-    "name": "Название фабричного напитка",
-    "weight": "220 мл  / 18 °",
-    "price": "500 ₽"
   }
 ]

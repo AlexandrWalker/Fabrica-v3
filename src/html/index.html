@@ -14,6 +14,8 @@
     @@include('./popups/menu.html')
     <!-- Блюдо -->
     @@include('./popups/dish.html')
+    <!-- Вина -->
+    @@include('./popups/dish-vino.html')
     <!-- Фильтр -->
     @@include('./popups/filter.html')
     <!-- Филиал -->
@@ -78,6 +80,8 @@
     @@include('./popups/cards-delete.html')
     <!-- Состав -->
     @@include('./popups/sostav.html')
+    <!-- Смена языка -->
+    @@include('./popups/language.html')
 
     <!-- Куки -->
     @@include('./popups/cookie.html')
@@ -607,6 +611,7 @@
 
             <div class="layout__items">
               @@loop('./elements/card-item-cocktails.html', './data/card-items-cocktails.json')
+              @@loop('./elements/card-item-vino.html', './data/card-items-vino.json')
             </div>
 
           </div>

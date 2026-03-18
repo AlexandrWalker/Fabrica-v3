@@ -1,0 +1,9 @@
+@use './../mixins' as *;
+
+.language {
+
+  .layout__inner,
+  .layout__block {
+    gap: 2.5rem;
+  }
+}
