@@ -1486,7 +1486,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const STORY_DURATION = 5000;
     const SWIPE_THRESHOLD = 50;
     const SWIPE_DOWN_THRESHOLD = 80;
-    const SLIDE_DURATION = 400;
+    const SLIDE_DURATION = 420;
 
     const items = Array.from(document.querySelectorAll('.stories-item'));
     if (!items.length) return;
@@ -1507,12 +1507,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.getElementById('storiesOverlay');
     const progressEl = document.getElementById('storiesProgress');
     const closeBtn = document.getElementById('storiesClose');
+    const shareBtn = document.getElementById('storiesShare');
     const navPrev = document.getElementById('storiesNavPrev');
     const navNext = document.getElementById('storiesNavNext');
     const imgA = document.getElementById('storiesImgA');
     const imgB = document.getElementById('storiesImgB');
 
     if (!overlay || !progressEl || !closeBtn || !navPrev || !navNext || !imgA || !imgB) return;
+
+    const container = overlay.querySelector('.stories-container');
 
     let activeBuffer = 'A';
     let groupIndex = 0;
@@ -1529,11 +1532,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let touchStartY = 0;
     let isSliding = false;
 
+    // Helpers
+
     function currentBanners() { return groups[groupIndex].banners; }
     function getActiveImg() { return activeBuffer === 'A' ? imgA : imgB; }
     function getInactiveImg() { return activeBuffer === 'A' ? imgB : imgA; }
 
-    // ПРОГРЕСС
+    // Прогресс
 
     function buildProgressBars() {
       progressEl.innerHTML = '';
@@ -1607,7 +1612,7 @@ document.addEventListener('DOMContentLoaded', () => {
       autoTimer = setTimeout(goNextBanner, STORY_DURATION);
     }
 
-    // ПОКАЗ БАННЕРА
+    // Показ баннера
 
     function showBanner(bIndex, animDir) {
       if (bIndex < 0 || bIndex >= currentBanners().length) return;
@@ -1625,16 +1630,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const nextImg = getInactiveImg();
       const currentImg = getActiveImg();
 
-      nextImg.classList.remove('is-visible', 'anim-next', 'anim-prev');
+      nextImg.classList.remove('is-visible');
       nextImg.src = story.img;
 
       function onLoaded() {
         nextImg.removeEventListener('load', onLoaded);
         nextImg.removeEventListener('error', onLoaded);
         nextImg.classList.add('is-visible');
-        if (animDir === 'next') nextImg.classList.add('anim-next');
-        if (animDir === 'prev') nextImg.classList.add('anim-prev');
-        currentImg.classList.remove('is-visible', 'anim-next', 'anim-prev');
+        currentImg.classList.remove('is-visible');
         activeBuffer = activeBuffer === 'A' ? 'B' : 'A';
         startTimer(bIndex);
       }
@@ -1647,7 +1650,7 @@ document.addEventListener('DOMContentLoaded', () => {
       navNext.style.pointerEvents = 'auto';
     }
 
-    // НАВИГАЦИЯ ВНУТРИ ГРУППЫ
+    // Навигация внутри группы
 
     function goNextBanner() {
       viewedSet.add(groupIndex);
@@ -1660,40 +1663,51 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // function goPrevBanner() {
-    //   if (bannerIndex > 0) {
-    //     showBanner(bannerIndex - 1, 'prev');
-    //     return;
-    //   }
-
-    //   if (elapsed > 500) {
-    //     // Перемотать текущий баннер сначала
-    //     elapsed = 0;
-    //     isPaused = false;
-    //     resetProgressBars(0);
-    //     startTimer(0);
-    //     return;
-    //   }
-
-    //   goPrevGroup();
-    // }
-
     function goPrevBanner() {
       if (bannerIndex > 0) {
         showBanner(bannerIndex - 1, 'prev');
         return;
       }
-
-      // Первый баннер группы — всегда идём в предыдущую группу
       goPrevGroup();
     }
 
-    // СЛАЙДЕР ГРУПП
-    //
-    // Создаём поверх оверлея два абсолютных слайда:
-    //   currentSlide — снимок текущего (уходит в сторону)
-    //   nextSlide    — следующая группа (приезжает)
-    // После transition убираем оба и показываем реальный контент.
+    // Слайдер групп
+
+    function makeSlide(zIndex) {
+      const slide = document.createElement('div');
+      slide.style.cssText = [
+        'position:absolute',
+        'inset:0',
+        'z-index:' + zIndex,
+        'background:#000',
+        'overflow:hidden',
+        '-webkit-transform:translateX(0)',
+        'transform:translateX(0)',
+        '-webkit-transition:-webkit-transform ' + SLIDE_DURATION + 'ms cubic-bezier(0.77,0,0.175,1)',
+        'transition:transform ' + SLIDE_DURATION + 'ms cubic-bezier(0.77,0,0.175,1)',
+        'will-change:transform'
+      ].join(';');
+      return slide;
+    }
+
+    function makeSnapImg(src) {
+      const img = new Image();
+      img.src = src;
+      img.style.cssText = [
+        'position:absolute',
+        'inset:0',
+        'width:100%',
+        'height:100%',
+        'object-fit:contain',
+        'display:block'
+      ].join(';');
+      return img;
+    }
+
+    function setTranslateX(el, value) {
+      el.style.webkitTransform = 'translateX(' + value + ')';
+      el.style.transform = 'translateX(' + value + ')';
+    }
 
     function slideToGroup(dir, nextGroupIndex) {
       if (isSliding) return;
@@ -1701,81 +1715,40 @@ document.addEventListener('DOMContentLoaded', () => {
       stopRaf();
       clearAutoTimer();
 
-      const nextBanner = groups[nextGroupIndex].banners[0];
-
-      // Текущий слайд — снимок того что сейчас видно
-      const currentSlide = document.createElement('div');
-      currentSlide.style.cssText = `
-            position: absolute;
-            inset: 0;
-            z-index: 60;
-            background: #000;
-            overflow: hidden;
-            transform: translateX(0);
-            transition: transform \${SLIDE_DURATION}ms cubic-bezier(0.77, 0, 0.175, 1);
-            will-change: transform;
-        `;
-      const currentSnap = new Image();
-      currentSnap.src = getActiveImg().src;
-      currentSnap.style.cssText = `
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        `;
-      currentSlide.appendChild(currentSnap);
-
-      // Следующий слайд — первый баннер следующей группы
-      const nextSlide = document.createElement('div');
       const fromX = dir === 'next' ? '100%' : '-100%';
-      nextSlide.style.cssText = `
-            position: absolute;
-            inset: 0;
-            z-index: 59;
-            background: #000;
-            overflow: hidden;
-            transform: translateX(\${fromX});
-            transition: transform \${SLIDE_DURATION}ms cubic-bezier(0.77, 0, 0.175, 1);
-            will-change: transform;
-        `;
-      const nextSnap = new Image();
-      nextSnap.src = nextBanner.img;
-      nextSnap.style.cssText = `
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        `;
-      nextSlide.appendChild(nextSnap);
+      const toX = dir === 'next' ? '-100%' : '100%';
 
-      // Монтируем в .stories-container (не в overlay — чтобы не перекрывать кнопку закрытия)
-      const container = overlay.querySelector('.stories-container');
-      container.appendChild(currentSlide);
-      container.appendChild(nextSlide);
+      // Текущий слайд
+      const currentSlide = makeSlide(60);
+      currentSlide.appendChild(makeSnapImg(getActiveImg().src));
 
-      // Скрываем реальные img на время анимации
+      // Следующий слайд — начинает за экраном
+      const nextSlide = makeSlide(59);
+      setTranslateX(nextSlide, fromX);
+      nextSlide.appendChild(makeSnapImg(groups[nextGroupIndex].banners[0].img));
+
+      // Скрываем реальные img
       imgA.style.visibility = 'hidden';
       imgB.style.visibility = 'hidden';
 
-      // Запускаем сдвиг
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          const toX = dir === 'next' ? '-100%' : '100%';
-          currentSlide.style.transform = `translateX(\${toX})`;
-          nextSlide.style.transform = `translateX(0)`;
+      container.appendChild(currentSlide);
+      container.appendChild(nextSlide);
+
+      // Запускаем анимацию — два rAF чтобы браузер успел отрисовать начальное состояние
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          setTranslateX(currentSlide, toX);
+          setTranslateX(nextSlide, '0');
         });
       });
 
-      setTimeout(() => {
-        container.removeChild(currentSlide);
-        container.removeChild(nextSlide);
+      setTimeout(function () {
+        if (container.contains(currentSlide)) container.removeChild(currentSlide);
+        if (container.contains(nextSlide)) container.removeChild(nextSlide);
 
         imgA.style.visibility = '';
         imgB.style.visibility = '';
 
-        // Переключаем группу
         groupIndex = nextGroupIndex;
         bannerIndex = 0;
 
@@ -1791,7 +1764,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showBanner(0, null);
 
         isSliding = false;
-      }, SLIDE_DURATION + 20);
+      }, SLIDE_DURATION + 32);
     }
 
     function goNextGroup() {
@@ -1806,7 +1779,7 @@ document.addEventListener('DOMContentLoaded', () => {
       slideToGroup('prev', groupIndex - 1);
     }
 
-    // ОТКРЫТИЕ / ЗАКРЫТИЕ
+    // Открытие / закрытие
 
     function openStories(gIndex) {
       groupIndex = gIndex;
@@ -1827,7 +1800,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       storiesScrollY = window.scrollY;
       document.body.style.position = 'fixed';
-      document.body.style.top = `-\${storiesScrollY}px`;
+      document.body.style.top = '-' + storiesScrollY + 'px';
       document.body.style.left = '0';
       document.body.style.right = '0';
       document.body.style.overflow = 'hidden';
@@ -1860,54 +1833,94 @@ document.addEventListener('DOMContentLoaded', () => {
       updateItemsVisualState();
     }
 
-    // СОБЫТИЯ
+    // События
 
-    items.forEach((el, i) => {
+    items.forEach(function (el, i) {
       el.style.cursor = 'pointer';
-      el.addEventListener('click', () => openStories(i));
+      el.addEventListener('click', function () { openStories(i); });
     });
 
     closeBtn.addEventListener('click', closeStories);
 
-    navNext.addEventListener('click', e => {
+    if (shareBtn) {
+      shareBtn.addEventListener('click', function () {
+        const banner = currentBanners()[bannerIndex];
+        const url = banner.url || window.location.href;
+        if (navigator.share) {
+          navigator.share({ title: document.title, url: url }).catch(function () { });
+        } else if (navigator.clipboard) {
+          navigator.clipboard.writeText(url).catch(function () { });
+        }
+      });
+    }
+
+    navNext.addEventListener('click', function (e) {
       e.stopPropagation();
       if (Date.now() - lastTouchEnd < 500) return;
       goNextBanner();
     });
 
-    navPrev.addEventListener('click', e => {
+    navPrev.addEventListener('click', function (e) {
       e.stopPropagation();
       if (Date.now() - lastTouchEnd < 500) return;
       goPrevBanner();
     });
 
-    navNext.addEventListener('touchend', e => {
+    navNext.addEventListener('touchend', function (e) {
       e.stopPropagation();
+
       const dx = e.changedTouches[0].clientX - touchStartX;
       const dy = e.changedTouches[0].clientY - touchStartY;
-      if (Math.abs(dx) > SWIPE_THRESHOLD || Math.abs(dy) > SWIPE_DOWN_THRESHOLD) return;
+      const absDx = Math.abs(dx);
+      const absDy = Math.abs(dy);
+
+      if (absDx > SWIPE_THRESHOLD && absDx > absDy) {
+        if (dx < 0) goNextGroup();
+        else goPrevGroup();
+        return;
+      }
+
+      if (absDy > SWIPE_DOWN_THRESHOLD && dy > 0 && absDy > absDx) {
+        closeStories();
+        return;
+      }
+
       navHandled = true;
       lastTouchEnd = Date.now();
       goNextBanner();
     }, { passive: true });
 
-    navPrev.addEventListener('touchend', e => {
+    navPrev.addEventListener('touchend', function (e) {
       e.stopPropagation();
+
       const dx = e.changedTouches[0].clientX - touchStartX;
       const dy = e.changedTouches[0].clientY - touchStartY;
-      if (Math.abs(dx) > SWIPE_THRESHOLD || Math.abs(dy) > SWIPE_DOWN_THRESHOLD) return;
+      const absDx = Math.abs(dx);
+      const absDy = Math.abs(dy);
+
+      if (absDx > SWIPE_THRESHOLD && absDx > absDy) {
+        if (dx < 0) goNextGroup();
+        else goPrevGroup();
+        return;
+      }
+
+      if (absDy > SWIPE_DOWN_THRESHOLD && dy > 0 && absDy > absDx) {
+        closeStories();
+        return;
+      }
+
       navHandled = true;
       lastTouchEnd = Date.now();
       goPrevBanner();
     }, { passive: true });
 
-    overlay.addEventListener('touchstart', e => {
+    overlay.addEventListener('touchstart', function (e) {
       touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
       if (!isSliding) pauseTimer();
     }, { passive: true });
 
-    overlay.addEventListener('touchend', e => {
+    overlay.addEventListener('touchend', function (e) {
       if (navHandled) { navHandled = false; return; }
 
       const dx = e.changedTouches[0].clientX - touchStartX;
@@ -1921,7 +1934,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (absDx > SWIPE_THRESHOLD && absDx > absDy) {
-        // Горизонтальный свайп — переключение группы
         if (dx < 0) goNextGroup();
         else goPrevGroup();
         return;
@@ -1930,69 +1942,69 @@ document.addEventListener('DOMContentLoaded', () => {
       resumeTimer();
     }, { passive: true });
 
-    overlay.addEventListener('touchcancel', () => {
+    overlay.addEventListener('touchcancel', function () {
       if (!isSliding) resumeTimer();
     });
 
-    overlay.addEventListener('touchmove', e => {
+    overlay.addEventListener('touchmove', function (e) {
       e.preventDefault();
     }, { passive: false });
 
-    document.addEventListener('keydown', e => {
+    document.addEventListener('keydown', function (e) {
       if (!overlay.classList.contains('is-active')) return;
       if (e.key === 'ArrowRight') goNextBanner();
       if (e.key === 'ArrowLeft') goPrevBanner();
       if (e.key === 'Escape') closeStories();
     });
 
-    overlay.addEventListener('click', e => {
+    overlay.addEventListener('click', function (e) {
       if (e.target === overlay) closeStories();
     });
 
-    document.addEventListener('stories:open', e => {
-      openStories(e.detail?.index ?? 0);
+    document.addEventListener('stories:open', function (e) {
+      openStories((e.detail && e.detail.index) ? e.detail.index : 0);
     });
 
-    document.querySelectorAll('[data-stories-open]').forEach(el => {
+    document.querySelectorAll('[data-stories-open]').forEach(function (el) {
       el.style.cursor = 'pointer';
-      el.addEventListener('click', () => {
+      el.addEventListener('click', function () {
         openStories(parseInt(el.dataset.storiesOpen, 10) || 0);
       });
     });
 
-    // ПРОСМОТРЕННЫЕ
+    // Просмотренные
 
     const VIEWED_KEY = 'stories_viewed';
 
     function loadViewed() {
       if (DEV_MODE) return new Set();
       try { return new Set(JSON.parse(localStorage.getItem(VIEWED_KEY)) || []); }
-      catch { return new Set(); }
+      catch (e) { return new Set(); }
     }
 
     function saveViewed(set) {
       if (DEV_MODE) return;
-      try { localStorage.setItem(VIEWED_KEY, JSON.stringify([...set])); }
-      catch { }
+      try { localStorage.setItem(VIEWED_KEY, JSON.stringify(Array.from(set))); }
+      catch (e) { }
     }
 
     const viewedSet = loadViewed();
 
     function updateItemsVisualState() {
-      requestAnimationFrame(() => {
-        const container = document.querySelector('.afisha__items');
-        if (!container) return;
+      requestAnimationFrame(function () {
+        const listContainer = document.querySelector('.afisha__items');
+        if (!listContainer) return;
 
-        items.forEach((el, i) => {
+        items.forEach(function (el, i) {
           el.classList.toggle('is-viewed', viewedSet.has(i));
         });
 
-        const firstUnviewed = items.find((_, i) => !viewedSet.has(i));
-        if (!firstUnviewed) { container.scrollLeft = 0; return; }
+        const firstUnviewed = items.find(function (_, i) { return !viewedSet.has(i); });
+        if (!firstUnviewed) { listContainer.scrollLeft = 0; return; }
 
-        const paddingLeft = parseFloat(getComputedStyle(container).paddingLeft) || 0;
+        const paddingLeft = parseFloat(getComputedStyle(listContainer).paddingLeft) || 0;
         const scrollTarget = firstUnviewed.offsetLeft - paddingLeft;
-        container.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
+        listContainer.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
       });
     }
 
