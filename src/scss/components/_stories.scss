@@ -132,7 +132,7 @@
   object-fit: contain;
   display: block;
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.3s ease;
   position: absolute;
   inset: 0;
   margin: auto;
@@ -177,36 +177,4 @@
   &--next {
     right: 0;
   }
-}
-
-@keyframes slideInRight {
-  from {
-    transform: translateX(6rem);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    transform: translateX(-6rem);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-.stories-img.anim-next {
-  animation: slideInRight 0.25s ease forwards;
-}
-
-.stories-img.anim-prev {
-  animation: slideInLeft 0.25s ease forwards;
 }
