@@ -1,0 +1,38 @@
+[
+  {
+    "id": "bowl-hookahs",
+    "img": "./../../images/temp/hookahs-3.png",
+    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div>",
+    "rating": "4.8",
+    "name": "Один кальян на чаше",
+    "desc": "При единовременном заказе",
+    "price": "3 300 ₽"
+  },
+  {
+    "id": "bowl-hookahs",
+    "img": "./../../images/temp/hookahs-3.png",
+    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div>",
+    "rating": "4.8",
+    "name": "Два кальяна на чаше",
+    "desc": "При единовременном заказе",
+    "price": "4 300 ₽"
+  },
+  {
+    "id": "bowl-hookahs",
+    "img": "./../../images/temp/hookahs-3.png",
+    "tags": "<div class=\"card__tags-item card__tags-hot\"><i class=\"icon-hot\"></i>Островато</div>",
+    "rating": "4.8",
+    "name": "Один кальян на чаше",
+    "desc": "При единовременном заказе",
+    "price": "3 300 ₽"
+  },
+  {
+    "id": "bowl-hookahs",
+    "img": "./../../images/temp/hookahs-3.png",
+    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div>",
+    "rating": "4.8",
+    "name": "Один кальян на чаше",
+    "desc": "При единовременном заказе",
+    "price": "4 200 ₽"
+  }
+]

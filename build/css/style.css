@@ -108,22 +108,6 @@ li:last-child {
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-Black.woff2") format("woff2"), url("../fonts/Inter-Black.woff") format("woff");
-  font-weight: 900;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: Inter;
-  font-display: swap;
-  src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: Inter;
-  font-display: swap;
   src: url("../fonts/Inter-ExtraBold.woff2") format("woff2"), url("../fonts/Inter-ExtraBold.woff") format("woff");
   font-weight: 800;
   font-style: normal;
@@ -502,6 +486,22 @@ li:last-child {
   font-display: swap;
   src: url("../fonts/SofiaPro-UltraLight.woff2") format("woff2"), url("../fonts/SofiaPro-UltraLight.woff") format("woff");
   font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Inter;
+  font-display: swap;
+  src: url("../fonts/Inter-Black.woff2") format("woff2"), url("../fonts/Inter-Black.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Inter;
+  font-display: swap;
+  src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
+  font-weight: 700;
   font-style: normal;
 }
 
@@ -1982,6 +1982,10 @@ body {
   gap: 1.5rem;
 }
 
+.layout__block-wrap p {
+  font-size: 1.4rem;
+}
+
 .layout__block-img img {
   width: 100%;
   height: auto;
@@ -1990,6 +1994,17 @@ body {
 }
 
 .layout__block-price {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.layout__block-price span {
   font-weight: 900;
   font-size: 3.5rem;
   line-height: 120%;
@@ -2254,6 +2269,16 @@ body {
   grid-template-columns: repeat(2, 1fr);
   gap: 0.8rem;
   z-index: 1;
+}
+
+.layout__items .layout__subtitle {
+  grid-column: 1/3;
+  margin-bottom: 0.7rem;
+}
+
+.layout__items .layout__time {
+  grid-column: 1/3;
+  margin-bottom: 0.7rem;
 }
 
 .layout__btns {
@@ -2628,6 +2653,15 @@ body {
 }
 
 .layout__price-icon {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   width: 3.4rem;
   height: 3.4rem;
   border-radius: 0.5rem;
@@ -2640,6 +2674,16 @@ body {
   font-size: 3.4rem;
 }
 
+.layout__price-icon span {
+  padding-left: 0.5ch;
+  font-family: var(--second-family);
+  font-weight: 800;
+  font-size: 1.3rem;
+  line-height: 120%;
+  color: var(--green);
+  text-align: center;
+}
+
 .layout__price-text {
   font-weight: 400;
   font-size: 2rem;
@@ -2648,6 +2692,56 @@ body {
 
 .layout__price-text span {
   font-weight: 900;
+}
+
+.layout__type {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.layout__type-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.layout__type-icon {
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 0.5rem;
+  background-color: var(--bg);
+  overflow: hidden;
+}
+
+.layout__type-icon i {
+  font-size: 3.4rem;
+  color: var(--green);
+}
+
+.layout__type-text {
+  font-weight: 400;
+  font-size: 1.6rem;
+  line-height: 100%;
+}
+
+.layout__subtitle {
+  font-weight: 900;
+  font-size: 2rem;
+  line-height: 120%;
 }
 
 .stories-overlay {
@@ -2666,19 +2760,11 @@ body {
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  -webkit-transition: opacity 0.3s ease, visibility 0.3s ease, -webkit-transform 0.3s ease;
-  transition: opacity 0.3s ease, visibility 0.3s ease, -webkit-transform 0.3s ease;
-  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, -webkit-transform 0.3s ease;
-  -webkit-transform: translateY(10rem);
-  -ms-transform: translateY(10rem);
-  transform: translateY(10rem);
+  -webkit-transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .stories-overlay.is-active {
-  -webkit-transform: translateY(0);
-  -ms-transform: translateY(0);
-  transform: translateY(0);
   opacity: 1;
   visibility: visible;
 }
@@ -2734,15 +2820,53 @@ body {
   width: 100%;
 }
 
-.stories-close {
+.stories-actions {
   position: absolute;
   top: 2.8rem;
   right: 1.4rem;
-  z-index: 10;
+  z-index: 70;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.stories-share {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 3.6rem;
+  cursor: pointer;
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+}
+
+.stories-share:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.stories-close {
+  position: static;
+  top: unset;
+  right: unset;
+  z-index: unset;
   background: none;
   border: none;
   color: #fff;
-  font-size: 2.2rem;
+  font-size: 3.6rem;
   line-height: 1;
   cursor: pointer;
   padding: 0.6rem;
@@ -2793,9 +2917,9 @@ body {
   opacity: 0;
   -webkit-transition: opacity 0.25s ease;
   transition: opacity 0.25s ease;
-  margin: auto 0;
   position: absolute;
   inset: 0;
+  margin: auto;
 }
 
 .stories-img.is-visible {
@@ -2829,7 +2953,7 @@ body {
   top: 0;
   bottom: 0;
   width: 35%;
-  z-index: 5;
+  z-index: 65;
   cursor: pointer;
 }
 
@@ -3007,20 +3131,16 @@ p {
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-  /* для snap-effect */
   scroll-snap-align: center;
   -ms-flex-negative: 0;
   flex-shrink: 0;
+  min-height: 25.3rem;
   height: auto;
   border-radius: 1.6rem;
   overflow: hidden;
   background: var(--bg);
   border: 0.1rem solid var(--beige);
   position: relative;
-}
-
-#hookahs .card {
-  min-height: 27.6rem;
 }
 
 .card * {
@@ -3383,6 +3503,10 @@ p {
   margin-left: calc(var(--container-padding) * -1);
 }
 
+.dish .layout__body {
+  gap: 2rem;
+}
+
 .dish .layout__block {
   gap: 2rem;
 }
@@ -3428,7 +3552,7 @@ p {
 }
 
 .favorite .card__like i::before {
-  content: "\e906";
+  content: "\e924";
 }
 
 .filter .layout__inner {
@@ -3439,11 +3563,16 @@ p {
   height: calc(var(--panel-height) + 15rem);
 }
 
+.filter .layout__foot::before {
+  display: none;
+}
+
 .filter .layout__foot-inner {
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
+  background-color: unset;
 }
 
 .filter .btn--remove {
@@ -3967,8 +4096,8 @@ p {
 }
 
 .panel__btn .btn--count {
-  top: 0.4rem;
-  right: 1.3rem;
+  top: 0.5rem;
+  right: 1rem;
 }
 
 .panel__btn--mid {

@@ -9,8 +9,13 @@
     &__foot {
       height: calc(var(--panel-height) + 15rem);
 
+      &::before {
+        display: none;
+      }
+
       &-inner {
         flex-direction: column;
+        background-color: unset;
       }
     }
   }

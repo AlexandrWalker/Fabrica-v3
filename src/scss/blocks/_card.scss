@@ -3,10 +3,10 @@
 .card {
   display: flex;
   flex-direction: column;
-  /* для snap-effect */
   scroll-snap-align: center;
   flex-shrink: 0;
   // min-height: 30.3rem;
+  min-height: 25.3rem;
   height: auto;
   border-radius: 1.6rem;
   overflow: hidden;
@@ -16,7 +16,7 @@
   position: relative;
 
   #hookahs & {
-    min-height: 27.6rem;
+    // min-height: 27.6rem;
   }
 
   * {

@@ -1106,6 +1106,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Утилиты
 
     /**
+     * Возвращает .layout__subtitle, стоящий перед карточкой, если он есть.
+     * Ищет ближайший предшествующий sibling, пропуская другие карточки.
+     *
+     * @param   {HTMLElement} card
+     * @returns {HTMLElement|null}
+     */
+    function getPrecedingSubtitle(card) {
+      let sibling = card.previousElementSibling;
+      while (sibling) {
+        if (sibling.classList.contains('layout__subtitle')) return sibling;
+        // Если наткнулись на другую карточку — субтитр не наш
+        if (sibling.classList.contains('card')) return null;
+        sibling = sibling.previousElementSibling;
+      }
+      return null;
+    }
+
+    /**
      * Возвращает scroll-контейнер для данного layout.
      * Если layout находится внутри попапа с [data-popup-scroll] - скролл там.
      * Иначе скролл на уровне window.
@@ -1206,10 +1224,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       } else {
         // Обычный режим: вертикальный скролл
+
+        // Учитываем subtitle перед карточкой
+        const subtitle = getPrecedingSubtitle(targetCard);
+        const scrollTarget = subtitle || targetCard;
+
         const cardTopAbsolute =
           scrollContainer === window
-            ? targetCard.getBoundingClientRect().top + window.pageYOffset
-            : targetCard.offsetTop;
+            ? scrollTarget.getBoundingClientRect().top + window.pageYOffset
+            : scrollTarget.offsetTop;
 
         scrollContainer.scrollTo({
           top: cardTopAbsolute - offsetPx,
@@ -1446,7 +1469,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /**
    * СТОРИСЫ                                                        
    *    
-   * Полноэкранный просмотрщик историй в стиле Instagram.           
+   * Полноэкранный просмотрщик историй         
    *    
    * Ключевые возможности:                                           
    * - Двойной буфер изображений - смена без моргания               
@@ -1458,21 +1481,28 @@ document.addEventListener('DOMContentLoaded', () => {
    * - iOS-фикс: фиксируем body на время просмотра                  
    */
   (function () {
-    // РЕЖИМ РАЗРАБОТКИ
-    // true - localStorage игнорируется, просмотренные не сохраняются и не загружаются
-    // false - обычная работа, просмотренные помнятся между сессиями
     const DEV_MODE = true;
 
     const STORY_DURATION = 5000;
     const SWIPE_THRESHOLD = 50;
     const SWIPE_DOWN_THRESHOLD = 80;
+    const SLIDE_DURATION = 400;
 
     const items = Array.from(document.querySelectorAll('.stories-item'));
     if (!items.length) return;
 
-    const stories = items.map(el => ({
-      img: el.dataset.storyImg || el.querySelector('img')?.src || '',
-    }));
+    const groups = items.map(el => {
+      let banners = [];
+      try { banners = JSON.parse(el.dataset.banners || '[]'); } catch (e) { }
+      if (!banners.length) {
+        const img = el.dataset.storyImg || el.querySelector('img')?.src || '';
+        const date = el.querySelector('.afisha__item-date')?.textContent.trim() || '';
+        if (img) banners = [{ img, date }];
+      }
+      return { banners, el };
+    }).filter(g => g.banners.length);
+
+    if (!groups.length) return;
 
     const overlay = document.getElementById('storiesOverlay');
     const progressEl = document.getElementById('storiesProgress');
@@ -1485,208 +1515,308 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!overlay || !progressEl || !closeBtn || !navPrev || !navNext || !imgA || !imgB) return;
 
     let activeBuffer = 'A';
-    let currentIndex = 0;
-    let autoTimer = null; // setTimeout для автоперехода
-    let rafId = null; // requestAnimationFrame для прогресс-бара
+    let groupIndex = 0;
+    let bannerIndex = 0;
+    let autoTimer = null;
+    let rafId = null;
     let isPaused = false;
-    let startTime = null; // момент последнего start/resume
-    let elapsed = 0; // накопленное время паузами в мс
+    let startTime = null;
+    let elapsed = 0;
     let storiesScrollY = 0;
     let navHandled = false;
     let lastTouchEnd = 0;
     let touchStartX = 0;
     let touchStartY = 0;
+    let isSliding = false;
 
+    function currentBanners() { return groups[groupIndex].banners; }
     function getActiveImg() { return activeBuffer === 'A' ? imgA : imgB; }
     function getInactiveImg() { return activeBuffer === 'A' ? imgB : imgA; }
 
-    // Строим полоски прогресса заново при каждом открытии
+    // ПРОГРЕСС
+
     function buildProgressBars() {
       progressEl.innerHTML = '';
-      stories.forEach(() => {
+      currentBanners().forEach(() => {
         const item = document.createElement('div');
         item.className = 'stories-progress-item';
-        // fill управляется через style.width напрямую из JS - без анимации в CSS
         item.innerHTML = '<div class="stories-progress-fill"></div>';
         progressEl.appendChild(item);
       });
     }
 
-    // Возвращает DOM-элемент fill для конкретного индекса
     function getFill(index) {
       const bar = progressEl.querySelectorAll('.stories-progress-item')[index];
       return bar ? bar.querySelector('.stories-progress-fill') : null;
     }
 
-    // Расставляет начальные ширины всех полосок:
-    // пройденные = 100%, текущая = 0%, будущие = 0%
     function resetProgressBars(index) {
-      const bars = progressEl.querySelectorAll('.stories-progress-item');
-      bars.forEach((bar, i) => {
-        const fill = bar.querySelector('.stories-progress-fill');
-        if (i < index) {
-          fill.style.width = '100%';
-        } else {
-          fill.style.width = '0%';
-        }
+      progressEl.querySelectorAll('.stories-progress-item').forEach((bar, i) => {
+        bar.querySelector('.stories-progress-fill').style.width =
+          i < index ? '100%' : '0%';
       });
     }
 
-    // Останавливает RAF-цикл прогресс-бара
     function stopRaf() {
-      if (rafId !== null) {
-        cancelAnimationFrame(rafId);
-        rafId = null;
-      }
+      if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
     }
 
-    // Останавливает таймер автоперехода
     function clearAutoTimer() {
       clearTimeout(autoTimer);
       autoTimer = null;
     }
 
-    // Запускает RAF-цикл который каждый кадр обновляет width текущей полоски
-    // Использует elapsed чтобы продолжить с нужного места после паузы
     function startProgressRaf(index) {
       stopRaf();
-
       const fill = getFill(index);
       if (!fill) return;
-
-      // Запоминаем момент старта этого RAF-цикла
       const rafStart = performance.now();
-
       function tick(now) {
-        // Суммарное время = накопленное до паузы + прошедшее с последнего старта
         const total = elapsed + (now - rafStart);
         const progress = Math.min(total / STORY_DURATION, 1);
-
         fill.style.width = (progress * 100) + '%';
-
-        if (progress < 1) {
-          // Ещё не закончили - запрашиваем следующий кадр
-          rafId = requestAnimationFrame(tick);
-        } else {
-          rafId = null;
-        }
+        if (progress < 1) { rafId = requestAnimationFrame(tick); }
+        else { rafId = null; }
       }
-
       rafId = requestAnimationFrame(tick);
     }
 
-    // Ставит на паузу: останавливает RAF и таймер, фиксирует elapsed
     function pauseTimer() {
       if (isPaused) return;
       isPaused = true;
-
       elapsed += performance.now() - startTime;
       elapsed = Math.min(elapsed, STORY_DURATION);
-
       stopRaf();
       clearAutoTimer();
     }
 
-    // Возобновляет после паузы: перезапускает RAF и таймер с оставшимся временем
     function resumeTimer() {
       if (!isPaused) return;
       isPaused = false;
       startTime = performance.now();
-
-      startProgressRaf(currentIndex);
-
-      const remaining = Math.max(50, STORY_DURATION - elapsed);
-      autoTimer = setTimeout(goNext, remaining);
+      startProgressRaf(bannerIndex);
+      autoTimer = setTimeout(goNextBanner, Math.max(50, STORY_DURATION - elapsed));
     }
 
-    // Запускает прогресс и таймер для указанного сториса с нуля
-    // (elapsed должен быть уже сброшен до вызова)
     function startTimer(index) {
       stopRaf();
       clearAutoTimer();
-
       isPaused = false;
       startTime = performance.now();
-
       startProgressRaf(index);
-
-      autoTimer = setTimeout(goNext, STORY_DURATION);
+      autoTimer = setTimeout(goNextBanner, STORY_DURATION);
     }
 
-    // Показывает сторис по индексу
-    // Загружает фото в неактивный буфер, после загрузки меняет буферы
-    // Прогресс и таймер стартуют только после показа картинки
-    function showStory(index) {
-      if (index < 0 || index >= stories.length) return;
+    // ПОКАЗ БАННЕРА
+
+    function showBanner(bIndex, animDir) {
+      if (bIndex < 0 || bIndex >= currentBanners().length) return;
 
       stopRaf();
       clearAutoTimer();
 
       elapsed = 0;
-      currentIndex = index;
+      bannerIndex = bIndex;
       isPaused = false;
 
-      resetProgressBars(index);
+      resetProgressBars(bIndex);
 
+      const story = currentBanners()[bIndex];
       const nextImg = getInactiveImg();
       const currentImg = getActiveImg();
 
-      nextImg.classList.remove('is-visible');
-      nextImg.src = stories[index].img;
+      nextImg.classList.remove('is-visible', 'anim-next', 'anim-prev');
+      nextImg.src = story.img;
 
       function onLoaded() {
         nextImg.removeEventListener('load', onLoaded);
         nextImg.removeEventListener('error', onLoaded);
-
         nextImg.classList.add('is-visible');
-        currentImg.classList.remove('is-visible');
+        if (animDir === 'next') nextImg.classList.add('anim-next');
+        if (animDir === 'prev') nextImg.classList.add('anim-prev');
+        currentImg.classList.remove('is-visible', 'anim-next', 'anim-prev');
         activeBuffer = activeBuffer === 'A' ? 'B' : 'A';
-
-        // Запускаем прогресс и таймер только после того как картинка видна
-        startTimer(index);
+        startTimer(bIndex);
       }
 
       nextImg.addEventListener('load', onLoaded);
       nextImg.addEventListener('error', onLoaded);
+      if (nextImg.complete && nextImg.naturalWidth > 0) onLoaded();
 
-      // Если картинка уже в кеше - load не сработает, вызываем вручную
-      if (nextImg.complete && nextImg.naturalWidth > 0) {
-        onLoaded();
-      }
-
-      navPrev.style.pointerEvents = index === 0 ? 'none' : 'auto';
+      navPrev.style.pointerEvents = (groupIndex === 0 && bIndex === 0) ? 'none' : 'auto';
       navNext.style.pointerEvents = 'auto';
     }
 
-    function goNext() {
-      viewedSet.add(currentIndex);
+    // НАВИГАЦИЯ ВНУТРИ ГРУППЫ
+
+    function goNextBanner() {
+      viewedSet.add(groupIndex);
       saveViewed(viewedSet);
 
-      if (currentIndex + 1 >= stories.length) {
-        closeStories();
+      if (bannerIndex + 1 < currentBanners().length) {
+        showBanner(bannerIndex + 1, 'next');
       } else {
-        showStory(currentIndex + 1);
+        goNextGroup();
       }
     }
 
-    function goPrev() {
-      if (currentIndex === 0) {
-        // Первый сторис - начинаем заново
-        elapsed = 0;
-        isPaused = false;
-        resetProgressBars(0);
-        startTimer(0);
+    // function goPrevBanner() {
+    //   if (bannerIndex > 0) {
+    //     showBanner(bannerIndex - 1, 'prev');
+    //     return;
+    //   }
+
+    //   if (elapsed > 500) {
+    //     // Перемотать текущий баннер сначала
+    //     elapsed = 0;
+    //     isPaused = false;
+    //     resetProgressBars(0);
+    //     startTimer(0);
+    //     return;
+    //   }
+
+    //   goPrevGroup();
+    // }
+
+    function goPrevBanner() {
+      if (bannerIndex > 0) {
+        showBanner(bannerIndex - 1, 'prev');
         return;
       }
-      showStory(currentIndex - 1);
+
+      // Первый баннер группы — всегда идём в предыдущую группу
+      goPrevGroup();
     }
 
-    // Открывает оверлей начиная с нужного сториса
-    function openStories(index) {
+    // СЛАЙДЕР ГРУПП
+    //
+    // Создаём поверх оверлея два абсолютных слайда:
+    //   currentSlide — снимок текущего (уходит в сторону)
+    //   nextSlide    — следующая группа (приезжает)
+    // После transition убираем оба и показываем реальный контент.
+
+    function slideToGroup(dir, nextGroupIndex) {
+      if (isSliding) return;
+      isSliding = true;
+      stopRaf();
+      clearAutoTimer();
+
+      const nextBanner = groups[nextGroupIndex].banners[0];
+
+      // Текущий слайд — снимок того что сейчас видно
+      const currentSlide = document.createElement('div');
+      currentSlide.style.cssText = `
+            position: absolute;
+            inset: 0;
+            z-index: 60;
+            background: #000;
+            overflow: hidden;
+            transform: translateX(0);
+            transition: transform \${SLIDE_DURATION}ms cubic-bezier(0.77, 0, 0.175, 1);
+            will-change: transform;
+        `;
+      const currentSnap = new Image();
+      currentSnap.src = getActiveImg().src;
+      currentSnap.style.cssText = `
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        `;
+      currentSlide.appendChild(currentSnap);
+
+      // Следующий слайд — первый баннер следующей группы
+      const nextSlide = document.createElement('div');
+      const fromX = dir === 'next' ? '100%' : '-100%';
+      nextSlide.style.cssText = `
+            position: absolute;
+            inset: 0;
+            z-index: 59;
+            background: #000;
+            overflow: hidden;
+            transform: translateX(\${fromX});
+            transition: transform \${SLIDE_DURATION}ms cubic-bezier(0.77, 0, 0.175, 1);
+            will-change: transform;
+        `;
+      const nextSnap = new Image();
+      nextSnap.src = nextBanner.img;
+      nextSnap.style.cssText = `
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        `;
+      nextSlide.appendChild(nextSnap);
+
+      // Монтируем в .stories-container (не в overlay — чтобы не перекрывать кнопку закрытия)
+      const container = overlay.querySelector('.stories-container');
+      container.appendChild(currentSlide);
+      container.appendChild(nextSlide);
+
+      // Скрываем реальные img на время анимации
+      imgA.style.visibility = 'hidden';
+      imgB.style.visibility = 'hidden';
+
+      // Запускаем сдвиг
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const toX = dir === 'next' ? '-100%' : '100%';
+          currentSlide.style.transform = `translateX(\${toX})`;
+          nextSlide.style.transform = `translateX(0)`;
+        });
+      });
+
+      setTimeout(() => {
+        container.removeChild(currentSlide);
+        container.removeChild(nextSlide);
+
+        imgA.style.visibility = '';
+        imgB.style.visibility = '';
+
+        // Переключаем группу
+        groupIndex = nextGroupIndex;
+        bannerIndex = 0;
+
+        buildProgressBars();
+
+        imgA.classList.remove('is-visible', 'anim-next', 'anim-prev');
+        imgB.classList.remove('is-visible', 'anim-next', 'anim-prev');
+        imgA.src = '';
+        imgB.src = '';
+        activeBuffer = 'A';
+        elapsed = 0;
+
+        showBanner(0, null);
+
+        isSliding = false;
+      }, SLIDE_DURATION + 20);
+    }
+
+    function goNextGroup() {
+      if (isSliding) return;
+      if (groupIndex + 1 >= groups.length) { closeStories(); return; }
+      slideToGroup('next', groupIndex + 1);
+    }
+
+    function goPrevGroup() {
+      if (isSliding) return;
+      if (groupIndex <= 0) { closeStories(); return; }
+      slideToGroup('prev', groupIndex - 1);
+    }
+
+    // ОТКРЫТИЕ / ЗАКРЫТИЕ
+
+    function openStories(gIndex) {
+      groupIndex = gIndex;
+      bannerIndex = 0;
+      isSliding = false;
+
       buildProgressBars();
 
-      imgA.classList.remove('is-visible');
-      imgB.classList.remove('is-visible');
+      imgA.classList.remove('is-visible', 'anim-next', 'anim-prev');
+      imgB.classList.remove('is-visible', 'anim-next', 'anim-prev');
       imgA.src = '';
       imgB.src = '';
       activeBuffer = 'A';
@@ -1695,7 +1825,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       overlay.classList.add('is-active');
 
-      // iOS-фикс: фиксируем body чтобы страница не скроллилась под оверлеем
       storiesScrollY = window.scrollY;
       document.body.style.position = 'fixed';
       document.body.style.top = `-\${storiesScrollY}px`;
@@ -1703,20 +1832,18 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.style.right = '0';
       document.body.style.overflow = 'hidden';
 
-      showStory(index);
+      showBanner(0, null);
     }
 
-    // Закрывает оверлей и восстанавливает страницу
     function closeStories() {
       stopRaf();
       clearAutoTimer();
 
-      viewedSet.add(currentIndex);
+      viewedSet.add(groupIndex);
       saveViewed(viewedSet);
 
       overlay.classList.remove('is-active');
 
-      // iOS-фикс: снимаем position:fixed и возвращаем позицию скролла
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.left = '';
@@ -1725,13 +1852,16 @@ document.addEventListener('DOMContentLoaded', () => {
       window.scrollTo(0, storiesScrollY);
 
       elapsed = 0;
-      currentIndex = 0;
+      groupIndex = 0;
+      bannerIndex = 0;
       isPaused = false;
+      isSliding = false;
 
       updateItemsVisualState();
     }
 
-    // Клик по карточке на странице
+    // СОБЫТИЯ
+
     items.forEach((el, i) => {
       el.style.cursor = 'pointer';
       el.addEventListener('click', () => openStories(i));
@@ -1739,52 +1869,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     closeBtn.addEventListener('click', closeStories);
 
-    // Клики мышью по зонам навигации
-    // Фильтруем синтетический click после touchend
     navNext.addEventListener('click', e => {
       e.stopPropagation();
       if (Date.now() - lastTouchEnd < 500) return;
-      goNext();
+      goNextBanner();
     });
 
     navPrev.addEventListener('click', e => {
       e.stopPropagation();
       if (Date.now() - lastTouchEnd < 500) return;
-      goPrev();
+      goPrevBanner();
     });
 
-    // Тач на зоне «вперёд» - если это тап (не свайп) идём вперёд
     navNext.addEventListener('touchend', e => {
       e.stopPropagation();
       const dx = e.changedTouches[0].clientX - touchStartX;
       const dy = e.changedTouches[0].clientY - touchStartY;
       if (Math.abs(dx) > SWIPE_THRESHOLD || Math.abs(dy) > SWIPE_DOWN_THRESHOLD) return;
-
       navHandled = true;
       lastTouchEnd = Date.now();
-      goNext();
+      goNextBanner();
     }, { passive: true });
 
-    // Тач на зоне «назад»
     navPrev.addEventListener('touchend', e => {
       e.stopPropagation();
       const dx = e.changedTouches[0].clientX - touchStartX;
       const dy = e.changedTouches[0].clientY - touchStartY;
       if (Math.abs(dx) > SWIPE_THRESHOLD || Math.abs(dy) > SWIPE_DOWN_THRESHOLD) return;
-
       navHandled = true;
       lastTouchEnd = Date.now();
-      goPrev();
+      goPrevBanner();
     }, { passive: true });
 
-    // Любое касание оверлея - фиксируем координаты и ставим на паузу
     overlay.addEventListener('touchstart', e => {
       touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
-      pauseTimer();
+      if (!isSliding) pauseTimer();
     }, { passive: true });
 
-    // Отпускание пальца - определяем жест
     overlay.addEventListener('touchend', e => {
       if (navHandled) { navHandled = false; return; }
 
@@ -1794,81 +1916,68 @@ document.addEventListener('DOMContentLoaded', () => {
       const absDy = Math.abs(dy);
 
       if (absDy > SWIPE_DOWN_THRESHOLD && dy > 0 && absDy > absDx) {
-        // Свайп вниз - закрываем
         closeStories();
         return;
       }
 
       if (absDx > SWIPE_THRESHOLD && absDx > absDy) {
-        // Горизонтальный свайп - навигация
-        dx < 0 ? goNext() : goPrev();
+        // Горизонтальный свайп — переключение группы
+        if (dx < 0) goNextGroup();
+        else goPrevGroup();
         return;
       }
 
-      // Обычный тап - снимаем паузу
       resumeTimer();
     }, { passive: true });
 
-    // Тач прерван системой - снимаем паузу чтобы не зависнуть
-    overlay.addEventListener('touchcancel', () => resumeTimer());
+    overlay.addEventListener('touchcancel', () => {
+      if (!isSliding) resumeTimer();
+    });
 
-    // Блокируем скролл страницы под оверлеем
     overlay.addEventListener('touchmove', e => {
       e.preventDefault();
     }, { passive: false });
 
-    // Клавиатурное управление
     document.addEventListener('keydown', e => {
       if (!overlay.classList.contains('is-active')) return;
-      if (e.key === 'ArrowRight') goNext();
-      if (e.key === 'ArrowLeft') goPrev();
+      if (e.key === 'ArrowRight') goNextBanner();
+      if (e.key === 'ArrowLeft') goPrevBanner();
       if (e.key === 'Escape') closeStories();
     });
 
-    // Клик по фону оверлея (вне контента) - закрыть
     overlay.addEventListener('click', e => {
       if (e.target === overlay) closeStories();
     });
 
     document.addEventListener('stories:open', e => {
-      const index = e.detail?.index ?? 0;
-      openStories(index);
+      openStories(e.detail?.index ?? 0);
     });
 
-    // Открытие сторисов через data-атрибут на любом элементе страницы
-    // <div data-stories-open="0"> откроет с первого сториса
-    // <div data-stories-open="2"> откроет с третьего
     document.querySelectorAll('[data-stories-open]').forEach(el => {
       el.style.cursor = 'pointer';
       el.addEventListener('click', () => {
-        const index = parseInt(el.dataset.storiesOpen, 10) || 0;
-        openStories(index);
+        openStories(parseInt(el.dataset.storiesOpen, 10) || 0);
       });
     });
 
-    // Множество просмотренных индексов - сохраняется между сессиями через localStorage
+    // ПРОСМОТРЕННЫЕ
+
     const VIEWED_KEY = 'stories_viewed';
 
     function loadViewed() {
       if (DEV_MODE) return new Set();
-      try {
-        return new Set(JSON.parse(localStorage.getItem(VIEWED_KEY)) || []);
-      } catch { return new Set(); }
+      try { return new Set(JSON.parse(localStorage.getItem(VIEWED_KEY)) || []); }
+      catch { return new Set(); }
     }
 
     function saveViewed(set) {
       if (DEV_MODE) return;
-      try {
-        localStorage.setItem(VIEWED_KEY, JSON.stringify([...set]));
-      } catch { }
+      try { localStorage.setItem(VIEWED_KEY, JSON.stringify([...set])); }
+      catch { }
     }
 
     const viewedSet = loadViewed();
 
-    // Вызывается при закрытии и при инициализации.
-    // Добавляет класс is-viewed просмотренным карточкам,
-    // затем скроллит контейнер так чтобы просмотренные ушли за левый край.
-    // Временно для теста - убрать после проверки
     function updateItemsVisualState() {
       requestAnimationFrame(() => {
         const container = document.querySelector('.afisha__items');
@@ -1879,22 +1988,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const firstUnviewed = items.find((_, i) => !viewedSet.has(i));
-
-        if (!firstUnviewed) {
-          container.scrollLeft = 0;
-          return;
-        }
+        if (!firstUnviewed) { container.scrollLeft = 0; return; }
 
         const paddingLeft = parseFloat(getComputedStyle(container).paddingLeft) || 0;
         const scrollTarget = firstUnviewed.offsetLeft - paddingLeft;
-
         container.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
       });
     }
 
-    // Вызови сразу на странице
     updateItemsVisualState();
-
   })();
 
   /**

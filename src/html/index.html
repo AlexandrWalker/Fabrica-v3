@@ -16,6 +16,8 @@
     @@include('./popups/dish.html')
     <!-- Вина -->
     @@include('./popups/dish-vino.html')
+    <!-- Кальяны -->
+    @@include('./popups/dish-hookah.html')
     <!-- Фильтр -->
     @@include('./popups/filter.html')
     <!-- Филиал -->
@@ -277,7 +279,11 @@
             </div>
 
             <div class="afisha__items stories-items">
-              <div class="afisha__item stories-item banner" data-story-img="./images/temp/afisha-full-1.png">
+              <div class="afisha__item stories-item banner" data-story-index="0" data-banners='[
+                {"img":"./images/temp/afisha-full-1.png"},
+                {"img":"./images/temp/afisha-full-1.png"},
+                {"img":"./images/temp/afisha-full-1.png"}
+              ]'>
                 <div class="afisha__item-img">
                   <img src="./../images/temp/afisha-1.png" alt="">
                 </div>
@@ -286,43 +292,11 @@
                 </div>
                 <i class="icon-chevron-right"></i>
               </div>
-              <div class="afisha__item stories-item banner" data-story-img="./images/temp/afisha-full-2.png">
-                <div class="afisha__item-img">
-                  <img src="./../images/temp/afisha-2.png" alt="">
-                </div>
-                <div class="afisha__item-date">
-                  10.12.2025
-                </div>
-                <i class="icon-chevron-right"></i>
-              </div>
-              <div class="afisha__item stories-item banner" data-story-img="./images/temp/afisha-full-1.png">
-                <div class="afisha__item-img">
-                  <img src="./../images/temp/afisha-1.png" alt="">
-                </div>
-                <div class="afisha__item-date">
-                  10.12.2025
-                </div>
-                <i class="icon-chevron-right"></i>
-              </div>
-              <div class="afisha__item stories-item banner" data-story-img="./images/temp/afisha-full-2.png">
-                <div class="afisha__item-img">
-                  <img src="./../images/temp/afisha-2.png" alt="">
-                </div>
-                <div class="afisha__item-date">
-                  10.12.2025
-                </div>
-                <i class="icon-chevron-right"></i>
-              </div>
-              <div class="afisha__item stories-item banner" data-story-img="./images/temp/afisha-full-1.png">
-                <div class="afisha__item-img">
-                  <img src="./../images/temp/afisha-1.png" alt="">
-                </div>
-                <div class="afisha__item-date">
-                  10.12.2025
-                </div>
-                <i class="icon-chevron-right"></i>
-              </div>
-              <div class="afisha__item stories-item banner" data-story-img="./images/temp/afisha-full-2.png">
+              <div class="afisha__item stories-item banner" data-story-index="1" data-banners='[
+                {"img":"./images/temp/afisha-full-2.png"},
+                {"img":"./images/temp/afisha-full-2.png"},
+                {"img":"./images/temp/afisha-full-2.png"}
+              ]'>
                 <div class="afisha__item-img">
                   <img src="./../images/temp/afisha-2.png" alt="">
                 </div>
@@ -411,7 +385,27 @@
             </div>
 
             <div class="layout__items">
-              @@loop('./elements/card-item-hookahs.html', './data/card-items-hookahs.json')
+              @@loop('./elements/card-item-hookahs-bowl.html', './data/card-items-hookahs-bowl.json')
+            </div>
+
+            <div class="layout__items">
+              <div class="layout__subtitle">
+                Кальяны на фруктах
+              </div>
+              @@loop('./elements/card-item-hookahs-fruit.html', './data/card-items-hookahs-fruit.json')
+            </div>
+
+            <div class="layout__items">
+              <div class="layout__subtitle">
+                Бизнес кальяны
+              </div>
+              <div class="layout__time">
+                <i class="icon-clock"></i>
+                <div class="layout__time-text">
+                  По будням с 12:00 до 17:00
+                </div>
+              </div>
+              @@loop('./elements/card-item-hookahs-business.html', './data/card-items-hookahs-business.json')
             </div>
 
           </div>
@@ -610,7 +604,15 @@
             </div>
 
             <div class="layout__items">
+              <div class="layout__subtitle">
+                Коктейли
+              </div>
               @@loop('./elements/card-item-cocktails.html', './data/card-items-cocktails.json')
+            </div>
+            <div class="layout__items">
+              <div class="layout__subtitle">
+                Вино
+              </div>
               @@loop('./elements/card-item-vino.html', './data/card-items-vino.json')
             </div>
 
@@ -624,11 +626,16 @@
           <!-- Progress bars -->
           <div class="stories-progress" id="storiesProgress"></div>
 
-          <!-- Close button -->
-          <button class="stories-close" id="storiesClose">
-            <i class="icon-x"></i>
-            ✕
-          </button>
+          <!-- Actions -->
+          <div class="stories-actions">
+            <div class="stories-share" id="storiesShare">
+              <i class="icon-share"></i>
+            </div>
+            <button class="stories-close" id="storiesClose">
+              <i class="icon-close"></i>
+              <!-- ✕ -->
+            </button>
+          </div>
 
           <!-- Story content -->
           <div class="stories-content" id="storiesContent">
