@@ -205,6 +205,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Используем массив как стек: push = открыть, pop = закрыть верхний.
     const stack = [];
 
+    // Флаг блокировки на время анимации закрытия.
+    // Пока true - новые открытия попапов игнорируются.
+    let isAnimating = false;
+
     // Полупрозрачный оверлей под попапами.
     // Один на все попапы - затемняет страницу позади всего стека.
     const overlay = document.getElementById('popup-overlay');
@@ -396,6 +400,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // Защита от повторного открытия того же самого попапа
       if (stack.includes(popup)) return;
 
+      // Блокируем открытие пока идёт анимация закрытия
+      if (isAnimating) return;
+
       // Блокируем скролл только при самом первом открытом попапе
       if (!stack.length) lockBodyScroll();
 
@@ -490,6 +497,7 @@ document.addEventListener('DOMContentLoaded', () => {
      *   При обычном нажатии кнопки velocity=0 -- duration=0.4с.
      */
     function closeTopPopup(velocity = 0) {
+      isAnimating = true;
       const popup = stack.pop();
       if (!popup) return;
 
@@ -511,6 +519,7 @@ document.addEventListener('DOMContentLoaded', () => {
         popup.style.zIndex = '';
         overlay.style.transition = ''; // сбрасываем, чтобы следующий open работал чисто
         popup.classList.remove('popup-showed');
+        isAnimating = false;
       }, duration * 1000);
 
       updatePointerEvents();
@@ -553,6 +562,7 @@ document.addEventListener('DOMContentLoaded', () => {
         popup.style.pointerEvents = 'none';
         popup.style.zIndex = '';
         popup.classList.remove('popup-showed');
+        isAnimating = false;
       }, duration * 1000);
 
       updatePointerEvents();
@@ -573,6 +583,8 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function closeAllPopups() {
       if (!stack.length) return;
+
+      isAnimating = true;
 
       // Вырезаем все элементы и получаем их копию за одну операцию
       const toClose = stack.splice(0);
@@ -595,6 +607,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Сбрасываем transition оверлея после завершения анимации
       setTimeout(() => {
         overlay.style.transition = '';
+        isAnimating = false;
       }, POPUP_ANIM_DURATION * 1000);
 
       updatePointerEvents();
