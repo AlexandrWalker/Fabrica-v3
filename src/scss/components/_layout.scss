@@ -1006,26 +1006,30 @@
   }
 
   &__price {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    align-items: center;
     gap: 1rem;
 
     &-item {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 1rem;
+      display: contents;
+      // display: grid;
+      // grid-column: 1 / -1;
+      // grid-template-columns: subgrid;
+      // align-items: center;
     }
 
     &-icon {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 3.4rem;
+      min-width: 3.4rem;
+      width: 100%;
       height: 3.4rem;
       border-radius: 0.5rem;
       background-color: var(--bg);
       overflow: hidden;
+      grid-column: 1;
 
       color: var(--green);
 
@@ -1034,7 +1038,7 @@
       }
 
       span {
-        padding-left: 0.5ch;
+        padding: 0 0.1ch 0 0.5ch;
 
         font-family: var(--second-family);
         font-weight: 800;
@@ -1046,6 +1050,8 @@
     }
 
     &-text {
+      grid-column: 2;
+
       font-weight: 400;
       font-size: 2rem;
       line-height: 100%;
