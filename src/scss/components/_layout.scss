@@ -179,6 +179,10 @@
       &.tags-chef {
         background-color: var(--orange-light);
       }
+
+      &.tags-business {
+        background-color: #37AEE2;
+      }
     }
 
     &-banner {
@@ -510,7 +514,7 @@
       align-items: center;
       gap: 2rem;
       width: 100%;
-      height: 9.5rem;
+      height: 8rem;
       padding: 2rem;
       border-radius: 0.4rem;
       border: 0.1rem solid var(--beige);
@@ -532,7 +536,7 @@
       &--text {
         font-family: var(--second-family);
         font-weight: 400;
-        font-size: 3rem;
+        font-size: 2rem;
         line-height: 120%;
       }
 

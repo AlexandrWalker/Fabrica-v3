@@ -2,7 +2,7 @@
   {
     "id": "business-hookahs",
     "img": "./../../images/temp/hookahs-3.png",
-    "tags": "<div class=\"card__tags-item card__tags-hot\"><i class=\"icon-hot\"></i>Островато</div>",
+    "tags": "<div class=\"card__tags-item card__tags-business\"><i class=\"icon-business\"></i>Бизнес-кальян</div>",
     "rating": "4.8",
     "name": "Один кальян на ананасе + один кальян на чаше",
     "desc": "При единовременном заказе",
@@ -11,7 +11,7 @@
   {
     "id": "business-hookahs",
     "img": "./../../images/temp/hookahs-3.png",
-    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div>",
+    "tags": "<div class=\"card__tags-item card__tags-top\"><i class=\"icon-top\"></i>Топчик</div><div class=\"card__tags-item card__tags-business\"><i class=\"icon-business\"></i>Бизнес-кальян</div>",
     "rating": "4.8",
     "name": "Один кальян на ананасе + один кальян на чаше",
     "desc": "При единовременном заказе",
