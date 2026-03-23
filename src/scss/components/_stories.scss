@@ -178,3 +178,30 @@
     right: 0;
   }
 }
+
+.stories-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  height: 5rem;
+  padding: 0 3.5rem;
+  border-radius: 9rem;
+  background-color: #268689;
+  box-shadow: 0rem 0.6rem 0rem #FFCA8C;
+  transition: all 0.3s ease;
+
+  font-weight: 500;
+  font-size: 2rem;
+  line-height: 110%;
+  color: var(--white);
+  text-align: center;
+
+  &-wrap {
+    position: absolute;
+    top: 57%;
+    left: 2rem;
+    z-index: 1;
+    transform: translateY(-50%);
+  }
+}

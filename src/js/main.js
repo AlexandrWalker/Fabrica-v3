@@ -1576,7 +1576,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const date = el.querySelector('.afisha__item-date')?.textContent.trim() || '';
         if (img) banners = [{ img, date }];
       }
-      return { banners, el };
+
+      // Ищем .stories-btn внутри stories-item.
+      // Если кнопка есть - берём её href и текст.
+      // Эти данные будут использованы для отображения кнопки внутри оверлея.
+      const btn = el.querySelector('.stories-btn');
+      const actionHref = btn ? btn.getAttribute('href') : null;
+      const actionText = btn ? btn.textContent.trim() : null;
+
+      return { banners, el, actionHref, actionText };
+      // return { banners, el };
     }).filter(g => g.banners.length);
 
     if (!groups.length) return;
@@ -1589,6 +1598,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const navNext = document.getElementById('storiesNavNext');
     const imgA = document.getElementById('storiesImgA');
     const imgB = document.getElementById('storiesImgB');
+
+    // Получаем контейнер кнопки действия из оверлея.
+    // Он будет заполняться ссылкой при открытии группы у которой есть actionHref,
+    // и очищаться при открытии группы без кнопки.
+    const storiesBtn = document.getElementById('storiesBtn');
 
     if (!overlay || !progressEl || !closeBtn || !navPrev || !navNext || !imgA || !imgB) return;
 
@@ -1725,6 +1739,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       navPrev.style.pointerEvents = (groupIndex === 0 && bIndex === 0) ? 'none' : 'auto';
       navNext.style.pointerEvents = 'auto';
+
+      updateActionBtn(bIndex);
     }
 
     // Навигация внутри группы
@@ -1840,6 +1856,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         showBanner(0, null);
 
+        // После завершения анимации слайда обновляем кнопку действия
+        // под новую группу. Если у новой группы нет actionHref - кнопка скроется.
+        updateActionBtn();
+
         isSliding = false;
       }, SLIDE_DURATION + 32);
     }
@@ -1854,6 +1874,27 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isSliding) return;
       if (groupIndex <= 0) { closeStories(); return; }
       slideToGroup('prev', groupIndex - 1);
+    }
+
+    // Обновление кнопки действия в оверлее.
+    // Берёт actionHref и actionText из текущей группы.
+    // Если данные есть - вставляет ссылку в #storiesBtn и показывает его.
+    // Если данных нет - очищает контейнер и скрывает его.
+    function updateActionBtn(bIndex) {
+      if (!storiesBtn) return;
+
+      // Берём данные кнопки из конкретного баннера, а не из группы
+      const banner = currentBanners()[bIndex !== undefined ? bIndex : bannerIndex];
+      const href = banner.btnHref || null;
+      const text = banner.btnText || null;
+
+      if (href) {
+        storiesBtn.innerHTML = '<a class="stories-btn" href="' + href + '">' + (text || 'Подробнее') + '</a>';
+        storiesBtn.style.display = '';
+      } else {
+        storiesBtn.innerHTML = '';
+        storiesBtn.style.display = 'none';
+      }
     }
 
     // Открытие / закрытие
@@ -1883,6 +1924,11 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.style.overflow = 'hidden';
 
       showBanner(0, null);
+
+      // При открытии сториса сразу обновляем кнопку действия
+      // для группы которую открываем. Это гарантирует что кнопка
+      // отображается корректно с первого же кадра.
+      updateActionBtn();
     }
 
     function closeStories() {
@@ -1928,6 +1974,15 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (navigator.clipboard) {
           navigator.clipboard.writeText(url).catch(function () { });
         }
+      });
+    }
+
+    // Блокируем всплытие клика с контейнера кнопки действия.
+    // Без этого клик по ссылке внутри storiesBtn всплывёт до overlay
+    // и вызовет closeStories вместо перехода по ссылке.
+    if (storiesBtn) {
+      storiesBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
       });
     }
 

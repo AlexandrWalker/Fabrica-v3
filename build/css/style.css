@@ -268,16 +268,16 @@ li:last-child {
 @font-face {
   font-family: PlayfairDisplay;
   font-display: swap;
-  src: url("../fonts/PlayfairDisplay-Medium.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Medium.woff") format("woff");
-  font-weight: 500;
+  src: url("../fonts/PlayfairDisplay-Bold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Bold.woff") format("woff");
+  font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
   font-family: PlayfairDisplay;
   font-display: swap;
-  src: url("../fonts/PlayfairDisplay-Bold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Bold.woff") format("woff");
-  font-weight: 700;
+  src: url("../fonts/PlayfairDisplay-Medium.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Medium.woff") format("woff");
+  font-weight: 500;
   font-style: normal;
 }
 
@@ -460,16 +460,16 @@ li:last-child {
 @font-face {
   font-family: SofiaPro;
   font-display: swap;
-  src: url("../fonts/SofiaPro-ExtraLight.woff2") format("woff2"), url("../fonts/SofiaPro-ExtraLight.woff") format("woff");
-  font-weight: 200;
+  src: url("../fonts/SofiaPro-Light.woff2") format("woff2"), url("../fonts/SofiaPro-Light.woff") format("woff");
+  font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
   font-family: SofiaPro;
   font-display: swap;
-  src: url("../fonts/SofiaPro-Light.woff2") format("woff2"), url("../fonts/SofiaPro-Light.woff") format("woff");
-  font-weight: 300;
+  src: url("../fonts/SofiaPro-ExtraLight.woff2") format("woff2"), url("../fonts/SofiaPro-ExtraLight.woff") format("woff");
+  font-weight: 200;
   font-style: normal;
 }
 
@@ -2959,6 +2959,44 @@ body {
 
 .stories-nav--next {
   right: 0;
+}
+
+.stories-btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: 5rem;
+  padding: 0 3.5rem;
+  border-radius: 9rem;
+  background-color: #268689;
+  -webkit-box-shadow: 0rem 0.6rem 0rem #FFCA8C;
+  box-shadow: 0rem 0.6rem 0rem #FFCA8C;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-size: 2rem;
+  line-height: 110%;
+  color: var(--white);
+  text-align: center;
+}
+
+.stories-btn-wrap {
+  position: absolute;
+  top: 57%;
+  left: 2rem;
+  z-index: 1;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 h1,
