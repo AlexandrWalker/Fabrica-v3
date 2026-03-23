@@ -2103,7 +2103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!panelMask) return;
 
     // Используем querySelector внутри panelMask или обращаемся к document.
-    const pathEl = document.querySelector('#wavePath');
+    const pathEl = panelMask.querySelector('#wavePath');
     if (!pathEl) return;
 
     const html = document.documentElement;
@@ -2223,19 +2223,19 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function buildPath() {
       const p = params;
-      return [
-        `M0 21.4458 C0 9.60161 9.59902 0 21.44 0`,
-        `H\${f(p.leftH)}`,
-        `C\${f(p.c1x1)} \${f(p.c1y1)} \${f(p.c1x2)} \${f(p.c1y2)} \${f(p.c1ex)} \${f(p.c1ey)}`,
-        `C\${f(p.c2x1)} \${f(p.c2y1)} \${f(p.c2x2)} \${f(p.c2y2)} \${f(p.c2ex)} \${f(p.c2ey)}`,
-        `C\${f(p.c3x1)} \${f(p.c3y1)} \${f(p.c3x2)} \${f(p.c3y2)} \${f(p.c3ex)} \${f(p.c3ey)}`,
-        `C\${f(p.c4x1)} \${f(p.c4y1)} \${f(p.c4x2)} \${f(p.c4y2)} \${f(p.c4ex)} \${f(p.c4ey)}`,
-        `C\${f(p.c5x1)} \${f(p.c5y1)} \${f(p.c5x2)} \${f(p.c5y2)} \${f(p.c5ex)} \${f(p.c5ey)}`,
-        `C\${f(p.c6x1)} \${f(p.c6y1)} \${f(p.c6x2)} \${f(p.c6y2)} \${f(p.c6ex)} \${f(p.c6ey)}`,
-        `L\${f(p.rightLx)} \${f(p.rightLy)}`,
-        `C392.401 0 402 9.6016 402 21.4458`,
-        `V77 H0 Z`
-      ].join(' ');
+      return (
+        'M0 21.4458 C0 9.60161 9.59902 0 21.44 0' +
+        ' H' + f(p.leftH) +
+        ' C' + f(p.c1x1) + ' ' + f(p.c1y1) + ' ' + f(p.c1x2) + ' ' + f(p.c1y2) + ' ' + f(p.c1ex) + ' ' + f(p.c1ey) +
+        ' C' + f(p.c2x1) + ' ' + f(p.c2y1) + ' ' + f(p.c2x2) + ' ' + f(p.c2y2) + ' ' + f(p.c2ex) + ' ' + f(p.c2ey) +
+        ' C' + f(p.c3x1) + ' ' + f(p.c3y1) + ' ' + f(p.c3x2) + ' ' + f(p.c3y2) + ' ' + f(p.c3ex) + ' ' + f(p.c3ey) +
+        ' C' + f(p.c4x1) + ' ' + f(p.c4y1) + ' ' + f(p.c4x2) + ' ' + f(p.c4y2) + ' ' + f(p.c4ex) + ' ' + f(p.c4ey) +
+        ' C' + f(p.c5x1) + ' ' + f(p.c5y1) + ' ' + f(p.c5x2) + ' ' + f(p.c5y2) + ' ' + f(p.c5ex) + ' ' + f(p.c5ey) +
+        ' C' + f(p.c6x1) + ' ' + f(p.c6y1) + ' ' + f(p.c6x2) + ' ' + f(p.c6y2) + ' ' + f(p.c6ex) + ' ' + f(p.c6ey) +
+        ' L' + f(p.rightLx) + ' ' + f(p.rightLy) +
+        ' C392.401 0 402 9.6016 402 21.4458' +
+        ' V77 H0 Z'
+      );
     }
 
     /** Применяет текущий path к DOM-элементу */
