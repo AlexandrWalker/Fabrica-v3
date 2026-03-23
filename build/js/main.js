@@ -2103,7 +2103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!panelMask) return;
 
     // Используем querySelector внутри panelMask или обращаемся к document.
-    const pathEl = panelMask.querySelector('#wavePath');
+    const pathEl = document.querySelector('#wavePath');
     if (!pathEl) return;
 
     const html = document.documentElement;
