@@ -846,6 +846,37 @@ document.addEventListener('DOMContentLoaded', () => {
       if (stack.length) closeTopPopup();
     });
 
+    // Автозакрытие попапа favorite когда layout__items становится пустым
+
+    /**
+     * MutationObserver следит за дочерними элементами layout__items внутри #favorite.
+     * Если список стал пустым и попап открыт - закрываем его.
+     *
+     * childList: true - реагируем только на добавление/удаление дочерних узлов.
+     * subtree: false - следим только за прямыми детьми layout__items, не глубже.
+     * Это исключает лишние срабатывания при изменениях внутри карточек.
+     */
+    const favoritePopup = document.getElementById('favorite');
+
+    if (favoritePopup) {
+      const favoriteItems = favoritePopup.querySelector('.layout__items');
+
+      if (favoriteItems) {
+        const favoriteObserver = new MutationObserver(() => {
+          // Проверяем что попап открыт и список реально пуст
+          // trim() на textContent страхует от случая когда остались пустые текстовые узлы
+          // const isEmpty = favoriteItems.children.length === 0;
+          const isEmpty = favoriteItems.querySelectorAll('.card').length === 0;
+
+          if (isEmpty && stack.includes(favoritePopup)) {
+            closePopup(favoritePopup);
+          }
+        });
+
+        favoriteObserver.observe(favoriteItems, { childList: true });
+      }
+    }
+
   })();
 
   //
@@ -1889,7 +1920,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const text = banner.btnText || null;
 
       if (href) {
-        storiesBtn.innerHTML = '<a class="stories-btn" href="' + href + '">' + (text || 'Подробнее') + '</a>';
+        storiesBtn.innerHTML = '<a class="stories-btn" href="' + href + '">' + '<i class="icon-add"></i>' + (text || 'Подробнее') + '</a>';
         storiesBtn.style.display = '';
       } else {
         storiesBtn.innerHTML = '';
