@@ -396,16 +396,16 @@ li:last-child {
 @font-face {
   font-family: SFPro;
   font-display: swap;
-  src: url("../fonts/SFPro-Light.woff2") format("woff2"), url("../fonts/SFPro-Light.woff") format("woff");
-  font-weight: 300;
+  src: url("../fonts/SFPro-Medium.woff2") format("woff2"), url("../fonts/SFPro-Medium.woff") format("woff");
+  font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: SFPro;
   font-display: swap;
-  src: url("../fonts/SFPro-Medium.woff2") format("woff2"), url("../fonts/SFPro-Medium.woff") format("woff");
-  font-weight: 500;
+  src: url("../fonts/SFPro-Light.woff2") format("woff2"), url("../fonts/SFPro-Light.woff") format("woff");
+  font-weight: 300;
   font-style: normal;
 }
 
@@ -460,16 +460,16 @@ li:last-child {
 @font-face {
   font-family: SofiaPro;
   font-display: swap;
-  src: url("../fonts/SofiaPro-Light.woff2") format("woff2"), url("../fonts/SofiaPro-Light.woff") format("woff");
-  font-weight: 300;
+  src: url("../fonts/SofiaPro-ExtraLight.woff2") format("woff2"), url("../fonts/SofiaPro-ExtraLight.woff") format("woff");
+  font-weight: 200;
   font-style: normal;
 }
 
 @font-face {
   font-family: SofiaPro;
   font-display: swap;
-  src: url("../fonts/SofiaPro-ExtraLight.woff2") format("woff2"), url("../fonts/SofiaPro-ExtraLight.woff") format("woff");
-  font-weight: 200;
+  src: url("../fonts/SofiaPro-Light.woff2") format("woff2"), url("../fonts/SofiaPro-Light.woff") format("woff");
+  font-weight: 300;
   font-style: normal;
 }
 
@@ -708,6 +708,7 @@ body {
   --safe-area-top: env(safe-area-inset-top, 0px);
   --bg: #F4EBDC;
   --white: #FDF6EC;
+  --white-50: rgba(253, 246, 236, 0.5);
   --black: #0A2533;
   --black-50: rgba(10, 37, 51, 0.5);
   --aqua: #06A5AA;
@@ -722,6 +723,8 @@ body {
   --orange-light: #FF9F5F;
   --red: #D93128;
   --beige: #EDE4D5;
+  --sun: #FFCA8C;
+  --sun-50: rgba(255, 202, 140, 0.5);
   --background-color: #1b1d20;
   --slide-width: 34.4rem;
   --slide-shadow: 0 4px 20px 2px rgba(0, 0, 0, 0.4);
@@ -1557,6 +1560,7 @@ body {
   height: 100%;
 }
 
+.layout__head-slide video,
 .layout__head-slide img {
   width: 100%;
   height: 100%;
@@ -2090,6 +2094,19 @@ body {
   border-radius: 0.4rem;
   border: 0.1rem solid var(--beige);
   background-color: var(--bg);
+  text-align: left;
+}
+
+html[lang=ru] .layout__block-item[data-lang=ru] {
+  border-color: var(--green);
+}
+
+html[lang=zh] .layout__block-item[data-lang=zh] {
+  border-color: var(--green);
+}
+
+html[lang=en] .layout__block-item[data-lang=en] {
+  border-color: var(--green);
 }
 
 .layout__block-item--img {
@@ -2106,6 +2123,18 @@ body {
   object-fit: cover;
 }
 
+.layout__block-item--wrap {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-right: auto;
+}
+
 .layout__block-item--text {
   font-family: var(--second-family);
   font-weight: 400;
@@ -2113,12 +2142,19 @@ body {
   line-height: 120%;
 }
 
+.layout__block-item--status {
+  font-family: var(--second-family);
+  font-weight: 400;
+  font-size: 1.2rem;
+  line-height: 120%;
+  color: var(--aqua);
+}
+
 .layout__block-item i {
   width: 2.4rem;
   height: 2.4rem;
   background-color: var(--white);
   border-radius: 50%;
-  margin-left: auto;
   font-size: 2.4rem;
   color: var(--green);
 }
@@ -2740,6 +2776,13 @@ body {
   line-height: 120%;
 }
 
+.stories-item video {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
 .stories-overlay {
   position: fixed;
   inset: 0;
@@ -2971,32 +3014,68 @@ body {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  gap: 1rem;
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
   height: 5rem;
   padding: 0 3.5rem;
   border-radius: 9rem;
-  background-color: #268689;
-  -webkit-box-shadow: 0rem 0.6rem 0rem #FFCA8C;
-  box-shadow: 0rem 0.6rem 0rem #FFCA8C;
+  background-color: var(--sun);
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
   font-weight: 500;
   font-size: 2rem;
   line-height: 110%;
-  color: var(--white);
   text-align: center;
+  position: relative;
+  -webkit-animation: moveBottom 1.2s linear infinite;
+  animation: moveBottom 1.2s linear infinite;
 }
 
 .stories-btn-wrap {
   position: absolute;
-  top: 57%;
+  top: 73%;
   left: 2rem;
   z-index: 1;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+}
+
+.stories-btn i {
+  font-size: 3rem;
+}
+
+@-webkit-keyframes moveBottom {
+  0% {
+    -webkit-transform: scaleX(1) scaleY(1);
+    transform: scaleX(1) scaleY(1);
+  }
+
+  50% {
+    -webkit-transform: scaleX(1.02) scaleY(1.04);
+    transform: scaleX(1.02) scaleY(1.04);
+  }
+
+  100% {
+    -webkit-transform: scaleX(1) scaleY(1);
+    transform: scaleX(1) scaleY(1);
+  }
+}
+
+@keyframes moveBottom {
+  0% {
+    -webkit-transform: scaleX(1) scaleY(1);
+    transform: scaleX(1) scaleY(1);
+  }
+
+  50% {
+    -webkit-transform: scaleX(1.02) scaleY(1.04);
+    transform: scaleX(1.02) scaleY(1.04);
+  }
+
+  100% {
+    -webkit-transform: scaleX(1) scaleY(1);
+    transform: scaleX(1) scaleY(1);
+  }
 }
 
 h1,
@@ -3524,7 +3603,7 @@ p {
 }
 
 .favorite .card__like i::before {
-  content: "\e91a";
+  content: "\e915";
 }
 
 .filter .layout__inner {
@@ -4739,8 +4818,17 @@ canvas {
 }
 
 .afisha__item-img {
+  width: 100%;
+  height: 100%;
   border-radius: 1.6rem;
   overflow: hidden;
+}
+
+.afisha__item-img video {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
 }
 
 .afisha__item-date {

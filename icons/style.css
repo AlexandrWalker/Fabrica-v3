@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'FabricaIconFont';
-  src:  url('fonts/FabricaIconFont.eot?j1ed53');
-  src:  url('fonts/FabricaIconFont.eot?j1ed53#iefix') format('embedded-opentype'),
-    url('fonts/FabricaIconFont.ttf?j1ed53') format('truetype'),
-    url('fonts/FabricaIconFont.woff?j1ed53') format('woff'),
-    url('fonts/FabricaIconFont.svg?j1ed53#FabricaIconFont') format('svg');
+  src:  url('fonts/FabricaIconFont.eot?dbb9pb');
+  src:  url('fonts/FabricaIconFont.eot?dbb9pb#iefix') format('embedded-opentype'),
+    url('fonts/FabricaIconFont.ttf?dbb9pb') format('truetype'),
+    url('fonts/FabricaIconFont.woff?dbb9pb') format('woff'),
+    url('fonts/FabricaIconFont.svg?dbb9pb#FabricaIconFont') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,147 +25,153 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-share-2:before {
+.icon-chevron-right:before {
   content: "\e900";
 }
-.icon-business:before {
+.icon-like:before {
   content: "\e901";
 }
-.icon-ananas:before {
+.icon-star-fill:before {
   content: "\e902";
 }
-.icon-bowl:before {
+.icon-top:before {
   content: "\e903";
 }
-.icon-grapefruit:before {
+.icon-hot:before {
   content: "\e904";
 }
-.icon-butylka:before {
+.icon-share:before {
   content: "\e905";
 }
-.icon-bokal:before {
+.icon-fat:before {
   content: "\e906";
 }
-.icon-language:before {
+.icon-calories:before {
   content: "\e907";
 }
-.icon-home:before {
+.icon-protein:before {
   content: "\e908";
 }
-.icon-menu-slang:before {
+.icon-carbohydrates:before {
   content: "\e909";
 }
-.icon-vega:before {
+.icon-up:before {
   content: "\e90a";
 }
-.icon-chef:before {
+.icon-filter:before {
   content: "\e90b";
 }
-.icon-menu-reviews:before {
+.icon-login:before {
   content: "\e90c";
 }
-.icon-trash:before {
+.icon-meatballs:before {
   content: "\e90d";
 }
-.icon-menu-rassadka:before {
+.icon-menu-microphone:before {
   content: "\e90e";
 }
-.icon-qr:before {
+.icon-menu-list:before {
   content: "\e90f";
 }
-.icon-points:before {
+.icon-menu-catering:before {
   content: "\e910";
 }
-.icon-search:before {
+.icon-menu-loyalty-system:before {
   content: "\e911";
 }
-.icon-menu-meatballs:before {
+.icon-menu-contacts:before {
   content: "\e912";
 }
-.icon-clock:before {
+.icon-question-mark:before {
   content: "\e913";
 }
-.icon-menu-personal-offers:before {
+.icon-user:before {
   content: "\e914";
 }
-.icon-star:before {
+.icon-close:before {
   content: "\e915";
 }
-.icon-menu-user:before {
+.icon-menu-card:before {
   content: "\e916";
 }
-.icon-menu-like:before {
+.icon-menu-geo:before {
   content: "\e917";
 }
-.icon-menu-geo:before {
+.icon-menu-like:before {
   content: "\e918";
 }
-.icon-menu-card:before {
+.icon-menu-user:before {
   content: "\e919";
 }
-.icon-close:before {
+.icon-star:before {
   content: "\e91a";
 }
-.icon-user:before {
+.icon-menu-personal-offers:before {
   content: "\e91b";
 }
-.icon-question-mark:before {
+.icon-clock:before {
   content: "\e91c";
 }
-.icon-menu-contacts:before {
+.icon-menu-meatballs:before {
   content: "\e91d";
 }
-.icon-menu-loyalty-system:before {
+.icon-search:before {
   content: "\e91e";
 }
-.icon-menu-catering:before {
+.icon-points:before {
   content: "\e91f";
 }
-.icon-menu-list:before {
+.icon-qr:before {
   content: "\e920";
 }
-.icon-menu-microphone:before {
+.icon-menu-rassadka:before {
   content: "\e921";
 }
-.icon-meatballs:before {
+.icon-trash:before {
   content: "\e922";
 }
-.icon-login:before {
+.icon-menu-reviews:before {
   content: "\e923";
 }
-.icon-filter:before {
+.icon-chef:before {
   content: "\e924";
 }
-.icon-up:before {
+.icon-vega:before {
   content: "\e925";
 }
-.icon-carbohydrates:before {
+.icon-menu-slang:before {
   content: "\e926";
 }
-.icon-protein:before {
+.icon-home:before {
   content: "\e927";
 }
-.icon-calories:before {
+.icon-hookah:before {
   content: "\e928";
 }
-.icon-fat:before {
+.icon-language:before {
   content: "\e929";
 }
-.icon-share:before {
+.icon-bokal:before {
   content: "\e92a";
 }
-.icon-hot:before {
+.icon-butylka:before {
   content: "\e92b";
 }
-.icon-top:before {
+.icon-grapefruit:before {
   content: "\e92c";
 }
-.icon-star-fill:before {
+.icon-bowl:before {
   content: "\e92d";
 }
-.icon-like:before {
+.icon-ananas:before {
   content: "\e92e";
 }
-.icon-chevron-right:before {
+.icon-business:before {
   content: "\e92f";
+}
+.icon-share-2:before {
+  content: "\e930";
+}
+.icon-add:before {
+  content: "\e931";
 }
