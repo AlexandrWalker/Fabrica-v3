@@ -421,6 +421,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       stack.push(popup);
 
+      // Уведомляем попап что он открылся - используется для сброса внутреннего состояния
+      popup.dispatchEvent(new CustomEvent('popup:open'));
+
       // Маркер для внешних CSS-стилей и других скриптов
       popup.classList.add('popup-showed');
 
@@ -876,6 +879,79 @@ document.addEventListener('DOMContentLoaded', () => {
         favoriteObserver.observe(favoriteItems, { childList: true });
       }
     }
+
+    const dishPopups = document.querySelectorAll('.dish');
+
+    dishPopups.forEach(dishPopup => {
+      const scrollEl = dishPopup.querySelector('[data-popup-scroll]');
+      const headEl = dishPopup.querySelector('.layout__head');
+      const innerEl = dishPopup.querySelector('.layout__inner--sticky');
+      let className = 'is-change';
+
+      // Применяем только если есть layout__inner--sticky
+      if (!innerEl) return;
+
+      if (scrollEl && headEl) {
+        const SCROLL_RANGE = 150;
+
+        const PROGRESS_FROM = 1;
+        const PROGRESS_TO = 0.4;
+
+        const HEIGHT_FROM = 24.8;
+        const HEIGHT_TO = 13;
+
+        let aspectRatio = null;
+
+        function getAspectRatio() {
+          const rect = headEl.getBoundingClientRect();
+          if (rect.height > 0) {
+            aspectRatio = rect.width / rect.height;
+          }
+        }
+
+        const resizeObserver = new ResizeObserver(() => {
+          if (scrollEl.scrollTop === 0) getAspectRatio();
+        });
+
+        resizeObserver.observe(headEl);
+
+        const setProgress = gsap.quickSetter(dishPopup, '--dish-head-progress');
+        const setHeight = gsap.quickSetter(headEl, '--height', 'rem');
+
+        let isSticky = false;
+
+        function onDishScroll() {
+          const raw = Math.min(1, scrollEl.scrollTop / SCROLL_RANGE);
+
+          const progress = PROGRESS_FROM + (PROGRESS_TO - PROGRESS_FROM) * raw;
+          const height = HEIGHT_FROM + (HEIGHT_TO - HEIGHT_FROM) * raw;
+
+          setProgress(progress);
+          setHeight(height);
+
+          if (raw >= 1 && !isSticky) {
+            innerEl.classList.add(className);
+            isSticky = true;
+          } else if (raw < 1 && isSticky) {
+            innerEl.classList.remove(className);
+            isSticky = false;
+          }
+        }
+
+        function reset() {
+          scrollEl.scrollTop = 0;
+          setProgress(PROGRESS_FROM);
+          setHeight(HEIGHT_FROM);
+          innerEl.classList.remove(className);
+          isSticky = false;
+
+          requestAnimationFrame(getAspectRatio);
+        }
+
+        dishPopup.addEventListener('popup:open', reset);
+        scrollEl.addEventListener('scroll', onDishScroll, { passive: true });
+      }
+    });
 
   })();
 
