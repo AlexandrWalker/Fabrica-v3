@@ -116,14 +116,6 @@ li:last-child {
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: Inter;
-  font-display: swap;
   src: url("../fonts/Inter-ExtraBold.woff2") format("woff2"), url("../fonts/Inter-ExtraBold.woff") format("woff");
   font-weight: 800;
   font-style: normal;
@@ -140,16 +132,24 @@ li:last-child {
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-Light.woff2") format("woff2"), url("../fonts/Inter-Light.woff") format("woff");
-  font-weight: 300;
+  src: url("../fonts/Inter-Medium.woff2") format("woff2"), url("../fonts/Inter-Medium.woff") format("woff");
+  font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-Medium.woff2") format("woff2"), url("../fonts/Inter-Medium.woff") format("woff");
-  font-weight: 500;
+  src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Inter;
+  font-display: swap;
+  src: url("../fonts/Inter-Light.woff2") format("woff2"), url("../fonts/Inter-Light.woff") format("woff");
+  font-weight: 300;
   font-style: normal;
 }
 
@@ -188,16 +188,16 @@ li:last-child {
 @font-face {
   font-family: LeagueSpartan;
   font-display: swap;
-  src: url("../fonts/LeagueSpartan-ExtraBold.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraBold.woff") format("woff");
-  font-weight: 800;
+  src: url("../fonts/LeagueSpartan-Bold.woff2") format("woff2"), url("../fonts/LeagueSpartan-Bold.woff") format("woff");
+  font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
   font-family: LeagueSpartan;
   font-display: swap;
-  src: url("../fonts/LeagueSpartan-Bold.woff2") format("woff2"), url("../fonts/LeagueSpartan-Bold.woff") format("woff");
-  font-weight: 700;
+  src: url("../fonts/LeagueSpartan-ExtraBold.woff2") format("woff2"), url("../fonts/LeagueSpartan-ExtraBold.woff") format("woff");
+  font-weight: 800;
   font-style: normal;
 }
 
@@ -228,6 +228,14 @@ li:last-child {
 @font-face {
   font-family: LeagueSpartan;
   font-display: swap;
+  src: url("../fonts/LeagueSpartan-Regular.woff2") format("woff2"), url("../fonts/LeagueSpartan-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: LeagueSpartan;
+  font-display: swap;
   src: url("../fonts/LeagueSpartan-SemiBold.woff2") format("woff2"), url("../fonts/LeagueSpartan-SemiBold.woff") format("woff");
   font-weight: 600;
   font-style: normal;
@@ -238,14 +246,6 @@ li:last-child {
   font-display: swap;
   src: url("../fonts/LeagueSpartan-Thin.woff2") format("woff2"), url("../fonts/LeagueSpartan-Thin.woff") format("woff");
   font-weight: 100;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: LeagueSpartan;
-  font-display: swap;
-  src: url("../fonts/LeagueSpartan-Regular.woff2") format("woff2"), url("../fonts/LeagueSpartan-Regular.woff") format("woff");
-  font-weight: 400;
   font-style: normal;
 }
 
@@ -268,14 +268,6 @@ li:last-child {
 @font-face {
   font-family: PlayfairDisplay;
   font-display: swap;
-  src: url("../fonts/PlayfairDisplay-Bold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Bold.woff") format("woff");
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: PlayfairDisplay;
-  font-display: swap;
   src: url("../fonts/PlayfairDisplay-Medium.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Medium.woff") format("woff");
   font-weight: 500;
   font-style: normal;
@@ -284,16 +276,16 @@ li:last-child {
 @font-face {
   font-family: PlayfairDisplay;
   font-display: swap;
-  src: url("../fonts/PlayfairDisplay-Regular.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Regular.woff") format("woff");
-  font-weight: 400;
+  src: url("../fonts/PlayfairDisplay-Bold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Bold.woff") format("woff");
+  font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: SFCompact;
+  font-family: PlayfairDisplay;
   font-display: swap;
-  src: url("../fonts/SFCompact-Black.woff2") format("woff2"), url("../fonts/SFCompact-Black.woff") format("woff");
-  font-weight: 900;
+  src: url("../fonts/PlayfairDisplay-Regular.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Regular.woff") format("woff");
+  font-weight: 400;
   font-style: normal;
 }
 
@@ -308,8 +300,8 @@ li:last-child {
 @font-face {
   font-family: SFCompact;
   font-display: swap;
-  src: url("../fonts/SFCompact-Heavy.woff2") format("woff2"), url("../fonts/SFCompact-Heavy.woff") format("woff");
-  font-weight: 800;
+  src: url("../fonts/SFCompact-Black.woff2") format("woff2"), url("../fonts/SFCompact-Black.woff") format("woff");
+  font-weight: 900;
   font-style: normal;
 }
 
@@ -318,6 +310,14 @@ li:last-child {
   font-display: swap;
   src: url("../fonts/SFCompact-Bold.woff2") format("woff2"), url("../fonts/SFCompact-Bold.woff") format("woff");
   font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: SFCompact;
+  font-display: swap;
+  src: url("../fonts/SFCompact-Heavy.woff2") format("woff2"), url("../fonts/SFCompact-Heavy.woff") format("woff");
+  font-weight: 800;
   font-style: normal;
 }
 
@@ -340,16 +340,16 @@ li:last-child {
 @font-face {
   font-family: SFCompact;
   font-display: swap;
-  src: url("../fonts/SFCompact-SemiBold.woff2") format("woff2"), url("../fonts/SFCompact-SemiBold.woff") format("woff");
-  font-weight: 600;
+  src: url("../fonts/SFCompact-Regular.woff2") format("woff2"), url("../fonts/SFCompact-Regular.woff") format("woff");
+  font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: SFCompact;
   font-display: swap;
-  src: url("../fonts/SFCompact-Regular.woff2") format("woff2"), url("../fonts/SFCompact-Regular.woff") format("woff");
-  font-weight: 400;
+  src: url("../fonts/SFCompact-SemiBold.woff2") format("woff2"), url("../fonts/SFCompact-SemiBold.woff") format("woff");
+  font-weight: 600;
   font-style: normal;
 }
 
@@ -380,16 +380,16 @@ li:last-child {
 @font-face {
   font-family: SFPro;
   font-display: swap;
-  src: url("../fonts/SFPro-Heavy.woff2") format("woff2"), url("../fonts/SFPro-Heavy.woff") format("woff");
-  font-weight: 800;
+  src: url("../fonts/SFPro-Bold.woff2") format("woff2"), url("../fonts/SFPro-Bold.woff") format("woff");
+  font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
   font-family: SFPro;
   font-display: swap;
-  src: url("../fonts/SFPro-Bold.woff2") format("woff2"), url("../fonts/SFPro-Bold.woff") format("woff");
-  font-weight: 700;
+  src: url("../fonts/SFPro-Heavy.woff2") format("woff2"), url("../fonts/SFPro-Heavy.woff") format("woff");
+  font-weight: 800;
   font-style: normal;
 }
 
@@ -420,14 +420,6 @@ li:last-child {
 @font-face {
   font-family: SFPro;
   font-display: swap;
-  src: url("../fonts/SFPro-UltraLight.woff2") format("woff2"), url("../fonts/SFPro-UltraLight.woff") format("woff");
-  font-weight: 200;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: SFPro;
-  font-display: swap;
   src: url("../fonts/SFPro-Thin.woff2") format("woff2"), url("../fonts/SFPro-Thin.woff") format("woff");
   font-weight: 100;
   font-style: normal;
@@ -442,6 +434,14 @@ li:last-child {
 }
 
 @font-face {
+  font-family: SFPro;
+  font-display: swap;
+  src: url("../fonts/SFPro-UltraLight.woff2") format("woff2"), url("../fonts/SFPro-UltraLight.woff") format("woff");
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
   font-family: SofiaPro;
   font-display: swap;
   src: url("../fonts/SofiaPro-Black.woff2") format("woff2"), url("../fonts/SofiaPro-Black.woff") format("woff");
@@ -452,16 +452,16 @@ li:last-child {
 @font-face {
   font-family: SofiaPro;
   font-display: swap;
-  src: url("../fonts/SofiaPro-ExtraLight.woff2") format("woff2"), url("../fonts/SofiaPro-ExtraLight.woff") format("woff");
-  font-weight: 200;
+  src: url("../fonts/SofiaPro-Bold.woff2") format("woff2"), url("../fonts/SofiaPro-Bold.woff") format("woff");
+  font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
   font-family: SofiaPro;
   font-display: swap;
-  src: url("../fonts/SofiaPro-Bold.woff2") format("woff2"), url("../fonts/SofiaPro-Bold.woff") format("woff");
-  font-weight: 700;
+  src: url("../fonts/SofiaPro-ExtraLight.woff2") format("woff2"), url("../fonts/SofiaPro-ExtraLight.woff") format("woff");
+  font-weight: 200;
   font-style: normal;
 }
 
@@ -1374,11 +1374,11 @@ body {
   display: none;
 }
 
-.form-checkbox:checked + label .form-checkbox--item::after {
+.form-checkbox:checked+label .form-checkbox--item::after {
   background-color: var(--green);
 }
 
-.form-checkbox + label {
+.form-checkbox+label {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2982,8 +2982,8 @@ html[lang=en] .layout__block-item[data-lang=en] {
   background: rgba(0, 0, 0, 0.45);
   padding: 0.8rem 2rem;
   border-radius: 2rem;
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
   white-space: nowrap;
 }
 
@@ -3035,7 +3035,7 @@ html[lang=en] .layout__block-item[data-lang=en] {
 
 .stories-btn-wrap {
   position: absolute;
-  top: 73%;
+  top: 80%;
   left: 2rem;
   z-index: 1;
 }
@@ -3505,6 +3505,13 @@ p {
   text-decoration: none;
 }
 
+.dish {
+  --dish-head-progress: 0;
+  --dish-head-height-from: 24.8rem;
+  --dish-head-height-to: 10rem;
+  --dish-head-height-diff: 14.8rem;
+}
+
 .dish .container {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -3516,36 +3523,65 @@ p {
   gap: 2rem;
 }
 
-.dish .layout__head--sticky {
+.dish .layout__inner--sticky.is-change .layout__head::before {
+  opacity: 1;
+}
+
+.dish .layout__inner--sticky .layout__head {
   position: sticky;
   top: 0;
   right: 0;
   left: 0;
-  z-index: 1;
+  z-index: 2;
+  -webkit-transform-origin: top center;
+  -ms-transform-origin: top center;
+  transform-origin: top center;
+  will-change: transform;
 }
 
-.dish .layout__head--sticky::before {
+.dish .layout__inner--sticky .layout__head::before {
   content: "";
   width: calc(100% + var(--container-padding) * 2);
   height: var(--container-padding);
   background: -webkit-gradient(linear, left bottom, left top, color-stop(0rem, transparent), to(var(--white)));
   background: linear-gradient(to top, transparent 0rem, var(--white) var(--container-padding));
   pointer-events: none;
+  opacity: 0;
   position: absolute;
-  bottom: calc(var(--container-padding) * -1);
+  top: calc(var(--height) - 1.5rem);
   left: calc(var(--container-padding) * -1);
   z-index: 2;
 }
 
-.dish .layout__head--sticky::after {
+.dish .layout__inner--sticky .layout__head::after {
   content: "";
   display: block;
   width: calc(100% + var(--container-padding) * 2);
-  height: calc(100% + var(--container-padding));
+  height: var(--height);
   background-color: var(--white);
   pointer-events: none;
   position: absolute;
   inset: calc(var(--container-padding) * -1);
+}
+
+.dish .layout__head-slider {
+  -webkit-transform: scale(var(--dish-head-progress));
+  -ms-transform: scale(var(--dish-head-progress));
+  transform: scale(var(--dish-head-progress));
+  -webkit-transform-origin: top center;
+  -ms-transform-origin: top center;
+  transform-origin: top center;
+  will-change: transform;
+}
+
+.dish .layout__head-tags {
+  -webkit-transform: scale(var(--dish-head-progress));
+  -ms-transform: scale(var(--dish-head-progress));
+  transform: scale(var(--dish-head-progress));
+  -webkit-transform-origin: top left;
+  -ms-transform-origin: top left;
+  transform-origin: top left;
+  will-change: transform;
 }
 
 .dish .layout__head-cover {
@@ -3668,7 +3704,7 @@ p {
   display: none;
 }
 
-.filter__item input:checked + .filter__check::before {
+.filter__item input:checked+.filter__check::before {
   opacity: 1;
 }
 
@@ -4175,7 +4211,7 @@ p {
   right: 0;
 }
 
-.panel__btn > .panel__btn {
+.panel__btn>.panel__btn {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

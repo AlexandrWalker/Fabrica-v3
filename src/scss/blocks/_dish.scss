@@ -1,6 +1,10 @@
 @use './../mixins' as *;
 
 .dish {
+  --dish-head-progress: 0;
+  --dish-head-height-from: 24.8rem;
+  --dish-head-height-to: 10rem;
+  --dish-head-height-diff: 14.8rem;
 
   .container {
     display: flex;
@@ -10,43 +14,74 @@
 
   .layout {
 
-    &__head {
+    &__inner {
 
       &--sticky {
-        position: sticky;
-        top: 0;
-        right: 0;
-        left: 0;
-        z-index: 1;
 
-        &::before {
-          content: "";
-          width: calc(100% + (var(--container-padding) * 2));
-          height: var(--container-padding);
-          background: linear-gradient(to top, transparent 0rem, var(--white) var(--container-padding));
-          pointer-events: none;
+        &.is-change {
 
-          position: absolute;
-          bottom: calc(var(--container-padding) * -1);
-          left: calc(var(--container-padding) * -1);
+          .layout__head::before {
+            opacity: 1;
+          }
+        }
+
+        .layout__head {
+          position: sticky;
+          top: 0;
+          right: 0;
+          left: 0;
           z-index: 2;
-        }
 
-        &::after {
-          content: "";
-          display: block;
-          width: calc(100% + (var(--container-padding) * 2));
-          height: calc(100% + var(--container-padding));
-          background-color: var(--white);
-          pointer-events: none;
+          // transform: scale(var(--dish-head-progress));
+          transform-origin: top center;
+          will-change: transform;
 
-          position: absolute;
-          inset: calc(var(--container-padding) * -1);
+          &::before {
+            content: "";
+            width: calc(100% + (var(--container-padding) * 2));
+            height: var(--container-padding);
+            background: linear-gradient(to top, transparent 0rem, var(--white) var(--container-padding));
+            pointer-events: none;
+            opacity: 0;
+
+            position: absolute;
+            top: calc(var(--height) - 1.5rem);
+            // bottom: calc(var(--container-padding) * -1);
+            left: calc(var(--container-padding) * -1);
+            z-index: 2;
+          }
+
+          &::after {
+            content: "";
+            display: block;
+            width: calc(100% + (var(--container-padding) * 2));
+            // height: calc(100% + var(--container-padding));
+            height: var(--height);
+            background-color: var(--white);
+            pointer-events: none;
+
+            position: absolute;
+            inset: calc(var(--container-padding) * -1);
+          }
         }
+      }
+    }
+
+    &__head {
+
+      &-slider {
+        transform: scale(var(--dish-head-progress));
+        transform-origin: top center;
+        will-change: transform;
+      }
+
+      &-tags {
+        transform: scale(var(--dish-head-progress));
+        transform-origin: top left;
+        will-change: transform;
       }
 
       &-cover {
-        // width: 100vw;
         width: calc(100% + (var(--container-padding) * 2));
         height: 26.8rem;
         margin-left: calc(var(--container-padding) * -1);
