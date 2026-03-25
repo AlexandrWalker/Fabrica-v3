@@ -1660,6 +1660,41 @@ document.addEventListener('DOMContentLoaded', () => {
     function getActiveImg() { return activeBuffer === 'A' ? imgA : imgB; }
     function getInactiveImg() { return activeBuffer === 'A' ? imgB : imgA; }
 
+    // Предзагрузка изображений
+
+    // Кеш уже загруженных URL.
+    // Храним Set чтобы не загружать одно изображение дважды.
+    const preloadedUrls = new Set();
+
+    // Предзагружает одно изображение по URL.
+    // Создаёт Image объект, браузер загружает и кеширует его.
+    // Повторный вызов с тем же URL игнорируется - изображение уже в кеше браузера.
+    function preloadImg(url) {
+      if (!url || preloadedUrls.has(url)) return;
+      preloadedUrls.add(url);
+      const img = new Image();
+      img.src = url;
+    }
+
+    // Предзагружает все баннеры указанной группы по её индексу.
+    // Вызывается заранее - до того как пользователь долистает до этой группы.
+    function preloadGroup(gIndex) {
+      if (gIndex < 0 || gIndex >= groups.length) return;
+      groups[gIndex].banners.forEach(function (banner) {
+        preloadImg(banner.img);
+      });
+    }
+
+    // Предзагружает соседние группы относительно текущей.
+    // Вызывается при открытии сториса и при каждой смене группы.
+    // Загружает текущую, следующую и предыдущую группы - этого достаточно
+    // чтобы переход в любую сторону был без видимой подгрузки.
+    function preloadNeighbors(gIndex) {
+      preloadGroup(gIndex);
+      preloadGroup(gIndex + 1);
+      preloadGroup(gIndex - 1);
+    }
+
     // Прогресс
 
     function buildProgressBars() {
@@ -1891,6 +1926,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // под новую группу. Если у новой группы нет actionHref - кнопка скроется.
         updateActionBtn();
 
+        // После перехода в новую группу предзагружаем её соседей.
+        // Пока пользователь смотрит текущую группу, соседние уже кешируются.
+        preloadNeighbors(nextGroupIndex);
+
         isSliding = false;
       }, SLIDE_DURATION + 32);
     }
@@ -1960,6 +1999,11 @@ document.addEventListener('DOMContentLoaded', () => {
       // для группы которую открываем. Это гарантирует что кнопка
       // отображается корректно с первого же кадра.
       updateActionBtn();
+
+      // Предзагружаем текущую и соседние группы сразу при открытии.
+      // К моменту когда пользователь долистает до соседней группы
+      // её изображения уже будут в кеше браузера.
+      preloadNeighbors(gIndex);
     }
 
     function closeStories() {
@@ -2172,6 +2216,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     updateItemsVisualState();
+
+    // Предзагружаем первые три группы сразу при загрузке страницы.
+    // Это самые вероятные для просмотра сторисы - пользователь видит их первыми.
+    // Остальные группы загрузятся по мере навигации через preloadNeighbors.
+    (function preloadInitial() {
+      var limit = Math.min(3, groups.length);
+      for (var i = 0; i < limit; i++) {
+        preloadGroup(i);
+      }
+    }());
   })();
 
   /**
