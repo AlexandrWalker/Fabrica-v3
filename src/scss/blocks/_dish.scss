@@ -32,6 +32,8 @@
           left: 0;
           z-index: 2;
 
+          pointer-events: none;
+
           // transform: scale(var(--dish-head-progress));
           transform-origin: top center;
           will-change: transform;
@@ -62,6 +64,10 @@
 
             position: absolute;
             inset: calc(var(--container-padding) * -1);
+          }
+
+          &-slider {
+            pointer-events: all;
           }
         }
       }
