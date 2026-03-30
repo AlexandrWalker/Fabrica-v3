@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'FabricaIconFont';
-  src:  url('fonts/FabricaIconFont.eot?s1ahvl');
-  src:  url('fonts/FabricaIconFont.eot?s1ahvl#iefix') format('embedded-opentype'),
-    url('fonts/FabricaIconFont.ttf?s1ahvl') format('truetype'),
-    url('fonts/FabricaIconFont.woff?s1ahvl') format('woff'),
-    url('fonts/FabricaIconFont.svg?s1ahvl#FabricaIconFont') format('svg');
+  src:  url('fonts/FabricaIconFont.eot?kwpxwt');
+  src:  url('fonts/FabricaIconFont.eot?kwpxwt#iefix') format('embedded-opentype'),
+    url('fonts/FabricaIconFont.ttf?kwpxwt') format('truetype'),
+    url('fonts/FabricaIconFont.woff?kwpxwt') format('woff'),
+    url('fonts/FabricaIconFont.svg?kwpxwt#FabricaIconFont') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,150 +25,156 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-chevron-right:before {
+.icon-kuvshin:before {
   content: "\e900";
 }
-.icon-like:before {
+.icon-cup:before {
   content: "\e901";
 }
-.icon-star-fill:before {
+.icon-menu-catering:before {
   content: "\e902";
 }
-.icon-top:before {
+.icon-add:before {
   content: "\e903";
 }
-.icon-hot:before {
+.icon-share-2:before {
   content: "\e904";
 }
-.icon-share:before {
+.icon-business:before {
   content: "\e905";
 }
-.icon-fat:before {
+.icon-ananas:before {
   content: "\e906";
 }
-.icon-calories:before {
+.icon-bowl:before {
   content: "\e907";
 }
-.icon-protein:before {
+.icon-grapefruit:before {
   content: "\e908";
 }
-.icon-carbohydrates:before {
+.icon-butylka:before {
   content: "\e909";
 }
-.icon-up:before {
+.icon-bokal:before {
   content: "\e90a";
 }
-.icon-filter:before {
+.icon-language:before {
   content: "\e90b";
 }
-.icon-login:before {
+.icon-home:before {
   content: "\e90c";
 }
-.icon-meatballs:before {
+.icon-menu-slang:before {
   content: "\e90d";
 }
-.icon-menu-microphone:before {
+.icon-vega:before {
   content: "\e90e";
 }
-.icon-menu-list:before {
+.icon-chef:before {
   content: "\e90f";
 }
-.icon-menu-loyalty-system:before {
+.icon-menu-reviews:before {
   content: "\e910";
 }
-.icon-menu-contacts:before {
+.icon-trash:before {
   content: "\e911";
 }
-.icon-question-mark:before {
+.icon-menu-rassadka:before {
   content: "\e912";
 }
-.icon-user:before {
+.icon-qr:before {
   content: "\e913";
 }
-.icon-close:before {
+.icon-points:before {
   content: "\e914";
 }
-.icon-menu-card:before {
+.icon-search:before {
   content: "\e915";
 }
-.icon-menu-geo:before {
+.icon-menu-meatballs:before {
   content: "\e916";
 }
-.icon-menu-like:before {
+.icon-clock:before {
   content: "\e917";
 }
-.icon-menu-user:before {
+.icon-menu-personal-offers:before {
   content: "\e918";
 }
 .icon-star:before {
   content: "\e919";
 }
-.icon-menu-personal-offers:before {
+.icon-menu-user:before {
   content: "\e91a";
 }
-.icon-clock:before {
+.icon-menu-like:before {
   content: "\e91b";
 }
-.icon-menu-meatballs:before {
+.icon-menu-geo:before {
   content: "\e91c";
 }
-.icon-search:before {
+.icon-menu-card:before {
   content: "\e91d";
 }
-.icon-points:before {
+.icon-close:before {
   content: "\e91e";
 }
-.icon-qr:before {
+.icon-user:before {
   content: "\e91f";
 }
-.icon-menu-rassadka:before {
+.icon-question-mark:before {
   content: "\e920";
 }
-.icon-trash:before {
+.icon-menu-contacts:before {
   content: "\e921";
 }
-.icon-menu-reviews:before {
+.icon-menu-loyalty-system:before {
   content: "\e922";
 }
-.icon-chef:before {
+.icon-menu-list:before {
   content: "\e923";
 }
-.icon-vega:before {
+.icon-menu-microphone:before {
   content: "\e924";
 }
-.icon-menu-slang:before {
+.icon-meatballs:before {
   content: "\e925";
 }
-.icon-home:before {
+.icon-login:before {
   content: "\e926";
 }
-.icon-language:before {
+.icon-filter:before {
   content: "\e927";
 }
-.icon-bokal:before {
+.icon-up:before {
   content: "\e928";
 }
-.icon-butylka:before {
+.icon-carbohydrates:before {
   content: "\e929";
 }
-.icon-grapefruit:before {
+.icon-protein:before {
   content: "\e92a";
 }
-.icon-bowl:before {
+.icon-calories:before {
   content: "\e92b";
 }
-.icon-ananas:before {
+.icon-fat:before {
   content: "\e92c";
 }
-.icon-business:before {
+.icon-share:before {
   content: "\e92d";
 }
-.icon-share-2:before {
+.icon-hot:before {
   content: "\e92e";
 }
-.icon-add:before {
+.icon-top:before {
   content: "\e92f";
 }
-.icon-menu-catering:before {
+.icon-star-fill:before {
   content: "\e930";
+}
+.icon-like:before {
+  content: "\e931";
+}
+.icon-chevron-right:before {
+  content: "\e932";
 }
