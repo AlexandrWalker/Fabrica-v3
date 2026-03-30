@@ -348,6 +348,14 @@ li:last-child {
 @font-face {
   font-family: SFCompact;
   font-display: swap;
+  src: url("../fonts/SFCompact-SemiBold.woff2") format("woff2"), url("../fonts/SFCompact-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: SFCompact;
+  font-display: swap;
   src: url("../fonts/SFCompact-Thin.woff2") format("woff2"), url("../fonts/SFCompact-Thin.woff") format("woff");
   font-weight: 100;
   font-style: normal;
@@ -358,14 +366,6 @@ li:last-child {
   font-display: swap;
   src: url("../fonts/SFCompact-UltraLight.woff2") format("woff2"), url("../fonts/SFCompact-UltraLight.woff") format("woff");
   font-weight: 200;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: SFCompact;
-  font-display: swap;
-  src: url("../fonts/SFCompact-SemiBold.woff2") format("woff2"), url("../fonts/SFCompact-SemiBold.woff") format("woff");
-  font-weight: 600;
   font-style: normal;
 }
 
@@ -420,16 +420,16 @@ li:last-child {
 @font-face {
   font-family: SFPro;
   font-display: swap;
-  src: url("../fonts/SFPro-Thin.woff2") format("woff2"), url("../fonts/SFPro-Thin.woff") format("woff");
-  font-weight: 100;
+  src: url("../fonts/SFPro-SemiBold.woff2") format("woff2"), url("../fonts/SFPro-SemiBold.woff") format("woff");
+  font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
   font-family: SFPro;
   font-display: swap;
-  src: url("../fonts/SFPro-SemiBold.woff2") format("woff2"), url("../fonts/SFPro-SemiBold.woff") format("woff");
-  font-weight: 600;
+  src: url("../fonts/SFPro-Thin.woff2") format("woff2"), url("../fonts/SFPro-Thin.woff") format("woff");
+  font-weight: 100;
   font-style: normal;
 }
 
@@ -1374,11 +1374,11 @@ body {
   display: none;
 }
 
-.form-checkbox:checked + label .form-checkbox--item::after {
+.form-checkbox:checked+label .form-checkbox--item::after {
   background-color: var(--green);
 }
 
-.form-checkbox + label {
+.form-checkbox+label {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -3644,7 +3644,7 @@ p {
 }
 
 .favorite .card__like i::before {
-  content: "\e914";
+  content: "\e91e";
 }
 
 .filter .layout__inner {
@@ -3709,7 +3709,7 @@ p {
   display: none;
 }
 
-.filter__item input:checked + .filter__check::before {
+.filter__item input:checked+.filter__check::before {
   opacity: 1;
 }
 
@@ -4216,7 +4216,7 @@ p {
   right: 0;
 }
 
-.panel__btn > .panel__btn {
+.panel__btn>.panel__btn {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
