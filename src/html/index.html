@@ -86,6 +86,14 @@
     @@include('./popups/sostav.html')
     <!-- Смена языка -->
     @@include('./popups/language.html')
+    <!-- Обратная связь -->
+    @@include('./popups/callback.html')
+    <!-- История списаний -->
+    @@include('./popups/pointsHistory.html')
+    <!-- Клиентский сервис -->
+    @@include('./popups/client-service.html')
+    <!-- Смена адреса -->
+    @@include('./popups/branch-change.html')
 
     <!-- Куки -->
     @@include('./popups/cookie.html')
@@ -106,6 +114,7 @@
       <section class="layout layout--first">
         <div class="container">
           <div class="layout__inner">
+
             <button class="btn btn--beige btn--arrow" data-popup-target="branch">
               <div class="btn__text btn__text--logout">
                 Пройдите <a href="javascript: void(0)" data-popup-target="auth">авторизицию</a> или <a
@@ -119,6 +128,19 @@
               </div> -->
               <i class="icon-chevron-right"></i>
             </button>
+
+            <div class="layout__search">
+              <div class="form-group">
+                <div class="layout__search-icon">
+                  <i class="icon-search"></i>
+                </div>
+                <input class="form-input" name="search" type="text" placeholder="Поиск">
+                <button class="layout__search-btn">
+                  <i class="icon-stars"></i>
+                </button>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>

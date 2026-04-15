@@ -921,7 +921,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let isSticky = false;
 
         function onDishScroll() {
-          const raw = Math.min(1, scrollEl.scrollTop / SCROLL_RANGE);
+          const raw = Math.max(0, Math.min(1, scrollEl.scrollTop / SCROLL_RANGE));
 
           const progress = PROGRESS_FROM + (PROGRESS_TO - PROGRESS_FROM) * raw;
           const height = HEIGHT_FROM + (HEIGHT_TO - HEIGHT_FROM) * raw;

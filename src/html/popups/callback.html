@@ -1,4 +1,4 @@
-<div id="reg" class="reg popup" data-lenis-prevent>
+<div id="callback" class="callback popup" data-lenis-prevent>
   <div class="popup__wrap">
     <div class="popup__area" data-popup-head>
       <div class="popup__close">
@@ -14,7 +14,7 @@
             <div class="layout__head">
               <div class="layout__head-title">
                 <h2>
-                  Регистрация
+                  Обратная связь
                 </h2>
               </div>
             </div>
@@ -23,62 +23,58 @@
 
               <form action="#" class="layout__form">
                 <div class="form-body">
-                  <div class="form-group">
-                    <label class="form-label">
-                      <input class="form-input" type="text" name="reg_name" placeholder="Имя">
-                    </label>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">
-                      <input class="form-input" type="text" name="reg_surname" placeholder="Фамилия">
-                    </label>
-                  </div>
-                  <div class="form-group">
-                    <div class="dropdown dropdown--js">
-                      <div class="dropdown__selected dropdown__selected--js">
-                        <input class="dropdown__input dropdown__selected-input--js" type="hidden" value="">
-                        <label class="dropdown__label dropdown__selected-label--js">Пол</label>
-                        <i class="icon-chevron-right"></i>
-                      </div>
-                      <div class="dropdown__container">
-                        <div class="dropdown__content">
-                          <div class="dropdown__option">
-                            <input id="place_1" class="dropdown__radio" name="place_name" type="radio" value="Мужчина">
-                            <label for="place_1" class="dropdown__label">Мужчина</label>
-                          </div>
-                          <div class="dropdown__option">
-                            <input id="place_2" class="dropdown__radio" name="place_name" type="radio" value="Женщина">
-                            <label for="place_2" class="dropdown__label">Женщина</label>
-                          </div>
+                  <div class="form-wrap">
+                    <div class="form-group">
+                      <label class="filter__item">
+                        <input type="radio" name="sub1">
+                        <span class="filter__check"></span>
+                        <div class="filter__item-text">
+                          Сообщить о проблеме
                         </div>
-                      </div>
-                      <input class="dropdown__value" type="hidden">
+                        <i class="icon-chevron"></i>
+                      </label>
+                    </div>
+                    <div class="form-group">
+                      <label class="filter__item">
+                        <input type="radio" name="sub1">
+                        <span class="filter__check"></span>
+                        <div class="filter__item-text">
+                          Идея для улучшения
+                        </div>
+                        <i class="icon-chevron"></i>
+                      </label>
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="form-label">
-                      <input class="form-input" type="text" name="reg_tel" min="1900-01-01" placeholder="Дата рождения" onfocus="(this.type='date')" onblur="(this.type='text')">
+                      <input class="form-input" type="text" name="reg_name" placeholder="Ваше имя*" required>
                     </label>
                   </div>
                   <div class="form-group">
                     <label class="form-label">
-                      <input class="form-input" type="tel" name="reg_tel" placeholder="Телефон">
+                      <input class="form-input" type="tel" name="reg_tel" placeholder="Телефон*" required>
                     </label>
                   </div>
                   <div class="form-group">
                     <label class="form-label">
-                      <input class="form-input" type="email" name="reg_tel" placeholder="Эл. почта">
+                      <input class="form-input" type="email" name="reg_tel" placeholder="Эл. почта*" required>
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">
+                      Сообщение*
+                      <textarea class="form-textarea" name="comment" rows="7"></textarea>
                     </label>
                   </div>
                 </div>
 
                 <div class="form-foot">
                   <button class="btn btn--green" type="button" data-popup-target="regCode">
-                    Получить код на почту
+                    Отправить
                   </button>
                   <div class="form-group form-text">
-                    <input id="form-checkbox-1" class="form-checkbox" type="checkbox" required="">
-                    <label for="form-checkbox-1">
+                    <input id="form-checkbox-9" class="form-checkbox" type="checkbox" required="">
+                    <label for="form-checkbox-9">
                       <div class="form-checkbox--item"></div>
                       <p>
                         Я согласен на <a href="javascript:void(0)" data-popup-target="policy">обработку персональных
@@ -87,8 +83,8 @@
                     </label>
                   </div>
                   <div class="form-group form-text">
-                    <input id="form-checkbox-2" class="form-checkbox" type="checkbox">
-                    <label for="form-checkbox-2">
+                    <input id="form-checkbox-10" class="form-checkbox" type="checkbox">
+                    <label for="form-checkbox-10">
                       <div class="form-checkbox--item"></div>
                       <p>
                         Я согласен на <a href="javascript:void(0)">рекламные уведомления</a>

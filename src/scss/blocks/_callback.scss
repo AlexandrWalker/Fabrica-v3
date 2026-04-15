@@ -1,0 +1,12 @@
+@use './../mixins' as *;
+
+.callback {
+
+  .layout__inner {
+    gap: 2rem;
+  }
+
+  .form-body {
+    gap: 2rem;
+  }
+}

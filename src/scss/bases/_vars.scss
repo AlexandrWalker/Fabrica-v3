@@ -12,6 +12,7 @@
   --container-width: 37.2rem;
   --header-height: 6.5rem;
   --wrapper-padding: 7.3rem;
+  --inner-popup-ptop: 30rem;
   --panel-height: 6.8rem;
   --safe-area-top: env(safe-area-inset-top, 0px);
 
@@ -27,6 +28,7 @@
   --green: #185D66;
   --green-30: rgba(24, 93, 102, 0.3);
   --green-50: rgba(24, 93, 102, 0.5);
+  --green-60: rgba(24, 93, 102, 0.6);
   --green-light: #25D366;
   --green-2: #114349;
   --orange-light: #FF9F5F;
@@ -34,6 +36,8 @@
   --beige: #EDE4D5;
   --sun: #FFCA8C;
   --sun-50: rgba(255, 202, 140, 0.5);
+  --gray: #7F8887;
+  --gray-50: rgba(127, 136, 135, 0.5);
 
   --background-color: #1b1d20;
   --slide-width: 34.4rem;

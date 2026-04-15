@@ -1,0 +1,8 @@
+@use './../mixins' as *;
+
+.pointsHistory {
+
+  .layout__inner {
+    gap: 3rem;
+  }
+}

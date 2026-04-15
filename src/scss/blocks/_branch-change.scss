@@ -1,0 +1,32 @@
+@use './../mixins' as *;
+
+.branch-change {
+  display: flex;
+  align-items: flex-end;
+
+  &.popup {
+    padding-top: var(--inner-popup-ptop);
+  }
+
+  .popup {
+
+    &__wrap {
+      width: 100%;
+    }
+  }
+
+  .layout {
+
+    &__inner {
+      gap: 2rem;
+    }
+
+    &__body {
+      gap: 1rem;
+    }
+  }
+
+  .btn {
+    font-weight: 700;
+  }
+}

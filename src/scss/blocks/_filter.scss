@@ -6,6 +6,10 @@
       padding-bottom: 14rem;
     }
 
+    &__body {
+      gap: 2rem;
+    }
+
     &__foot {
       height: calc(var(--panel-height) + 15rem);
 
@@ -84,6 +88,7 @@
       -webkit-transform: translate(-50%, -50%);
       -ms-transform: translate(-50%, -50%);
       transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
     }
   }
 }
