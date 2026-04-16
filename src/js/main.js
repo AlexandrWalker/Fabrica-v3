@@ -507,6 +507,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // Линейная интерполяция времени анимации по скорости свайпа
       const duration = Math.max(0.2, Math.min(0.6, POPUP_ANIM_DURATION - velocity));
 
+      popup.dispatchEvent(new CustomEvent('popup:close'));
+
       popup.style.transition = `top \${duration}s ease, opacity \${duration}s ease`;
       popup.style.top = '100%';
       popup.style.opacity = '0';
@@ -555,6 +557,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // Попап не верхний - вырезаем его из стека и скрываем
       stack.splice(idx, 1);
 
+      popup.dispatchEvent(new CustomEvent('popup:close'));
+
       const duration = POPUP_ANIM_DURATION;
       popup.style.transition = `top \${duration}s ease, opacity \${duration}s ease`;
       popup.style.top = '100%';
@@ -593,6 +597,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const toClose = stack.splice(0);
 
       toClose.forEach(popup => {
+        popup.dispatchEvent(new CustomEvent('popup:close'));
+
         popup.style.transition = `top \${POPUP_ANIM_DURATION}s ease, opacity \${POPUP_ANIM_DURATION}s ease`;
         popup.style.top = '100%';
         popup.style.opacity = '0';
@@ -929,6 +935,12 @@ document.addEventListener('DOMContentLoaded', () => {
           setProgress(progress);
           setHeight(height);
 
+          if (raw > 0) {
+            innerEl.classList.add('is-change-moment');
+          } else {
+            innerEl.classList.remove('is-change-moment');
+          }
+
           if (raw >= 1 && !isSticky) {
             innerEl.classList.add(className);
             isSticky = true;
@@ -943,13 +955,20 @@ document.addEventListener('DOMContentLoaded', () => {
           setProgress(PROGRESS_FROM);
           setHeight(HEIGHT_FROM);
           innerEl.classList.remove(className);
+          innerEl.classList.remove('is-change-moment');
           isSticky = false;
 
           requestAnimationFrame(getAspectRatio);
         }
 
-        dishPopup.addEventListener('popup:open', reset);
-        scrollEl.addEventListener('scroll', onDishScroll, { passive: true });
+        dishPopup.addEventListener('popup:open', () => {
+          reset();
+          scrollEl.addEventListener('scroll', onDishScroll, { passive: true });
+        });
+
+        dishPopup.addEventListener('popup:close', () => {
+          scrollEl.removeEventListener('scroll', onDishScroll);
+        });
       }
     });
 
