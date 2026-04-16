@@ -5554,7 +5554,7 @@
                 </div>
 
                 <div class="form-foot">
-                  <button class="btn btn--green" type="button" data-popup-target="regCode">
+                  <button class="btn btn--green" type="button" data-popup-target="callbackSuccess">
                     Отправить
                   </button>
                   <div class="form-group form-text">
@@ -5584,6 +5584,43 @@
                   </div>
                 </div>
               </form>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+    <!-- Обратная связь - успех -->
+    <div id="callbackSuccess" class="callback popup" data-lenis-prevent>
+  <div class="popup__wrap">
+    <div class="popup__area" data-popup-head>
+      <div class="popup__close">
+        <i class="icon-close"></i>
+      </div>
+    </div>
+    <div class="popup__inner">
+
+      <div class="layout" data-popup-scroll>
+        <div class="container">
+          <div class="layout__inner">
+
+            <div class="layout__head">
+              <div class="layout__head-title">
+                <h2>
+                  Ваше сообщение отправлено!
+                </h2>
+              </div>
+            </div>
+
+            <div class="layout__body">
+
+              <button class="btn btn--accent" type="button" data-close-all-popups>
+                Вернуться в меню
+              </button>
 
             </div>
 
@@ -5794,28 +5831,36 @@
 
             <div class="layout__body">
               <div class="menu__items">
-                <a class="menu__item" href="/">
+                <a class="menu__item" href="javascript: void(0)" data-popup-target="callback">
+                  <div class="menu__item-icon">
+                    <i class="icon-callback"></i>
+                  </div>
+                  <div class="menu__item-title">
+                    Обратная связь
+                  </div>
+                </a>
+                <a class="menu__item" href="https://t.me/hookahfactory.nsk">
                   <div class="menu__item-icon">
                     <i class="icon-tg"></i>
                   </div>
                   <div class="menu__item-title">
-                    Написать в Telegram
+                    Telegram
                   </div>
                 </a>
-                <a class="menu__item" href="/">
+                <a class="menu__item" href="https://max.ru/@hookahfactory.nsk">
                   <div class="menu__item-icon">
                     <i class="icon-max"></i>
                   </div>
                   <div class="menu__item-title">
-                    Написать в Max
+                    Max
                   </div>
                 </a>
-                <a class="menu__item" href="/">
+                <a class="menu__item" href="https://wa.me/+73832558005">
                   <div class="menu__item-icon">
                     <i class="icon-wa"></i>
                   </div>
                   <div class="menu__item-title">
-                    Написать в WhatsApp
+                    WhatsApp
                   </div>
                 </a>
               </div>
