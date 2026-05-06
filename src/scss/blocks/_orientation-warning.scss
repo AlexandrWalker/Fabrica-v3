@@ -7,7 +7,7 @@
   height: 100%;
   background-color: var(--green-2);
 
-  color: white;
+  color: var(--white);
   text-align: center;
 
   position: fixed;
@@ -35,6 +35,8 @@
   }
 
   &__text {
+    max-width: 35rem;
+
     font-size: 1.4rem;
   }
 }
