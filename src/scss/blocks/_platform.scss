@@ -1,0 +1,15 @@
+@use './../mixins' as *;
+
+.platform {
+
+  .layout__head-cover {
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+}

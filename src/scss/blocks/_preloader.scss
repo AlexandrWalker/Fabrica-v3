@@ -6,10 +6,24 @@
   justify-content: center;
   background: var(--green-2);
   transform-origin: top center;
-  
+
   position: fixed;
   inset: 0;
   z-index: 9999;
+}
+
+.foodbook {
+  
+  &__img {
+    width: 16rem;
+    height: auto;
+    object-fit: contain;
+
+    position: absolute;
+    left: 50%;
+    bottom: 5rem;
+    transform: translateX(-50%);
+  }
 }
 
 canvas {

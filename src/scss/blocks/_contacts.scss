@@ -4,12 +4,25 @@
 
   .layout {
 
+    &__inner {
+      gap: 2rem;
+    }
+
+    &__body {
+      gap: 2rem;
+    }
+
     &__block {
+
+      &-wrap {
+        gap: 1rem;
+      }
 
       &-text {
 
         span {
           font-size: 1rem;
+          line-height: 120%;
         }
 
         a {

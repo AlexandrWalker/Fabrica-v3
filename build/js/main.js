@@ -403,6 +403,20 @@ document.addEventListener('DOMContentLoaded', () => {
       // Блокируем открытие пока идёт анимация закрытия
       if (isAnimating) return;
 
+      // Проверка для попапа с id="favorite"
+      if (popup.id === 'favorite') {
+        const layoutItems = popup.querySelector('.layout__items');
+        const hasCard = layoutItems && layoutItems.querySelector('.card');
+
+        if (!hasCard) {
+          // Если нет блока card, добавляем класс popup-null
+          popup.classList.add('popup-null');
+        } else {
+          // Если блок card есть, убеждаемся, что класс popup-null удалён
+          popup.classList.remove('popup-null');
+        }
+      }
+
       // Блокируем скролл только при самом первом открытом попапе
       if (!stack.length) lockBodyScroll();
 
@@ -865,26 +879,26 @@ document.addEventListener('DOMContentLoaded', () => {
      * subtree: false - следим только за прямыми детьми layout__items, не глубже.
      * Это исключает лишние срабатывания при изменениях внутри карточек.
      */
-    const favoritePopup = document.getElementById('favorite');
+    // const favoritePopup = document.getElementById('favorite');
 
-    if (favoritePopup) {
-      const favoriteItems = favoritePopup.querySelector('.layout__items');
+    // if (favoritePopup) {
+    //   const favoriteItems = favoritePopup.querySelector('.layout__items');
 
-      if (favoriteItems) {
-        const favoriteObserver = new MutationObserver(() => {
-          // Проверяем что попап открыт и список реально пуст
-          // trim() на textContent страхует от случая когда остались пустые текстовые узлы
-          // const isEmpty = favoriteItems.children.length === 0;
-          const isEmpty = favoriteItems.querySelectorAll('.card').length === 0;
+    //   if (favoriteItems) {
+    //     const favoriteObserver = new MutationObserver(() => {
+    //       // Проверяем что попап открыт и список реально пуст
+    //       // trim() на textContent страхует от случая когда остались пустые текстовые узлы
+    //       // const isEmpty = favoriteItems.children.length === 0;
+    //       const isEmpty = favoriteItems.querySelectorAll('.card').length === 0;
 
-          if (isEmpty && stack.includes(favoritePopup)) {
-            closePopup(favoritePopup);
-          }
-        });
+    //       if (isEmpty && stack.includes(favoritePopup)) {
+    //         closePopup(favoritePopup);
+    //       }
+    //     });
 
-        favoriteObserver.observe(favoriteItems, { childList: true });
-      }
-    }
+    //     favoriteObserver.observe(favoriteItems, { childList: true });
+    //   }
+    // }
 
     const dishPopups = document.querySelectorAll('.dish');
 
@@ -2825,6 +2839,53 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+  })();
+
+  /**
+   * Функция для блока welcome
+   */
+  (function () {
+    const welcome = document.getElementById('welcome');
+
+    if (welcome) {
+      document.documentElement.classList.add('welcome--open');
+    } else {
+      document.documentElement.classList.remove('welcome--open');
+    }
+
+    welcome.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        welcome.classList.add('is-hidden');
+        document.documentElement.classList.remove('welcome--open');
+
+        welcome.addEventListener('transitionend', () => {
+          welcome.remove();
+        }, { once: true });
+      });
+    });
+  })();
+
+  /**
+   * Функция для отслеживания оринетации смартфона
+   */
+  (function () {
+    const warningEl = document.getElementById('orientation-warning');
+    if (!warningEl) return;
+
+    const update = () => {
+      const isLandscape = window.innerHeight < window.innerWidth; // высота меньше ширины
+      warningEl.style.display = isLandscape ? 'flex' : 'none';
+      document.documentElement.classList.toggle('orientation--show', isLandscape);
+    };
+
+    // При загрузке сразу, в самом начале выполнения
+    update();
+
+    // При автоповороте смартфона
+    window.addEventListener('orientationchange', update);
+
+    // На случай, если orientationchange срабатывает не всегда (iOS/вебвью иногда)
+    window.addEventListener('resize', update, { passive: true });
   })();
 
   /**

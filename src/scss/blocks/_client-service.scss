@@ -1,19 +1,6 @@
 @use './../mixins' as *;
 
 .client-service {
-  display: flex;
-  align-items: flex-end;
-
-  &.popup {
-    padding-top: var(--inner-popup-ptop);
-  }
-
-  .popup {
-
-    &__wrap {
-      width: 100%;
-    }
-  }
 
   .menu__item-title {
     font-family: var(--font-family);

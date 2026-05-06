@@ -128,6 +128,40 @@
       }
     }
   }
+
+  &-inner {
+    display: flex;
+    align-items: flex-end;
+    // padding-top: var(--inner-popup-ptop);
+
+    .popup {
+
+      &__wrap {
+        width: 100%;
+        height: fit-content;
+      }
+    }
+
+    .btn {
+      font-weight: 700;
+    }
+
+    .layout__inner {
+      gap: 2rem;
+    }
+  }
+
+  &-null {
+
+    .layout__head,
+    .layout__body {
+      display: none;
+    }
+
+    .layout__null {
+      display: flex;
+    }
+  }
 }
 
 /* Overlay */

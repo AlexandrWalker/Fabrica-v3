@@ -25,8 +25,26 @@
 
 #profileCard {
 
-  .layout__body {
-    padding-top: 1rem;
+  .layout {
+
+    &__head-title * {
+      font-size: 2rem;
+    }
+
+    &__body {
+      // padding-top: 1rem;
+    }
+
+    &__card {
+      gap: 1.5rem;
+    }
+
+    &__block {
+
+      &-link {
+        color: var(--green);
+      }
+    }
   }
 }
 

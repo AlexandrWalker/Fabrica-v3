@@ -6,8 +6,16 @@
     background-image: url(./../images/temp/menu-bg.png);
   }
 
-  .layout__inner {
-    gap: 1.5rem;
+  .layout {
+    padding-bottom: 15rem;
+
+    &__body {
+      z-index: 2;
+    }
+
+    &__inner {
+      gap: 1.5rem;
+    }
   }
 
   &__items {

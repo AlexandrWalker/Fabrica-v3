@@ -15,6 +15,10 @@ html {
     --refRes: 1920;
   }
 
+  @include dosm {
+    --refRes: 834;
+  }
+
   &.header-out {
     scroll-padding-top: 10rem;
   }

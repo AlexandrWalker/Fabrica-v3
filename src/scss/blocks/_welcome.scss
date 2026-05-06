@@ -1,0 +1,133 @@
+@use './../mixins' as *;
+
+.welcome {
+  width: 100vw;
+  width: 100dvw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: var(--green-2);
+  transition: opacity 0.6s ease, visibility 0.6s ease, top 0.4s ease;
+  overflow-y: auto;
+
+  color: var(--white);
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1100;
+
+  &--open {
+
+    body {
+      overflow: hidden !important;
+      overscroll-behavior-y: none;
+      max-height: 100vh;
+    }
+  }
+
+  &.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    top: -100%;
+  }
+
+  .container {
+    --container-padding: 3.6rem;
+  }
+
+  &__inner {
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
+    justify-content: center;
+    height: 100%;
+    padding: 4rem 0;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+
+    grid-row: 2/3;
+  }
+
+  &__logo {
+    width: auto;
+    height: 18rem;
+
+    img {
+      width: auto;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  &__text {
+    text-align: center;
+
+    p {
+      font-size: 1.4rem;
+    }
+  }
+
+  &__btns {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    max-width: 21.2rem;
+    width: 100%;
+  }
+
+  &__btn {
+    width: 100%;
+
+    font-weight: 700;
+  }
+
+  &__lang {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    &-img {
+      width: auto;
+      height: 1.9rem;
+      border-radius: 0.2rem;
+      overflow: hidden;
+
+      img {
+        width: auto;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+
+    &-text {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0;
+
+      p {
+        font-size: 1.4rem;
+      }
+
+      i {
+        font-size: 2rem;
+      }
+    }
+  }
+
+  .foodbook__img {
+    margin: auto auto 0 auto;
+    padding: 3rem 0 1rem;
+    transform: none;
+    grid-row: 3/4;
+
+    position: static;
+  }
+}

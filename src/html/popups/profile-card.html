@@ -1,6 +1,6 @@
 <div id="profileCard" class="profile popup" data-lenis-prevent>
   <div class="popup__wrap">
-        <div class="popup__area" data-popup-head>
+    <div class="popup__area" data-popup-head>
       <div class="popup__close">
         <i class="icon-close"></i>
       </div>
@@ -11,18 +11,78 @@
         <div class="container">
           <div class="layout__inner">
 
-            <div class="layout__head">
+            <!-- <div class="layout__head">
               <div class="layout__head-title">
                 <h2>
                   Применить системой лояльности
                 </h2>
               </div>
+            </div> -->
+
+            <div class="layout__head">
+              <div class="layout__head-title">
+                <h2>
+                  Профиль
+                </h2>
+              </div>
+              <div class="layout__head-content">
+                <h2>
+                  Иван Петров
+                </h2>
+                <a class="layout__head-tel h6" href="tel:+71234567890">
+                  +7 (123) 456-78-90
+                </a>
+                <button class="layout__head-change h6" data-popup-target="profileDetails">
+                  Изменить номер
+                </button>
+              </div>
             </div>
 
             <div class="layout__body">
               <div class="layout__card">
+
+                <div class="layout__card-block">
+                  <div class="layout__card-img">
+                    <img src="./../../images/temp/profile-card-bg-light.png" data-color="light" alt="">
+                    <img src="./../../images/temp/profile-card-bg-green.png" data-color="dark" alt="">
+                  </div>
+                  <div class="layout__card-col">
+                    <div class="layout__card-logo">
+                      <img src="./../../images/logo/preloader-logo-white.svg" alt="">
+                    </div>
+                    <div class="layout__card-icon" data-popup-target="profileCard">
+                      <img src="./../images/temp/card-qr.png" alt="">
+                    </div>
+                  </div>
+                  <div class="layout__card-content">
+                    <div class="layout__card-wrap">
+                      <div class="layout__card-status">
+                        бронза
+                      </div>
+                      <div class="layout__card-value">
+                        <span>1000</span> Б
+                      </div>
+                      <div class="layout__card-text">
+                        01.05.2027 сгорит 900 Б
+                      </div>
+                    </div>
+                    <div class="layout__card-procent">
+                      2%
+                    </div>
+                  </div>
+                </div>
+
                 <div class="layout__card-qr">
                   <img src="./../../images/temp/profile-card-qr.png" alt="">
+                </div>
+                <div class="layout__block-text">
+                  <p>
+                    QR-код постоянно обновляется. Не пытайтесь его скопировать или передать третьим лицам. Бонусы
+                    начисляются только держателям карт лояльности.
+                  </p>
+                </div>
+                <div class="layout__block-link" data-popup-target="loyalty">
+                  Правила программы привилегий
                 </div>
               </div>
             </div>

@@ -35,6 +35,61 @@
   <!-- Прелоадер -->
   <div class="preloader">
   <canvas id="logo-canvas" width="185" height="179"></canvas>
+
+  
+
+  <img class="foodbook__img" src="./images/temp/foodbook.svg" alt="">
+</div>
+  <!-- welcome -->
+  <div id="welcome" class="welcome">
+  <div class="container">
+    <div class="welcome__inner">
+
+      <div class="welcome__content">
+        <div class="welcome__logo">
+          <img src="./images/logo/preloader-logo-white.svg" alt="Фабрика">
+        </div>
+        <div class="welcome__text">
+          <p>
+            Зарегистрируйтесь или войдите в приложение что бы получать бонусы и скидки!
+          </p>
+        </div>
+        <div class="welcome__btns">
+          <button class="welcome__btn btn btn--accent layout__btn--login" data-log="login" type="button">
+            Войти
+          </button>
+          <button class="welcome__btn btn btn--green" type="button" data-popup-target="reg">
+            Регистрация
+          </button>
+          <!-- <button class="welcome__btn welcome__lang btn btn--green" type="button" data-popup-target="language">
+            <div class="welcome__lang-img">
+              <img src="./images/temp/language-rus-min.svg" alt="">
+            </div>
+            <div class="welcome__lang-text">
+              <p>
+                Русский
+              </p>
+              <i class="icon-chevron-right"></i>
+            </div>
+          </button> -->
+        </div>
+      </div>
+
+      <img class="foodbook__img" src="./images/temp/foodbook.svg" alt="">
+
+    </div>
+  </div>
+</div>
+  <!-- orientation -->
+  <div id="orientation-warning" class="warning">
+  <div class="warning__content">
+    <div class="warning__img">
+      <img src="./images/temp/orientation-img.svg" alt="">
+    </div>
+    <div class="warning__text">
+      Для комфортного просмотра меню, пожалуйста, разверните экран вертикально
+    </div>
+  </div>
 </div>
   <!-- main -->
   <div class="wrapper">
@@ -218,7 +273,18 @@
                     Пользовательское соглашение
                   </div>
                 </div>
+                <div class="menu__item" data-popup-target="platform">
+                  <div class="menu__item-icon">
+                    <i class="icon-menu-platform"></i>
+                  </div>
+                  <div class="menu__item-title">
+                    О платформе
+                  </div>
+                </div>
               </div>
+            </div>
+            <div class="layout__logo">
+              <img src="./images/temp/foodbook.svg" alt="">
             </div>
 
           </div>
@@ -3299,7 +3365,7 @@
                     Зарегистрируйтесь и получайте бонусы и скидки <button data-popup-target="reg">Регистрация</button>
                   </div>
                 </div>
-                <div class="layout__card-block">
+                <!-- <div class="layout__card-block">
                   <div class="layout__card-img">
                     <img src="./images/temp/profile-card-bg-light.png" data-color="light" alt="">
                     <img src="./images/temp/profile-card-bg-green.png" data-color="dark" alt="">
@@ -3325,13 +3391,43 @@
                   <div class="layout__card-icon" data-popup-target="profileCard">
                     <i class="icon-qr"></i>
                   </div>
+                </div> -->
+                <div class="layout__card-block">
+                  <div class="layout__card-img">
+                    <img src="./images/temp/profile-card-bg-light.png" data-color="light" alt="">
+                    <img src="./images/temp/profile-card-bg-green.png" data-color="dark" alt="">
+                  </div>
+                  <div class="layout__card-col">
+                    <div class="layout__card-logo">
+                      <img src="./images/logo/preloader-logo-white.svg" alt="">
+                    </div>
+                    <div class="layout__card-icon" data-popup-target="profileCard">
+                      <img src="./images/temp/card-qr.png" alt="">
+                    </div>
+                  </div>
+                  <div class="layout__card-content">
+                    <div class="layout__card-wrap">
+                      <div class="layout__card-status">
+                        бронза
+                      </div>
+                      <div class="layout__card-value">
+                        <span>1000</span> Б
+                      </div>
+                      <div class="layout__card-text">
+                        01.05.2027 сгорит 900 Б
+                      </div>
+                    </div>
+                    <div class="layout__card-procent">
+                      2%
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div class="layout__cashback">
                 <div class="layout__cashback-head">
                   <div class="layout__cashback-title">
-                    Повысьте кэшбэк до 2%
+                    Повысьте кэшбэк до 3%
                   </div>
                   <div class="layout__cashback-text">
                     Закажите еще на 10 000 ₽
@@ -3340,7 +3436,9 @@
                 <div class="layout__cashback-progressbar">
                   <progress value="25" max="100"></progress>
                 </div>
-                <i class="icon-chevron-right"></i>
+                <button class="layout__cashback-guess" data-popup-target="loyalty">
+                  <i class="icon-question-mark"></i>
+                </button>
               </div>
 
               <div class="menu__items">
@@ -3350,25 +3448,6 @@
                   </div>
                   <div class="menu__item-title">
                     Мои данные
-                  </div>
-                </div>
-                <div class="menu__item" data-popup-target="favorite">
-                  <div class="menu__item-icon">
-                    <i class="icon-menu-like"></i>
-                    <div class="btn--count">
-                      5
-                    </div>
-                  </div>
-                  <div class="menu__item-title">
-                    Нравится
-                  </div>
-                </div>
-                <div class="menu__item" data-popup-target="pointsHistory">
-                  <div class="menu__item-icon">
-                    <i class="icon-history"></i>
-                  </div>
-                  <div class="menu__item-title">
-                    История списаний
                   </div>
                 </div>
                 <div class="menu__item" data-popup-target="offers">
@@ -3382,12 +3461,47 @@
                     Персональные предложения
                   </div>
                 </div>
+                <div class="menu__item" data-popup-target="pointsHistory">
+                  <div class="menu__item-icon">
+                    <i class="icon-history"></i>
+                  </div>
+                  <div class="menu__item-title">
+                    История списаний
+                  </div>
+                </div>
+                <div class="menu__item" data-popup-target="favorite">
+                  <div class="menu__item-icon">
+                    <i class="icon-menu-like"></i>
+                    <div class="btn--count">
+                      5
+                    </div>
+                  </div>
+                  <div class="menu__item-title">
+                    Нравится
+                  </div>
+                </div>
+                <div class="menu__item" data-popup-target="branchSelect">
+                  <div class="menu__item-icon">
+                    <i class="icon-menu-geo"></i>
+                  </div>
+                  <div class="menu__item-title">
+                    Мои адреса
+                  </div>
+                </div>
                 <div class="menu__item" data-popup-target="cards">
                   <div class="menu__item-icon">
                     <i class="icon-menu-card"></i>
                   </div>
                   <div class="menu__item-title">
                     Мои карты
+                  </div>
+                </div>
+                <div class="menu__item" data-popup-target="myReviews">
+                  <div class="menu__item-icon">
+                    <i class="icon-menu-reviews-2"></i>
+                  </div>
+                  <div class="menu__item-title">
+                    Мои отзывы (5)
                   </div>
                 </div>
                 <div class="menu__item" data-popup-target="clientService">
@@ -3398,12 +3512,12 @@
                     Клиентский сервис
                   </div>
                 </div>
-                <div class="menu__item" data-popup-target="myReviews">
+                <div class="menu__item" data-popup-target="notifications">
                   <div class="menu__item-icon">
-                    <i class="icon-menu-reviews"></i>
+                    <i class="icon-menu-notifications"></i>
                   </div>
                   <div class="menu__item-title">
-                    Мои отзывы (5)
+                    Уведомления
                   </div>
                 </div>
               </div>
@@ -3432,7 +3546,7 @@
     <!-- Профиль -->
     <div id="profileCard" class="profile popup" data-lenis-prevent>
   <div class="popup__wrap">
-        <div class="popup__area" data-popup-head>
+    <div class="popup__area" data-popup-head>
       <div class="popup__close">
         <i class="icon-close"></i>
       </div>
@@ -3443,18 +3557,78 @@
         <div class="container">
           <div class="layout__inner">
 
-            <div class="layout__head">
+            <!-- <div class="layout__head">
               <div class="layout__head-title">
                 <h2>
                   Применить системой лояльности
                 </h2>
               </div>
+            </div> -->
+
+            <div class="layout__head">
+              <div class="layout__head-title">
+                <h2>
+                  Профиль
+                </h2>
+              </div>
+              <div class="layout__head-content">
+                <h2>
+                  Иван Петров
+                </h2>
+                <a class="layout__head-tel h6" href="tel:+71234567890">
+                  +7 (123) 456-78-90
+                </a>
+                <button class="layout__head-change h6" data-popup-target="profileDetails">
+                  Изменить номер
+                </button>
+              </div>
             </div>
 
             <div class="layout__body">
               <div class="layout__card">
+
+                <div class="layout__card-block">
+                  <div class="layout__card-img">
+                    <img src="./images/temp/profile-card-bg-light.png" data-color="light" alt="">
+                    <img src="./images/temp/profile-card-bg-green.png" data-color="dark" alt="">
+                  </div>
+                  <div class="layout__card-col">
+                    <div class="layout__card-logo">
+                      <img src="./images/logo/preloader-logo-white.svg" alt="">
+                    </div>
+                    <div class="layout__card-icon" data-popup-target="profileCard">
+                      <img src="./images/temp/card-qr.png" alt="">
+                    </div>
+                  </div>
+                  <div class="layout__card-content">
+                    <div class="layout__card-wrap">
+                      <div class="layout__card-status">
+                        бронза
+                      </div>
+                      <div class="layout__card-value">
+                        <span>1000</span> Б
+                      </div>
+                      <div class="layout__card-text">
+                        01.05.2027 сгорит 900 Б
+                      </div>
+                    </div>
+                    <div class="layout__card-procent">
+                      2%
+                    </div>
+                  </div>
+                </div>
+
                 <div class="layout__card-qr">
                   <img src="./images/temp/profile-card-qr.png" alt="">
+                </div>
+                <div class="layout__block-text">
+                  <p>
+                    QR-код постоянно обновляется. Не пытайтесь его скопировать или передать третьим лицам. Бонусы
+                    начисляются только держателям карт лояльности.
+                  </p>
+                </div>
+                <div class="layout__block-link" data-popup-target="loyalty">
+                  Правила программы привилегий
                 </div>
               </div>
             </div>
@@ -4153,7 +4327,7 @@
     <!-- По кайфу! -->
     <div id="favorite" class="favorite popup" data-lenis-prevent>
   <div class="popup__wrap">
-        <div class="popup__area" data-popup-head>
+    <div class="popup__area" data-popup-head>
       <div class="popup__close">
         <i class="icon-close"></i>
       </div>
@@ -4177,7 +4351,7 @@
                 <div class="layout">
                   <div class="layout__inner">
                     <div class="layout__head">
-                      <div class="layout__nav">
+                      <!-- <div class="layout__nav">
                         <button class="layout__nav-item active" type="button" data-nav="favorites-hot">
                           Горячее
                         </button>
@@ -4190,10 +4364,10 @@
                         <button class="layout__nav-item" type="button" data-nav="favorites-soups">
                           Супы
                         </button>
-                      </div>
+                      </div> -->
                     </div>
                     <div class="layout__items">
-                      <div class="card" data-popup-target="dish" data-dish="favorites-hot">
+                      <!-- <div class="card" data-popup-target="dish" data-dish="favorites-hot">
   <div class="card__head">
     <div class="card__tags">
       <div class="card__tags-item card__tags-top"><i class="icon-top"></i>Топчик</div>
@@ -4665,7 +4839,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
                     </div>
                   </div>
                 </div>
@@ -4921,6 +5095,17 @@
                   </div>
                 </div> -->
 
+              </div>
+            </div>
+            <div class="layout__null">
+              <div class="layout__null-cover">
+                <img src="./images/temp/null.svg" alt="">
+              </div>
+              <div class="layout__null-text">
+                <p>
+                  В данном разделе ничего нет. Перейдите в <a href="javascript: void(0)" data-close-all-popups>меню</a>,
+                  чтобы изучить ассортимент
+                </p>
               </div>
             </div>
 
@@ -5328,7 +5513,7 @@
   </div>
 </div>
     <!-- Удаление карты -->
-    <div id="cardsDelete" class="cards cards--delete popup" data-lenis-prevent>
+    <div id="cardsDelete" class="cards cards--delete popup popup-inner" data-lenis-prevent>
   <div class="popup__wrap">
         <div class="popup__area" data-popup-head>
       <div class="popup__close">
@@ -5808,7 +5993,7 @@
   </div>
 </div>
     <!-- Клиентский сервис -->
-    <div id="clientService" class="client-service popup" data-lenis-prevent>
+    <div id="clientService" class="client-service popup popup-inner" data-lenis-prevent>
   <div class="popup__wrap">
     <div class="popup__area" data-popup-head>
       <div class="popup__close">
@@ -5833,7 +6018,7 @@
               <div class="menu__items">
                 <a class="menu__item" href="javascript: void(0)" data-popup-target="callback">
                   <div class="menu__item-icon">
-                    <i class="icon-callback"></i>
+                    <i class="icon-callback-min"></i>
                   </div>
                   <div class="menu__item-title">
                     Обратная связь
@@ -5841,7 +6026,7 @@
                 </a>
                 <a class="menu__item" href="https://t.me/hookahfactory.nsk">
                   <div class="menu__item-icon">
-                    <i class="icon-tg"></i>
+                    <i class="icon-tg-min"></i>
                   </div>
                   <div class="menu__item-title">
                     Telegram
@@ -5849,7 +6034,7 @@
                 </a>
                 <a class="menu__item" href="https://max.ru/@hookahfactory.nsk">
                   <div class="menu__item-icon">
-                    <i class="icon-max"></i>
+                    <i class="icon-max-min"></i>
                   </div>
                   <div class="menu__item-title">
                     Max
@@ -5857,7 +6042,7 @@
                 </a>
                 <a class="menu__item" href="https://wa.me/+73832558005">
                   <div class="menu__item-icon">
-                    <i class="icon-wa"></i>
+                    <i class="icon-wa-min"></i>
                   </div>
                   <div class="menu__item-title">
                     WhatsApp
@@ -5874,7 +6059,7 @@
   </div>
 </div>
     <!-- Смена адреса -->
-    <div id="branchChange" class="branch-change popup" data-lenis-prevent>
+    <div id="branchChange" class="branch-change popup popup-inner" data-lenis-prevent>
   <div class="popup__wrap">
     <div class="popup__area" data-popup-head>
       <div class="popup__close">
@@ -5902,6 +6087,91 @@
               <button class="btn btn--remove popup__close">
                 Нет
               </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+    <!-- Уведомления -->
+    <div id="notifications" class="notifications popup popup-inner" data-lenis-prevent>
+  <div class="popup__wrap">
+    <div class="popup__area" data-popup-head>
+      <div class="popup__close">
+        <i class="icon-close"></i>
+      </div>
+    </div>
+    <div class="popup__inner">
+
+      <div class="layout" data-popup-scroll>
+        <div class="container">
+          <div class="layout__inner">
+
+            <div class="layout__head">
+              <div class="layout__head-title">
+                <h2>
+                  Вы хотите получать уведомления?
+                </h2>
+              </div>
+            </div>
+
+            <div class="layout__body">
+              <div class="layout__btns">
+                <button class="btn btn--accent popup__close">
+                  Да
+                </button>
+                <button class="btn btn--remove popup__close">
+                  Нет
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+    <!-- О платформе -->
+    <div id="platform" class="platform popup" data-lenis-prevent>
+  <div class="popup__wrap">
+    <div class="popup__area" data-popup-head>
+      <div class="popup__close">
+        <i class="icon-close"></i>
+      </div>
+    </div>
+    <div class="popup__inner">
+
+      <div class="layout" data-popup-scroll>
+        <div class="container">
+          <div class="layout__inner">
+
+            <div class="layout__head">
+              <div class="layout__head-cover">
+                <img src="./images/temp/foodbook.svg" alt="">
+              </div>
+              <div class="layout__head-title">
+                <h2>
+                  О платформе
+                </h2>
+              </div>
+            </div>
+            <div class="layout__body">
+              <div class="layout__block">
+                <div class="layout__block-wrap">
+                  <div class="layout__block-text">
+                    <p>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, porro! Reprehenderit,
+                      consequatur id? Delectus sint obcaecati dicta, deserunt rerum illum incidunt aliquid recusandae
+                      nisi deleniti, voluptas saepe rem atque. Delectus.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
 
           </div>
