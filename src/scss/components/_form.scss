@@ -57,6 +57,19 @@
 
       i {}
     }
+
+    &.invalid {
+      border-color: var(--red);
+      background-color: var(--red-05);
+
+      color: var(--red);
+
+      &+.invalid__text {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: all;
+      }
+    }
   }
 
   &-label {
@@ -355,5 +368,25 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+  }
+}
+
+.invalid {
+
+  &__text {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    font-family: var(--font-family);
+    font-weight: 500;
+    font-size: 0.8rem;
+    line-height: 1.25;
+    color: var(--red);
+
+    position: absolute;
+    bottom: 0.7rem;
+    left: 2rem;
+    z-index: 1;
   }
 }

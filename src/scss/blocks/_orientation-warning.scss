@@ -20,12 +20,14 @@
     flex-direction: column;
     align-items: center;
     gap: 2rem;
+    gap: calc(100vw/(800/20));
     padding: 2rem;
   }
 
   &__img {
     width: fit-content;
     height: 11.2rem;
+    height: calc(100vw/(800/112));
 
     img {
       width: auto;
@@ -36,8 +38,11 @@
 
   &__text {
     max-width: 35rem;
+    max-width: calc(100vw/(800/350));
 
     font-size: 1.4rem;
+    font-size: calc(100vw/(800/14));
+    line-height: 1.2;
   }
 }
 
