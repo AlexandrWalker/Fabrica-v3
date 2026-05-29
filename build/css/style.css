@@ -261,6 +261,14 @@ li:last-child {
 @font-face {
   font-family: PlayfairDisplay;
   font-display: swap;
+  src: url("../fonts/PlayfairDisplay-Bold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: PlayfairDisplay;
+  font-display: swap;
   src: url("../fonts/PlayfairDisplay-ExtraBold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-ExtraBold.woff") format("woff");
   font-weight: 800;
   font-style: normal;
@@ -271,14 +279,6 @@ li:last-child {
   font-display: swap;
   src: url("../fonts/PlayfairDisplay-Medium.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Medium.woff") format("woff");
   font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: PlayfairDisplay;
-  font-display: swap;
-  src: url("../fonts/PlayfairDisplay-Bold.woff2") format("woff2"), url("../fonts/PlayfairDisplay-Bold.woff") format("woff");
-  font-weight: 700;
   font-style: normal;
 }
 
@@ -863,6 +863,33 @@ body {
   display: block;
 }
 
+.CheckboxCaptcha {
+  background-color: #F4EBDC;
+  border-radius: 0.4rem;
+}
+
+.Text_typography_control-l,
+.Text_typography_control-xxl {
+  font-family: SFPro, Arial, sans-serif;
+}
+
+.Text_typography_control-xxl {
+  font-size: 1.2rem;
+}
+
+.Text_typography_control-l {
+  font-size: 0.8rem;
+}
+
+.Link.Link_view_captcha {
+  font-size: 12px;
+}
+
+.CheckboxCaptcha-Button {
+  border-color: #EDE4D5;
+  border-radius: 0.4rem;
+}
+
 .dropdown {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -983,6 +1010,14 @@ body {
 
 .dropdown__radio {
   display: none;
+  visibility: hidden;
+  position: absolute;
+  top: -99999px;
+  left: -999999px;
+}
+
+.dropdown__radio:checked + .dropdown__label {
+  color: var(--black);
 }
 
 .form-body {

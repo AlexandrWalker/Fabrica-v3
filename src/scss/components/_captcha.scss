@@ -1,0 +1,28 @@
+@use './../mixins' as *;
+
+.CheckboxCaptcha {
+  background-color: #F4EBDC;
+  border-radius: 0.4rem;
+}
+
+.Text_typography_control-l,
+.Text_typography_control-xxl {
+  font-family: SFPro, Arial, sans-serif;
+}
+
+.Text_typography_control-xxl {
+  font-size: 1.2rem;
+}
+
+.Text_typography_control-l {
+  font-size: 0.8rem;
+}
+
+.Link.Link_view_captcha {
+  font-size: 12px;
+}
+
+.CheckboxCaptcha-Button {
+  border-color: #EDE4D5;
+  border-radius: 0.4rem;
+}

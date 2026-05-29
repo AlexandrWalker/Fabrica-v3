@@ -104,5 +104,16 @@
 
   &__radio {
     display: none;
+    visibility: hidden;
+    position: absolute;
+    top: -99999px;
+    left: -999999px;
+
+    &:checked {
+
+      &+.dropdown__label {
+        color: var(--black);
+      }
+    }
   }
 }
