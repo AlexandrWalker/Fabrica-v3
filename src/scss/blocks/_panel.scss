@@ -32,6 +32,7 @@
     height: 13rem;
     background: linear-gradient(0deg, #0A2533 22.45%, rgba(255, 255, 255, 0) 86.33%);
     pointer-events: none;
+    transition: height 0.5s ease, transform 0.5s ease, opacity 0.5s ease, visibility 0.5s ease;
 
     position: absolute;
     top: auto;
@@ -41,6 +42,12 @@
 
     .popup-open & {
       height: 10rem;
+    }
+
+    .scroll-active & {
+      transform: translateY(150%);
+      opacity: 0;
+      visibility: hidden;
     }
   }
 
@@ -55,8 +62,13 @@
     height: var(--panel-height);
     pointer-events: all;
     border-radius: 2.4rem 2.4rem 0 0;
+    transition: transform 0.5s ease, opacity 0.5s ease, visibility 0.5s ease;
 
-    .popup-open & {}
+    .scroll-active & {
+      transform: translateY(150%);
+      opacity: 0;
+      visibility: hidden;
+    }
   }
 
   &__btns {

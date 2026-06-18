@@ -625,6 +625,31 @@
         color: var(--green);
       }
     }
+
+    &-social {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 2rem;
+      margin-top: 1rem;
+
+      a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        background-color: var(--green-2);
+        overflow: hidden;
+
+        color: var(--white);
+      }
+
+      i {
+        font-size: 4rem;
+      }
+    }
   }
 
   &__list {

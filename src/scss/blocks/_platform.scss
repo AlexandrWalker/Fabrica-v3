@@ -2,14 +2,135 @@
 
 .platform {
 
-  .layout__head-cover {
-    width: 100%;
-    height: auto;
-    border-radius: 0;
+  .popup {
 
-    img {
-      width: 100%;
-      height: auto;
+    &__area {
+      transition: background-color 0.3s ease;
+
+      z-index: 2;
+
+      &::before {
+        transition: background-color 0.3s ease;
+      }
+
+      &.popup__area--active {
+        background-color: var(--white);
+      }
+    }
+
+    &__inner {
+      margin-top: -3.6rem;
+
+      z-index: 1;
+    }
+  }
+
+  .layout {
+
+    &__inner {
+      gap: 2rem;
+    }
+
+    &__head {
+
+      &-cover {
+        height: auto;
+
+        width: calc(100% + var(--container-padding) * 2);
+        margin-left: calc(var(--container-padding) * -1);
+        border-radius: 0;
+
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+    }
+
+    &__block {
+      gap: 2rem;
+
+      &-wrap {
+
+        p {
+          font-size: 1.2rem;
+        }
+      }
+
+      &-text {
+        max-width: 100%;
+
+        &--accent {
+          color: var(--green-2);
+
+          * {
+            font-weight: 700;
+          }
+        }
+
+        &--italic {
+          font-style: italic;
+        }
+
+        &--contacts {
+
+          & p:nth-child(1) {
+
+            a {
+              font-weight: 700;
+            }
+          }
+
+          a {
+            width: fit-content;
+            margin-left: 0;
+
+            font-weight: 400;
+            font-size: 1.2rem;
+            text-decoration: underline;
+            color: var(--black);
+
+            &:hover {
+              color: var(--green-2);
+            }
+          }
+        }
+
+        p {
+
+          a {
+            margin-left: 0;
+
+            font-weight: 400;
+            font-size: 1.2rem;
+            text-decoration: none;
+            color: var(--black);
+
+            &:hover {
+              color: var(--green-2);
+            }
+          }
+        }
+      }
+
+      &-social {
+        margin-top: 0;
+        gap: 1rem;
+
+        a:last-child {
+
+          i {
+            font-size: 3rem;
+          }
+        }
+      }
+    }
+
+    &__list {
+
+      li {
+        margin-bottom: 0;
+      }
     }
   }
 }
