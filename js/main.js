@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Глобальные константы
   // Длительность плавного скролла страницы (мс) - используется в smoothScrollTo
-  const SCROLL_DURATION = 1500;
+  const SCROLL_DURATION = 1000;
   const NAV_HEIGHT_REM = 16.5;
 
   // Регистрируем плагин ScrollTrigger из библиотеки GSAP.
@@ -47,7 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   (function () {
     let activeScrollRAF = null;
-
+    let userScrollTimeout = null; // Таймер для отслеживания остановки ручного скролла
+    const htmlEl = document.documentElement; // Ссылка на тег <html>
     let passiveSupported = false;
     try {
       const testOptions = Object.defineProperty({}, 'passive', {
@@ -62,6 +63,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const passiveOption = passiveSupported ? { passive: true } : false;
+
+    // Включаем класс scroll-active
+    function setScrollActive() {
+      htmlEl.classList.add('scroll-active');
+    }
+
+    // Выключаем класс scroll-active
+    function removeScrollActive() {
+      htmlEl.classList.remove('scroll-active');
+    }
 
     // S-образная кривая: медленный старт, быстрая середина, мягкое торможение.
     // Вынесена за пределы smoothScrollTo чтобы не пересоздавалась при каждом вызове.
@@ -104,6 +115,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      // Включаем класс перед стартом анимации
+      setScrollActive();
+
       // performance.now() точнее чем Date.now() и не зависит от системного времени.
       const startTime = performance.now();
 
@@ -121,6 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
           activeScrollRAF = requestAnimationFrame(step);
         } else {
           activeScrollRAF = null;
+          removeScrollActive(); // Удаляем класс по окончании анимации
           if (callback) callback();
         }
       }
@@ -137,8 +152,29 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // Обработчик для ручного скролла пользователя (скролл мышью, тачпадом, swipe)
+    function handleUserScroll() {
+      setScrollActive();
+
+      // Сбрасываем предыдущий таймер остановки
+      if (userScrollTimeout) {
+        clearTimeout(userScrollTimeout);
+      }
+
+      // Если в течение 100мс событий скролла нет — считаем, что скролл остановлен
+      userScrollTimeout = setTimeout(function () {
+        // Проверяем, не запущена ли в этот момент программная анимация
+        if (activeScrollRAF === null) {
+          removeScrollActive();
+        }
+      }, 100);
+    }
+
     window.addEventListener('wheel', cancelActiveScroll, passiveOption);
     window.addEventListener('touchstart', cancelActiveScroll, passiveOption);
+
+    // Слушатель процесса скролла для отслеживания ручных движений пользователя
+    window.addEventListener('scroll', handleUserScroll, passiveOption);
 
     // Перехватываем клики по якорным ссылкам и заменяем нативный скролл на плавный.
     document.querySelectorAll('a[href^="#"]').forEach(function (link) {
@@ -2863,6 +2899,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { once: true });
       });
     });
+  })();
+
+  /**
+   * Изменение фона для попап ареа при скролле
+   */
+  (function () {
+    const popup = document.querySelector('#platform.popup');
+    // Находим нужные элементы внутри текущего попапа
+    const scrollContainer = popup.querySelector('[data-popup-scroll]');
+    const headCover = popup.querySelector('.layout__head-cover');
+    const popupArea = popup.querySelector('[data-popup-head]');
+
+    // Если какого-то элемента нет в разметке — выходим, чтобы не было ошибок
+    if (!scrollContainer || !headCover || !popupArea) return;
+
+    // Настройки для обсервера
+    const options = {
+      root: scrollContainer, // Следим за пересечением именно внутри скролл-контейнера попапа
+      threshold: 0           // Сработает сразу, как только хоть один пиксель скроется/появится
+    };
+
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        // entry.isIntersecting равен true, когда layout__head-cover ХОТЯ БЫ ЧАСТИЧНО виден на экране.
+        // Нам нужно добавлять класс, когда мы ПОЛНОСТЬЮ ПРОШЛИ блок (его НЕ видно), то есть !entry.isIntersecting
+        if (!entry.isIntersecting) {
+          popupArea.classList.add('popup__area--active');
+        } else {
+          popupArea.classList.remove('popup__area--active');
+        }
+      });
+    }, options);
+
+    // Запускаем слежку за обложкой
+    observer.observe(headCover);
+
   })();
 
   /**
