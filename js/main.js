@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // На iOS scrollY иногда возвращает дробные пиксели.
       // window.pageYOffset - запасной вариант для IE11.
       const startY = Math.round(window.scrollY || window.pageYOffset || 0);
-      const safeTargetY = Math.round(targetY);
+      const safeTargetY = Math.max(0, Math.round(targetY));
       const delta = safeTargetY - startY;
 
       // Если уже на нужной позиции - сразу завершаем без запуска rAF.
@@ -125,17 +125,23 @@ document.addEventListener('DOMContentLoaded', () => {
       // Браузер передаёт текущее время now (DOMHighResTimeStamp).
       function step(now) {
         const elapsed = now - startTime;
-
-        // Math.min защищает от перелёта если кадр запоздал.
         const progress = Math.min(elapsed / duration, 1);
 
         window.scrollTo(0, startY + delta * easeInOutCubic(progress));
 
-        if (progress < 1) {
+        // Проверяем текущую позицию. Если скроллили вверх и уперлись в 0 — принудительно завершаем
+        const currentScrollY = window.scrollY || window.pageYOffset || 0;
+        const hitTop = delta < 0 && currentScrollY <= 0;
+
+        if (progress < 1 && !hitTop) {
           activeScrollRAF = requestAnimationFrame(step);
         } else {
+          // Если уперлись в верх, жестко ставим в 0 для надежности
+          if (hitTop) {
+            window.scrollTo(0, 0);
+          }
           activeScrollRAF = null;
-          removeScrollActive(); // Удаляем класс по окончании анимации
+          removeScrollActive(); // Теперь класс гарантированно удалится
           if (callback) callback();
         }
       }
@@ -1201,20 +1207,24 @@ document.addEventListener('DOMContentLoaded', () => {
    * CSS использует эти классы для показа/скрытия элементов UI.
    */
   (function () {
-    const loginBtn = document.querySelector('[data-log="login"]');
-    const logoutBtn = document.querySelector('[data-log="logout"]');
+    const loginBtns = document.querySelectorAll('[data-log="login"]');
+    const logoutBtns = document.querySelectorAll('[data-log="logout"]');
 
-    if (loginBtn) {
-      loginBtn.addEventListener('click', () => {
-        document.documentElement.classList.replace('logout', 'login') ||
-          document.documentElement.classList.add('login');
+    if (loginBtns.length) {
+      loginBtns.forEach(loginBtn => {
+        loginBtn.addEventListener('click', () => {
+          document.documentElement.classList.replace('logout', 'login') ||
+            document.documentElement.classList.add('login');
+        });
       });
     }
 
-    if (logoutBtn) {
-      logoutBtn.addEventListener('click', () => {
-        document.documentElement.classList.replace('login', 'logout') ||
-          document.documentElement.classList.add('logout');
+    if (logoutBtns.length) {
+      logoutBtns.forEach(logoutBtn => {
+        logoutBtn.addEventListener('click', () => {
+          document.documentElement.classList.replace('login', 'logout') ||
+            document.documentElement.classList.add('logout');
+        });
       });
     }
   })();
