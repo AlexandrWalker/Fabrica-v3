@@ -1,0 +1,32 @@
+@use './../mixins' as *;
+
+.reservation {
+
+
+  .layout {
+
+    &__block {
+
+      &-item {
+
+        &--icon {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: var(--white);
+          border-radius: 50%;
+          width: 5rem;
+          height: 5rem;
+
+          i {
+            width: 4rem;
+            height: 4rem;
+
+            font-size: 4rem;
+            color: var(--green);
+          }
+        }
+      }
+    }
+  }
+}

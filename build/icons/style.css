@@ -1,10 +1,10 @@
 @font-face {
-  font-family: 'FoodbookIconFont';
-  src:  url('fonts/FoodbookIconFont.eot?flvj7l');
-  src:  url('fonts/FoodbookIconFont.eot?flvj7l#iefix') format('embedded-opentype'),
-    url('fonts/FoodbookIconFont.ttf?flvj7l') format('truetype'),
-    url('fonts/FoodbookIconFont.woff?flvj7l') format('woff'),
-    url('fonts/FoodbookIconFont.svg?flvj7l#FoodbookIconFont') format('svg');
+  font-family: 'FabricaIconFont';
+  src:  url('fonts/FabricaIconFont.eot?nez8m7');
+  src:  url('fonts/FabricaIconFont.eot?nez8m7#iefix') format('embedded-opentype'),
+    url('fonts/FabricaIconFont.ttf?nez8m7') format('truetype'),
+    url('fonts/FabricaIconFont.woff?nez8m7') format('woff'),
+    url('fonts/FabricaIconFont.svg?nez8m7#FabricaIconFont') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -12,7 +12,7 @@
 
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'FoodbookIconFont' !important;
+  font-family: 'FabricaIconFont' !important;
   speak: never;
   font-style: normal;
   font-weight: normal;
@@ -25,219 +25,231 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-callback:before {
+.icon-bron:before {
   content: "\e900";
 }
-.icon-wa:before {
+.icon-theme:before {
   content: "\e901";
 }
-.icon-callback-min:before {
+.icon-callback:before {
   content: "\e902";
 }
-.icon-wa-min:before {
+.icon-wa:before {
   content: "\e903";
 }
-.icon-tg-min:before {
+.icon-callback-min:before {
   content: "\e904";
 }
-.icon-max-min:before {
+.icon-wa-min:before {
   content: "\e905";
 }
-.icon-orientation:before {
+.icon-tg-min:before {
   content: "\e906";
 }
-.icon-foodbook:before {
+.icon-max-min:before {
   content: "\e907";
 }
-.icon-menu-reviews-2:before {
+.icon-orientation:before {
   content: "\e908";
 }
-.icon-menu-notifications:before {
+.icon-foodbook:before {
   content: "\e909";
 }
-.icon-tg:before {
+.icon-menu-reviews-2:before {
   content: "\e90a";
 }
-.icon-vk:before {
+.icon-menu-notifications:before {
   content: "\e90b";
 }
-.icon-max:before {
+.icon-tg:before {
   content: "\e90c";
 }
-.icon-menu-telephone:before {
+.icon-vk:before {
   content: "\e90d";
 }
-.icon-menu-call:before {
+.icon-max:before {
   content: "\e90e";
 }
-.icon-menu-platform:before {
+.icon-menu-telephone:before {
   content: "\e90f";
 }
-.icon-stars:before {
+.icon-menu-call:before {
   content: "\e910";
 }
-.icon-agreement:before {
+.icon-menu-platform:before {
   content: "\e911";
 }
-.icon-privacy:before {
+.icon-call:before {
   content: "\e912";
 }
-.icon-client-services:before {
+.icon-stars:before {
   content: "\e913";
 }
-.icon-history:before {
+.icon-agreement:before {
   content: "\e914";
 }
-.icon-kuvshin:before {
+.icon-privacy:before {
   content: "\e915";
 }
-.icon-cup:before {
+.icon-client-services:before {
   content: "\e916";
 }
-.icon-menu-catering:before {
+.icon-history:before {
   content: "\e917";
 }
-.icon-add:before {
+.icon-kuvshin:before {
   content: "\e918";
 }
-.icon-share-2:before {
+.icon-cup:before {
   content: "\e919";
 }
-.icon-business:before {
+.icon-search-2:before {
   content: "\e91a";
 }
-.icon-ananas:before {
+.icon-menu-catering:before {
   content: "\e91b";
 }
-.icon-bowl:before {
+.icon-add:before {
   content: "\e91c";
 }
-.icon-grapefruit:before {
+.icon-share-2:before {
   content: "\e91d";
 }
-.icon-butylka:before {
+.icon-business:before {
   content: "\e91e";
 }
-.icon-bokal:before {
+.icon-ananas:before {
   content: "\e91f";
 }
-.icon-language:before {
+.icon-bowl:before {
   content: "\e920";
 }
-.icon-home:before {
+.icon-grapefruit:before {
   content: "\e921";
 }
-.icon-menu-slang:before {
+.icon-butylka:before {
   content: "\e922";
 }
-.icon-vega:before {
+.icon-bokal:before {
   content: "\e923";
 }
-.icon-chef:before {
+.icon-language:before {
   content: "\e924";
 }
-.icon-menu-reviews:before {
+.icon-home:before {
   content: "\e925";
 }
-.icon-trash:before {
+.icon-menu-slang:before {
   content: "\e926";
 }
-.icon-menu-rassadka:before {
+.icon-vega:before {
   content: "\e927";
 }
-.icon-qr:before {
+.icon-chef:before {
   content: "\e928";
 }
-.icon-points:before {
+.icon-menu-reviews:before {
   content: "\e929";
 }
-.icon-search:before {
+.icon-trash:before {
   content: "\e92a";
 }
-.icon-menu-meatballs:before {
+.icon-menu-rassadka:before {
   content: "\e92b";
 }
-.icon-clock:before {
+.icon-qr:before {
   content: "\e92c";
 }
-.icon-menu-personal-offers:before {
+.icon-points:before {
   content: "\e92d";
 }
-.icon-star:before {
+.icon-search:before {
   content: "\e92e";
 }
-.icon-menu-user:before {
+.icon-menu-meatballs:before {
   content: "\e92f";
 }
-.icon-menu-like:before {
+.icon-clock:before {
   content: "\e930";
 }
-.icon-menu-geo:before {
+.icon-menu-personal-offers:before {
   content: "\e931";
 }
-.icon-menu-card:before {
+.icon-star:before {
   content: "\e932";
 }
-.icon-close:before {
+.icon-menu-user:before {
   content: "\e933";
 }
-.icon-user:before {
+.icon-menu-like:before {
   content: "\e934";
 }
-.icon-question-mark:before {
+.icon-menu-geo:before {
   content: "\e935";
 }
-.icon-menu-contacts:before {
+.icon-menu-card:before {
   content: "\e936";
 }
-.icon-menu-loyalty-system:before {
+.icon-close:before {
   content: "\e937";
 }
-.icon-menu-list:before {
+.icon-user:before {
   content: "\e938";
 }
-.icon-menu-microphone:before {
+.icon-question-mark:before {
   content: "\e939";
 }
-.icon-meatballs:before {
+.icon-menu-contacts:before {
   content: "\e93a";
 }
-.icon-login:before {
+.icon-menu-loyalty-system:before {
   content: "\e93b";
 }
-.icon-filter:before {
+.icon-menu-list:before {
   content: "\e93c";
 }
-.icon-up:before {
+.icon-menu-microphone:before {
   content: "\e93d";
 }
-.icon-carbohydrates:before {
+.icon-meatballs:before {
   content: "\e93e";
 }
-.icon-protein:before {
+.icon-login:before {
   content: "\e93f";
 }
-.icon-calories:before {
+.icon-filter:before {
   content: "\e940";
 }
-.icon-fat:before {
+.icon-up:before {
   content: "\e941";
 }
-.icon-share:before {
+.icon-carbohydrates:before {
   content: "\e942";
 }
-.icon-hot:before {
+.icon-protein:before {
   content: "\e943";
 }
-.icon-top:before {
+.icon-calories:before {
   content: "\e944";
 }
-.icon-star-fill:before {
-  content: "\e945" !important;
+.icon-fat:before {
+  content: "\e945";
 }
-.icon-like:before {
+.icon-share:before {
   content: "\e946";
 }
-.icon-chevron-right:before {
+.icon-hot:before {
   content: "\e947";
+}
+.icon-top:before {
+  content: "\e948";
+}
+.icon-star-fill:before {
+  content: "\e949";
+}
+.icon-like:before {
+  content: "\e94a";
+}
+.icon-chevron-right:before {
+  content: "\e94b";
 }

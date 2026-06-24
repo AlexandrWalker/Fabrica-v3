@@ -73,6 +73,9 @@
             </div>
           </button> -->
         </div>
+        <button class="welcome__link">
+          Пропустить
+        </button>
       </div>
 
       <img class="foodbook__img" src="./images/temp/foodbook.svg" alt="">
@@ -156,7 +159,7 @@
           </div>
           <div class="header__right">
             <button class="header__search" data-popup-target="search" data-popup-toggle>
-              <i class="icon-search"></i>
+              <i class="icon-search-2"></i>
             </button>
             <button class="header__points" data-popup-target="profile" data-popup-toggle>
               <i class="icon-points"></i>
@@ -2738,7 +2741,7 @@
     <!-- Кейтеринг -->
     <div id="catering" class="catering popup" data-lenis-prevent>
   <div class="popup__wrap">
-        <div class="popup__area" data-popup-head>
+    <div class="popup__area" data-popup-head>
       <div class="popup__close">
         <i class="icon-close"></i>
       </div>
@@ -2796,6 +2799,9 @@
                   </div>
                 </div>
               </div>
+              <button class="btn btn--green" data-popup-target="reservation">
+                Забронировать стол
+              </button>
             </div>
 
           </div>
@@ -3203,7 +3209,7 @@
     <!-- Персональные предложения - деталка -->
     <div id="offersInner" class="offers popup" data-lenis-prevent>
   <div class="popup__wrap">
-        <div class="popup__area" data-popup-head>
+    <div class="popup__area" data-popup-head>
       <div class="popup__close">
         <i class="icon-close"></i>
       </div>
@@ -3235,6 +3241,9 @@
                   </div>
                 </div>
               </div>
+              <button class="btn btn--green" data-popup-target="reservation">
+                Забронировать стол
+              </button>
             </div>
 
           </div>
@@ -4337,6 +4346,11 @@
                 <img src="./images/temp/Афиша марта.png" alt="">
               </div>
             </div>
+            <!-- <div class="layout__body">
+              <button class="btn btn--green" data-popup-target="reservation">
+                Забронировать стол
+              </button>
+            </div> -->
 
           </div>
         </div>
@@ -5164,7 +5178,7 @@
                   <div class="form-group">
                     <input class="form-input" type="text" name="search_input" placeholder="Введите название блюда">
                     <button class="form-input-btn">
-                      <i class="icon-search"></i>
+                      <i class="icon-search-2"></i>
                     </button>
                   </div>
                   <div class="form-results">
@@ -6296,6 +6310,398 @@
               </div>
             </div>
 
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+    <!-- Бронирование -->
+    <div id="reservation" class="reservation popup" data-lenis-prevent>
+  <div class="popup__wrap">
+    <div class="popup__area" data-popup-head>
+      <div class="popup__close">
+        <i class="icon-close"></i>
+      </div>
+    </div>
+    <div class="popup__inner">
+
+      <div class="layout" data-popup-scroll>
+        <div class="container">
+          <div class="layout__inner">
+
+            <div class="layout__head">
+              <div class="layout__head-title">
+                <h2>
+                  Забронируйте стол
+                </h2>
+              </div>
+            </div>
+
+            <div class="layout__body">
+              <div class="layout__block">
+                <a class="layout__block-item" href="javascript: void(0)" data-popup-target="online">
+                  <div class="layout__block-item--icon">
+                    <i class="icon-callback"></i>
+                  </div>
+                  <div class="layout__block-item--wrap">
+                    <div class="layout__block-item--text">
+                      Онлайн
+                    </div>
+                    <div class="layout__block-item--status">
+                      бронирование онлайн
+                    </div>
+                  </div>
+                  <i class="icon-chevron-right"></i>
+                </a>
+                <a class="layout__block-item" href="tel:+74959373811">
+                  <div class="layout__block-item--icon">
+                    <i class="icon-menu-telephone"></i>
+                  </div>
+                  <div class="layout__block-item--wrap">
+                    <div class="layout__block-item--text">
+                      Телефон
+                    </div>
+                    <div class="layout__block-item--status">
+                      позвонить по телефону
+                    </div>
+                  </div>
+                  <i class="icon-chevron-right"></i>
+                </a>
+                <a class="layout__block-item" href="javascript: void(0)">
+                  <div class="layout__block-item--icon">
+                    <i class="icon-max"></i>
+                  </div>
+                  <div class="layout__block-item--wrap">
+                    <div class="layout__block-item--text">
+                      Макс
+                    </div>
+                    <div class="layout__block-item--status">
+                      написать сообщение
+                    </div>
+                  </div>
+                  <i class="icon-chevron-right"></i>
+                </a>
+                <a class="layout__block-item" href="javascript: void(0)">
+                  <div class="layout__block-item--icon">
+                    <i class="icon-tg"></i>
+                  </div>
+                  <div class="layout__block-item--wrap">
+                    <div class="layout__block-item--text">
+                      Telegram
+                    </div>
+                    <div class="layout__block-item--status">
+                      написать сообщение
+                    </div>
+                  </div>
+                  <i class="icon-chevron-right"></i>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+    <!--  -->
+    <div id="online" class="callback popup" data-lenis-prevent>
+  <div class="popup__wrap">
+    <div class="popup__area" data-popup-head>
+      <div class="popup__close">
+        <i class="icon-close"></i>
+      </div>
+    </div>
+    <div class="popup__inner">
+
+      <div class="layout" data-popup-scroll>
+        <div class="container">
+          <div class="layout__inner">
+
+            <div class="layout__head">
+              <div class="layout__head-title">
+                <h2>
+                  Онлайн бронирование
+                </h2>
+              </div>
+            </div>
+
+            <div class="layout__body">
+
+              <form action="#" class="form layout__form">
+                <div class="form-body">
+                  <div class="form-group">
+                    <label class="form-label">
+                      <input class="form-input" type="text" name="online_name" placeholder="Имя" required>
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">
+                      <input class="form-input" type="tel" name="online_tel" placeholder="Телефон" required>
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">
+                      <input class="form-input" type="email" name="online_tel" placeholder="Эл. почта" required>
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">
+                      <input class="form-input" type="text" name="online_time" placeholder="Дата и время" required>
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">
+                      <input class="form-input" type="text" name="online_col" placeholder="Количество человек" required>
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">
+                      <textarea class="form-textarea" name="comment" rows="7" placeholder="Сообщение"></textarea>
+                    </label>
+                  </div>
+                </div>
+                <div class="form-foot">
+                  <button class="btn btn--accent" type="button" data-popup-target="callbackSuccess">
+                    Отправить
+                  </button>
+                  <div class="form-group form-text">
+                    <input id="form-checkbox-11" class="form-checkbox" type="checkbox" required="">
+                    <label for="form-checkbox-11">
+                      <div class="form-checkbox--item"></div>
+                      <p>
+                        Я согласен на <a href="javascript:void(0)" data-popup-target="policy">обработку персональных
+                          данных</a>
+                      </p>
+                    </label>
+                  </div>
+                  <div class="form-group form-text">
+                    <input id="form-checkbox-12" class="form-checkbox" type="checkbox">
+                    <label for="form-checkbox-12">
+                      <div class="form-checkbox--item"></div>
+                      <p>
+                        Я согласен на <a href="javascript:void(0)">рекламные уведомления</a>
+                      </p>
+                    </label>
+                  </div>
+                  <div class="form-text">
+                    <p>
+                      Нажимая на кнопку, Вы соглашаетесь с обработкой персональных данный в рамках <a
+                        href="javascript:void(0)" data-popup-target="policy">Политики персональных данных </a>
+                    </p>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+    <!--  -->
+    <div id="call" class="call popup" data-lenis-prevent>
+  <div class="popup__wrap">
+    <div class="popup__area" data-popup-head>
+      <div class="popup__close">
+        <i class="icon-close"></i>
+      </div>
+    </div>
+    <div class="popup__inner">
+
+      <div class="layout" data-popup-scroll>
+        <div class="container">
+          <div class="layout__inner">
+            <div class="layout__head">
+              <div class="layout__head-title">
+                <h2>
+                  Вызвать официанта
+                </h2>
+              </div>
+            </div>
+
+            <form action="#" class="layout__form">
+              <div class="form-body">
+                <div class="form-tabs">
+                  <div class="form-tabs-item">
+                    <input id="etagh-1" class="form-tabs-radio" name="place" type="radio">
+                    <label for="etagh-1" class="form-tabs-label">
+                      Этаж 1
+                    </label>
+                  </div>
+                  <div class="form-tabs-item">
+                    <input id="etagh-2" class="form-tabs-radio" name="place" type="radio">
+                    <label for="etagh-2" class="form-tabs-label">
+                      Этаж 2
+                    </label>
+                  </div>
+
+                  <div class="form-tabs-item">
+                    <input id="zal-1" class="form-tabs-radio" name="place" type="radio">
+                    <label for="zal-1" class="form-tabs-label">
+                      Зал 1
+                    </label>
+                  </div>
+                  <div class="form-tabs-item">
+                    <input id="zal-2" class="form-tabs-radio" name="place" type="radio">
+                    <label for="zal-2" class="form-tabs-label">
+                      Зал 2
+                    </label>
+                  </div>
+                  <div class="form-tabs-item">
+                    <input id="zal-3" class="form-tabs-radio" name="place" type="radio">
+                    <label for="zal-3" class="form-tabs-label">
+                      Зал 3
+                    </label>
+                  </div>
+                  <div class="form-tabs-item">
+                    <input id="zal-4" class="form-tabs-radio" name="place" type="radio">
+                    <label for="zal-4" class="form-tabs-label">
+                      Зал 4
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="dropdown dropdown--js">
+                    <div class="dropdown__selected dropdown__selected--js">
+                      <input class="dropdown__input dropdown__selected-input--js" type="hidden" value="">
+                      <label class="dropdown__label dropdown__selected-label--js">Выберите номер вашего стола</label>
+                      <i class="icon-chevron-right"></i>
+                    </div>
+                    <div class="dropdown__container">
+                      <div class="dropdown__content">
+                        <div class="dropdown__option">
+                          <input id="call_place_1" class="dropdown__radio" name="call_place_board" type="radio"
+                            value="Стол №1">
+                          <label for="call_place_1" class="dropdown__label">Стол №1</label>
+                        </div>
+                        <div class="dropdown__option">
+                          <input id="call_place_2" class="dropdown__radio" name="call_place_board" type="radio"
+                            value="Стол №2">
+                          <label for="call_place_2" class="dropdown__label">Стол №2</label>
+                        </div>
+                        <div class="dropdown__option">
+                          <input id="call_place_3" class="dropdown__radio" name="call_place_board" type="radio"
+                            value="Стол №3">
+                          <label for="call_place_3" class="dropdown__label">Стол №3</label>
+                        </div>
+                        <div class="dropdown__option">
+                          <input id="call_place_4" class="dropdown__radio" name="call_place_board" type="radio"
+                            value="Стол №4">
+                          <label for="call_place_4" class="dropdown__label">Стол №4</label>
+                        </div>
+                        <div class="dropdown__option">
+                          <input id="call_place_5" class="dropdown__radio" name="call_place_board" type="radio"
+                            value="Стол №5">
+                          <label for="call_place_5" class="dropdown__label">Стол №5</label>
+                        </div>
+                        <div class="dropdown__option">
+                          <input id="call_place_6" class="dropdown__radio" name="call_place_board" type="radio"
+                            value="Стол №6">
+                          <label for="call_place_6" class="dropdown__label">Стол №6</label>
+                        </div>
+                        <div class="dropdown__option">
+                          <input id="call_place_7" class="dropdown__radio" name="call_place_board" type="radio"
+                            value="Стол №7">
+                          <label for="call_place_7" class="dropdown__label">Стол №7</label>
+                        </div>
+                        <div class="dropdown__option">
+                          <input id="call_place_8" class="dropdown__radio" name="call_place_board" type="radio"
+                            value="Стол №8">
+                          <label for="call_place_8" class="dropdown__label">Стол №8</label>
+                        </div>
+                        <div class="dropdown__option">
+                          <input id="call_place_9" class="dropdown__radio" name="call_place_board" type="radio"
+                            value="Стол №9">
+                          <label for="call_place_9" class="dropdown__label">Стол №9</label>
+                        </div>
+                        <div class="dropdown__option">
+                          <input id="call_place_10" class="dropdown__radio" name="call_place_board" type="radio"
+                            value="Стол №10">
+                          <label for="call_place_10" class="dropdown__label">Стол №10</label>
+                        </div>
+                        <div class="dropdown__option">
+                          <input id="call_place_11" class="dropdown__radio" name="call_place_board" type="radio"
+                            value="Стол №11">
+                          <label for="call_place_11" class="dropdown__label">Стол №11</label>
+                        </div>
+                        <div class="dropdown__option">
+                          <input id="call_place_12" class="dropdown__radio" name="call_place_board" type="radio"
+                            value="Стол №12">
+                          <label for="call_place_12" class="dropdown__label">Стол №12</label>
+                        </div>
+                        <div class="dropdown__option">
+                          <input id="call_place_13" class="dropdown__radio" name="call_place_board" type="radio"
+                            value="Стол №13">
+                          <label for="call_place_13" class="dropdown__label">Стол №13</label>
+                        </div>
+                      </div>
+                    </div>
+                    <input class="dropdown__value" type="hidden">
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <div class="layout__body">
+              <div class="layout__block">
+                <div class="layout__block-img">
+                  <img src="./images/temp/boards-1.png" alt="">
+                </div>
+              </div>
+            </div>
+
+            <div class="layout__foot">
+              <div class="layout__foot-inner">
+                <button class="layout__btn btn btn--accent" data-popup-target="callSuccess">
+                  Вызвать официанта
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+    <!--  -->
+    <div id="callSuccess" class="call call--success popup" data-lenis-prevent>
+  <div class="popup__wrap">
+    <div class="popup__area" data-popup-head>
+      <div class="popup__close">
+        <i class="icon-close"></i>
+      </div>
+    </div>
+    <div class="popup__inner">
+
+      <div class="layout" data-popup-scroll>
+        <div class="container">
+          <div class="layout__inner">
+            <div class="layout__head">
+              <div class="layout__head-title">
+                <h2>
+                  Официант уже спешит к&nbsp;вам!
+                </h2>
+              </div>
+            </div>
+
+            <div class="layout__body">
+              <div class="layout__block">
+                <div class="layout__block-img">
+                  <img src="./images/temp/call-emoji.png" alt="">
+                </div>
+                <button class="layout__block-btn btn" data-close-all-popups>
+                  Закрыть
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -7659,7 +8065,7 @@
             <div class="layout__search">
               <div class="form-group">
                 <div class="layout__search-icon">
-                  <i class="icon-search"></i>
+                  <i class="icon-search-2"></i>
                 </div>
                 <input class="form-input" name="search" type="text" placeholder="Поиск">
                 <button class="layout__search-btn">
@@ -10746,11 +11152,20 @@
     </div>
   </div>
 </div>
+    <!--  -->
+    <div class="scrollup">
+  <div class="scrollup__btn scrollup__btn--call" data-popup-target="call" data-popup-toggle>
+    <i class="icon-call"></i>
+  </div>
+  <a class="scrollup__btn scrollup__btn--up" href="#main">
+    <i class="icon-up"></i>
+  </a>
+</div>
     <!-- Панель -->
     <div class="panel">
   <div class="panel__inner">
     <div class="panel__btns">
-      <div class="panel__btn">
+      <!-- <div class="panel__btn">
         <a class="panel__btn panel__btn--visible" href="#main">
           <i class="icon-up"></i>
           <span>
@@ -10763,7 +11178,7 @@
             На главную
           </span>
         </div>
-      </div>
+      </div> -->
       <button class="panel__btn" data-popup-target="filter" data-popup-toggle>
         <i class="icon-filter"></i>
         <span>
@@ -10773,7 +11188,7 @@
           10
         </div>
       </button>
-      <button class="panel__btn panel__btn--mid" data-popup-target="favorite" data-popup-toggle>
+      <button class="panel__btn" data-popup-target="favorite" data-popup-toggle>
         <i class="icon-like"></i>
         <span>
           Нравится
@@ -10781,6 +11196,14 @@
         <div class="btn--count">
           20
         </div>
+      </button>
+      <button class="panel__btn panel__btn--mid" data-popup-target="reservation" data-popup-toggle>
+        <div class="panel__btn-icon">
+          <i class="icon-bron"></i>
+        </div>
+        <span>
+          Бронь стола
+        </span>
       </button>
       <button class="panel__btn" data-popup-target="profile" data-popup-toggle>
         <i class="icon-login"></i>
@@ -10798,11 +11221,11 @@
         </span>
       </button>
     </div>
-    <div class="panel__mask">
+    <!-- <div class="panel__mask">
       <svg id="waveSvg" viewBox="0 0 402 77" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
         <path id="wavePath" fill="#FDF6EC" />
       </svg>
-    </div>
+    </div> -->
   </div>
 </div>
     <!-- Подвал -->

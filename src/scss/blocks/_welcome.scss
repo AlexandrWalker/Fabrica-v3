@@ -83,8 +83,26 @@
 
   &__btn {
     width: 100%;
+    transform: translateX(-5rem);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
 
     font-weight: 700;
+
+    .welcome--open body:not(body.no-scroll) & {
+      transform: translateX(0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    &:nth-child(1) {
+      transition-delay: 0s;
+    }
+
+    &:nth-child(2) {
+      transition-delay: 0.2s;
+    }
   }
 
   &__lang {
@@ -120,6 +138,14 @@
         font-size: 2rem;
       }
     }
+  }
+
+  &__link {
+    font-weight: 400;
+    font-size: 1.4rem;
+    line-height: 140%;
+    text-align: center;
+    color: var(--white);
   }
 
   .foodbook__img {

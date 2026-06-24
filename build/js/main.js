@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Переменные для отслеживания истинного скролла пальцем
     let touchStartY = 0;
     let isRealScrollActive = false;
-    const SCROLL_THRESHOLD = 5; // Порог в пикселях: игнорируем движения меньше этого значения
+    const SCROLL_THRESHOLD = 1; // Порог в пикселях: игнорируем движения меньше этого значения
 
     try {
       const testOptions = Object.defineProperty({}, 'passive', {
@@ -1714,22 +1714,42 @@ document.addEventListener('DOMContentLoaded', () => {
    * Добавляет/убирает класс is-flipped у .panel__btn               
    * когда изменяется наличие popup-open у <html>.                  
    */
-  (function () {
-    const html = document.documentElement;
-    const button = document.querySelector('.panel__btn');
-    if (!button) return; // Кнопка отсутствует - выходим
+  // (function () {
+  //   const html = document.documentElement;
+  //   const button = document.querySelector('.panel__btn');
+  //   if (!button) return; // Кнопка отсутствует - выходим
 
-    /**
-     * MutationObserver слушает изменения атрибута class у <html>.
-     * Это надёжнее чем подписываться на произвольные события -
-     * отражает реальное состояние DOM независимо от источника изменения.
-     */
-    new MutationObserver(() => {
-      button.classList.toggle('is-flipped', html.classList.contains('popup-open'));
-    }).observe(html, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
+  //   /**
+  //    * MutationObserver слушает изменения атрибута class у <html>.
+  //    * Это надёжнее чем подписываться на произвольные события -
+  //    * отражает реальное состояние DOM независимо от источника изменения.
+  //    */
+  //   new MutationObserver(() => {
+  //     button.classList.toggle('is-flipped', html.classList.contains('popup-open'));
+  //   }).observe(html, {
+  //     attributes: true,
+  //     attributeFilter: ['class']
+  //   });
+  // })();
+
+  (function () {
+    const scrollup = document.querySelector('.scrollup');
+
+    if (!scrollup) return;
+
+    const upButton = scrollup.querySelector('.scrollup__btn--up');
+
+    const render = () => {
+      // Проверяем, ушел ли скролл с самого верха страницы
+      const isScrolled = window.scrollY > 0 || document.documentElement.scrollTop > 0;
+      upButton.classList.toggle('scrollup-visible', isScrolled);
+    };
+
+    // Оптимальный слушатель скролла
+    window.addEventListener('scroll', render, { passive: true });
+
+    // Запускаем проверку при первой загрузке страницы
+    render();
   })();
 
   /**

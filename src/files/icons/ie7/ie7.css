@@ -1,217 +1,229 @@
-.icon-callback {
+.icon-bron {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe900;');
 }
-.icon-wa {
+.icon-theme {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe901;');
 }
-.icon-callback-min {
+.icon-callback {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe902;');
 }
-.icon-wa-min {
+.icon-wa {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe903;');
 }
-.icon-tg-min {
+.icon-callback-min {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe904;');
 }
-.icon-max-min {
+.icon-wa-min {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe905;');
 }
-.icon-orientation {
+.icon-tg-min {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe906;');
 }
-.icon-foodbook {
+.icon-max-min {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe907;');
 }
-.icon-menu-reviews-2 {
+.icon-orientation {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe908;');
 }
-.icon-menu-notifications {
+.icon-foodbook {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe909;');
 }
-.icon-tg {
+.icon-menu-reviews-2 {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe90a;');
 }
-.icon-vk {
+.icon-menu-notifications {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe90b;');
 }
-.icon-max {
+.icon-tg {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe90c;');
 }
-.icon-menu-telephone {
+.icon-vk {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe90d;');
 }
-.icon-menu-call {
+.icon-max {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe90e;');
 }
-.icon-menu-platform {
+.icon-menu-telephone {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe90f;');
 }
-.icon-stars {
+.icon-menu-call {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe910;');
 }
-.icon-agreement {
+.icon-menu-platform {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe911;');
 }
-.icon-privacy {
+.icon-call {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe912;');
 }
-.icon-client-services {
+.icon-stars {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe913;');
 }
-.icon-history {
+.icon-agreement {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe914;');
 }
-.icon-kuvshin {
+.icon-privacy {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe915;');
 }
-.icon-cup {
+.icon-client-services {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe916;');
 }
-.icon-menu-catering {
+.icon-history {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe917;');
 }
-.icon-add {
+.icon-kuvshin {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe918;');
 }
-.icon-share-2 {
+.icon-cup {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe919;');
 }
-.icon-business {
+.icon-search-2 {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe91a;');
 }
-.icon-ananas {
+.icon-menu-catering {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe91b;');
 }
-.icon-bowl {
+.icon-add {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe91c;');
 }
-.icon-grapefruit {
+.icon-share-2 {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe91d;');
 }
-.icon-butylka {
+.icon-business {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe91e;');
 }
-.icon-bokal {
+.icon-ananas {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe91f;');
 }
-.icon-language {
+.icon-bowl {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe920;');
 }
-.icon-home {
+.icon-grapefruit {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe921;');
 }
-.icon-menu-slang {
+.icon-butylka {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe922;');
 }
-.icon-vega {
+.icon-bokal {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe923;');
 }
-.icon-chef {
+.icon-language {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe924;');
 }
-.icon-menu-reviews {
+.icon-home {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe925;');
 }
-.icon-trash {
+.icon-menu-slang {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe926;');
 }
-.icon-menu-rassadka {
+.icon-vega {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe927;');
 }
-.icon-qr {
+.icon-chef {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe928;');
 }
-.icon-points {
+.icon-menu-reviews {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe929;');
 }
-.icon-search {
+.icon-trash {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe92a;');
 }
-.icon-menu-meatballs {
+.icon-menu-rassadka {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe92b;');
 }
-.icon-clock {
+.icon-qr {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe92c;');
 }
-.icon-menu-personal-offers {
+.icon-points {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe92d;');
 }
-.icon-star {
+.icon-search {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe92e;');
 }
-.icon-menu-user {
+.icon-menu-meatballs {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe92f;');
 }
-.icon-menu-like {
+.icon-clock {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe930;');
 }
-.icon-menu-geo {
+.icon-menu-personal-offers {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe931;');
 }
-.icon-menu-card {
+.icon-star {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe932;');
 }
-.icon-close {
+.icon-menu-user {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe933;');
 }
-.icon-user {
+.icon-menu-like {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe934;');
 }
-.icon-question-mark {
+.icon-menu-geo {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe935;');
 }
-.icon-menu-contacts {
+.icon-menu-card {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe936;');
 }
-.icon-menu-loyalty-system {
+.icon-close {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe937;');
 }
-.icon-menu-list {
+.icon-user {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe938;');
 }
-.icon-menu-microphone {
+.icon-question-mark {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe939;');
 }
-.icon-meatballs {
+.icon-menu-contacts {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe93a;');
 }
-.icon-login {
+.icon-menu-loyalty-system {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe93b;');
 }
-.icon-filter {
+.icon-menu-list {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe93c;');
 }
-.icon-up {
+.icon-menu-microphone {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe93d;');
 }
-.icon-carbohydrates {
+.icon-meatballs {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe93e;');
 }
-.icon-protein {
+.icon-login {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe93f;');
 }
-.icon-calories {
+.icon-filter {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe940;');
 }
-.icon-fat {
+.icon-up {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe941;');
 }
-.icon-share {
+.icon-carbohydrates {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe942;');
 }
-.icon-hot {
+.icon-protein {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe943;');
 }
-.icon-top {
+.icon-calories {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe944;');
 }
-.icon-star-fill {
+.icon-fat {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe945;');
 }
-.icon-like {
+.icon-share {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe946;');
 }
-.icon-chevron-right {
+.icon-hot {
   *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe947;');
+}
+.icon-top {
+  *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe948;');
+}
+.icon-star-fill {
+  *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe949;');
+}
+.icon-like {
+  *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe94a;');
+}
+.icon-chevron-right {
+  *zoom: expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe94b;');
 }
 
