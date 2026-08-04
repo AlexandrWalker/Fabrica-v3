@@ -117,6 +117,11 @@
         margin-top: 0;
         gap: 1rem;
 
+        a {
+          margin-left: 0;
+          text-decoration: none;
+        }
+
         a:last-child {
 
           i {
@@ -133,4 +138,23 @@
       }
     }
   }
+}
+
+.presentation-block {
+  max-width: 100%;
+  width: 100%;
+}
+
+.pdf-vertical-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-items: center;
+}
+
+.pdf-page-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
 }

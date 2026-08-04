@@ -13,7 +13,10 @@
 
             <div class="layout__head">
               <div class="layout__head-cover">
-                <img src="./../../images/temp/platform-cover.png" alt="">
+                <!-- <img src="./../../images/temp/platform-cover.png" alt=""> -->
+                <video autoplay muted playsinline loop disablepictureinpicture>
+                  <source src="./video/platform.mp4">
+                </video>
               </div>
               <div class="layout__head-title">
                 <h2>
@@ -119,19 +122,31 @@
                     <p>
                       Почта: <a href="mailto:hello@1and2.ru">hello@1and2.ru</a>
                     </p>
-                    <a href="./docs/презентация.pdf" download="Презентация.pdf">Скачать презентацию</a>
                   </div>
                 </div>
-                <div class="layout__block-social">
-                  <a href="/">
-                    <i class="icon-max"></i>
-                  </a>
-                  <a href="/">
-                    <i class="icon-vk"></i>
-                  </a>
-                  <a href="/">
-                    <i class="icon-tg"></i>
-                  </a>
+                <div class="layout__block-wrap">
+                  <div class="layout__block-text layout__block-text--accent">
+                    <p>
+                      Подробнее о нас
+                    </p>
+                  </div>
+                  <div class="layout__block-text">
+                    <div class="layout__block-social">
+                      <button class="layout__block-presentation btn btn--accent" data-popup-target="presentation">
+                        <i class="icon-docs"></i>
+                        Презентация
+                      </button>
+                      <a href="/">
+                        <i class="icon-max"></i>
+                      </a>
+                      <a href="/">
+                        <i class="icon-vk"></i>
+                      </a>
+                      <a href="/">
+                        <i class="icon-tg"></i>
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

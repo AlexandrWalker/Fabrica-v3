@@ -132,6 +132,7 @@
       width: 100%;
       height: 24.8rem;
 
+      video,
       img {
         width: 100%;
         height: 100%;
@@ -642,12 +643,31 @@
         border-radius: 50%;
         background-color: var(--green-2);
         overflow: hidden;
+        flex-shrink: 0;
 
         color: var(--white);
       }
 
       i {
         font-size: 4rem;
+      }
+    }
+
+    &-presentation {
+      height: 4rem;
+      gap: 0.5rem;
+
+      font-weight: 700;
+      font-size: 1.2rem;
+
+      i {
+        --btn-icon-size: 2.2rem;
+        --btn-icon-color: var(--layout-presentation-icon-color);
+        --btn-icon-background: transparent;
+        --btn-icon-radius: 0;
+
+        font-size: 2.2rem;
+        ;
       }
     }
   }
