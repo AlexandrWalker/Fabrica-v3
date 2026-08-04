@@ -3026,6 +3026,53 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', update, { passive: true });
   })();
 
+  (function () {
+    const pdfUrl = '/Fabrica-v3/docs/Presentation.pdf';
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    const container = document.getElementById('pdf-container');
+    if (!container) return;
+
+    pdfjsLib.getDocument(pdfUrl).promise.then(async (pdf) => {
+      console.log(`Успешно загружено страниц: ${pdf.numPages}`);
+
+      // Шаг 1: Сразу создаем все холсты, чтобы пользователь видел, что документ загружается
+      const renderPromises = [];
+
+      for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+        const canvas = document.createElement('canvas');
+        canvas.className = 'pdf-page-canvas';
+        container.appendChild(canvas);
+
+        // Запускаем рендеринг страницы асинхронно
+        const renderTask = pdf.getPage(pageNum).then(page => {
+          const scale = 1;
+          const viewport = page.getViewport({ scale: scale });
+
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
+
+          const context = canvas.getContext('2d');
+          const renderContext = {
+            canvasContext: context,
+            viewport: viewport
+          };
+          return page.render(renderContext).promise;
+        });
+
+        renderPromises.push(renderTask);
+      }
+
+      // Ждем, пока все страницы завершат отрисовку
+      await Promise.all(renderPromises);
+      console.log('Все страницы успешно отрисованы!');
+
+    }).catch(error => {
+      console.error('Ошибка при обработке PDF:', error);
+      container.innerHTML = '<p style="color:red; text-align:center;">Не удалось загрузить презентацию.</p>';
+    });
+  })();
+
   /**
    * УВЕДОМЛЕНИЕ О COOKIE (.plate-cookie)                           
    *    

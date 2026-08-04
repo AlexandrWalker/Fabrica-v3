@@ -141,16 +141,16 @@ li:last-child {
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
-  font-weight: 700;
+  src: url("../fonts/Inter-Medium.woff2") format("woff2"), url("../fonts/Inter-Medium.woff") format("woff");
+  font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: Inter;
   font-display: swap;
-  src: url("../fonts/Inter-Medium.woff2") format("woff2"), url("../fonts/Inter-Medium.woff") format("woff");
-  font-weight: 500;
+  src: url("../fonts/Inter-Bold.woff2") format("woff2"), url("../fonts/Inter-Bold.woff") format("woff");
+  font-weight: 700;
   font-style: normal;
 }
 
@@ -1749,6 +1749,7 @@ body {
   height: 24.8rem;
 }
 
+.layout__head-cover video,
 .layout__head-cover img {
   width: 100%;
   height: 100%;
@@ -2405,11 +2406,28 @@ html[lang=en] .layout__block-item[data-lang=en] {
   border-radius: 50%;
   background-color: var(--green-2);
   overflow: hidden;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
   color: var(--white);
 }
 
 .layout__block-social i {
   font-size: 4rem;
+}
+
+.layout__block-presentation {
+  height: 4rem;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.layout__block-presentation i {
+  --btn-icon-size: 2.2rem;
+  --btn-icon-color: var(--layout-presentation-icon-color);
+  --btn-icon-background: transparent;
+  --btn-icon-radius: 0;
+  font-size: 2.2rem;
 }
 
 .layout__list li {
@@ -4338,7 +4356,7 @@ p {
 }
 
 .favorite .card__like i::before {
-  content: "\e937";
+  content: "\e938";
 }
 
 .filter .layout__inner {
@@ -5280,12 +5298,43 @@ html.popup-open .panel__btn--hidden {
   gap: 1rem;
 }
 
+.platform .layout__block-social a {
+  margin-left: 0;
+  text-decoration: none;
+}
+
 .platform .layout__block-social a:last-child i {
   font-size: 3rem;
 }
 
 .platform .layout__list li {
   margin-bottom: 0;
+}
+
+.presentation-block {
+  max-width: 100%;
+  width: 100%;
+}
+
+.pdf-vertical-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 0;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.pdf-page-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
 }
 
 .pointsHistory .layout__inner {
