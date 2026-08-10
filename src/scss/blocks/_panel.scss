@@ -19,7 +19,6 @@
   // bottom: 0;
   position: sticky;
   bottom: 0;
-
   opacity: 1;
   visibility: visible;
 
@@ -30,11 +29,11 @@
     display: none;
   }
 
-  .scroll-active & {
-    bottom: calc((var(--panel-height) * 2) * -1);
-    opacity: 0;
-    visibility: hidden;
-  }
+  // .scroll-active & {
+  //   bottom: calc((var(--panel-height) * 2) * -1);
+  //   opacity: 0;
+  //   visibility: hidden;
+  // }
 
   * {
     transition: height 400ms cubic-bezier(.4, 0, .2, 1), transform 400ms cubic-bezier(.4, 0, .2, 1);
@@ -46,6 +45,7 @@
     height: 13rem;
     background: linear-gradient(0deg, #0A2533 22.45%, rgba(255, 255, 255, 0) 86.33%);
     pointer-events: none;
+    transform: translateY(0);
     transition: height 0.5s ease, transform 0.5s ease, opacity 0.5s ease, visibility 0.5s ease;
 
     position: absolute;
@@ -63,6 +63,18 @@
     //   opacity: 0;
     //   visibility: hidden;
     // }
+
+    .keyboard-is-open & {
+      transform: translateY(calc(var(--panel-height) * 2));
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .scroll-active & {
+      transform: translateY(calc(var(--panel-height) * 2));
+      opacity: 0;
+      visibility: hidden;
+    }
   }
 
   &__inner {
@@ -76,6 +88,7 @@
     height: var(--panel-height);
     pointer-events: all;
     border-radius: 2.4rem 2.4rem 0 0;
+    transform: translateY(0);
     transition: transform 0.5s ease, opacity 0.5s ease, visibility 0.5s ease;
 
     // .scroll-active & {
@@ -83,6 +96,18 @@
     //   opacity: 0;
     //   visibility: hidden;
     // }
+
+    .keyboard-is-open & {
+      transform: translateY(calc(var(--panel-height) * 2));
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .scroll-active & {
+      transform: translateY(calc(var(--panel-height) * 2));
+      opacity: 0;
+      visibility: hidden;
+    }
   }
 
   &__btns {

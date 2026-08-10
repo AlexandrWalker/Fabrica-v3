@@ -42,6 +42,31 @@
       background-color: var(--white);
     }
 
+    &[type="date"],
+    &[type="time"] {
+      max-width: 100%;
+      width: 100%;
+      flex-shrink: 0;
+      -webkit-appearance: none;
+      appearance: none;
+
+      font-weight: 500;
+      text-align: left;
+      color: var(--black-50);
+
+      &::placeholder {
+        opacity: 0;
+      }
+
+      &.filled {
+        color: var(--black);
+
+        &+.form-placeholder {
+          display: none;
+        }
+      }
+    }
+
     &-btn {
       --btn-size: 2.2rem;
 
@@ -54,8 +79,6 @@
       top: 50%;
       right: 1.1rem;
       transform: translateY(-50%);
-
-      i {}
     }
 
     &.invalid {
