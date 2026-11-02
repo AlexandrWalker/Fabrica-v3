@@ -30,9 +30,6 @@ const sass = gulpsass(dartsass);
 
 //IMAGES
 import imagemin, { gifsicle, mozjpeg, optipng, svgo } from 'gulp-imagemin';
-import avif from 'gulp-avif';
-import webp from 'gulp-webp';
-import imageminWebp from 'imagemin-webp';
 import svgsprite from 'gulp-svg-sprite';
 
 //FONTS
@@ -53,8 +50,6 @@ const destFolder = isModeP ? docsFolder : buildFolder;
 
 // TUMBLERS
 const svgHtml = false; // Также нужно вкл или выкл коммент в index.html
-const imgAvif = false;
-const imgWebp = false;
 const imgMin = imgMinify || isModeP ? true : false;
 const typography = false;
 
@@ -180,16 +175,6 @@ gulp.task('images', function () {
   return gulp
     .src(imgSrc)
 
-    .pipe(gulpIf(imgAvif, newer(`${destFolder}images`)))
-    .pipe(gulpIf(imgAvif, avif({ quality: 85 }))) // 75
-    .pipe(gulpIf(imgAvif, gulp.dest(`${destFolder}images`)))
-    .pipe(gulpIf(imgAvif, gulp.src(imgSrc)))
-
-    .pipe(gulpIf(imgWebp, newer(`${destFolder}images`)))
-    .pipe(gulpIf(imgWebp, webp()))
-    .pipe(gulpIf(imgWebp, gulp.dest(`${destFolder}images`)))
-    .pipe(gulpIf(imgWebp, gulp.src(imgSrc)))
-
     .pipe(gulpIf(imgMin, newer(`${destFolder}images`)))
     .pipe(
       gulpIf(
@@ -199,7 +184,6 @@ gulp.task('images', function () {
             gifsicle({ interlaced: true }),
             mozjpeg({ quality: 90, progressive: true }), // 75
             optipng({ optimizationLevel: 3 }), // 5
-            imageminWebp({ quality: 85 }),
           ],
           { verbose: true }
         )
